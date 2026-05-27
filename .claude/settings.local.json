@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(not exist *)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\app\\\\dashboard\\\\admin\\\\reports\\\\page.tsx\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\app\\\\dashboard\\\\admin\\\\settings\\\\page.tsx\" -Force)",
+      "Bash(Write-Output \"Eliminados\")",
+      "Bash(npm show *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

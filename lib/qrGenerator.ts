@@ -1,0 +1,152 @@
+/**
+ * QR Code Generator Utilities for AECMI Certificate Verification
+ */
+
+export type CertificationType = 'IDM' | 'BDM' | 'BCM';
+
+export interface CertificateData {
+  qrCode: string;
+  certificationType: CertificationType;
+  professionalName: string;
+  obtainedDate: string;
+  expiryDate: string;
+  status: 'active' | 'due' | 'expired';
+  certificateNumber: string;
+  isPublic: boolean;
+}
+
+/**
+ * Generate a unique QR code string
+ * Format: {TYPE}-{YEAR}-{RANDOM(12)}
+ * Example: IDM-2024-ABC123XYZ789
+ */
+export function generateQRCode(certificationType: CertificationType): string {
+  const year = new Date().getFullYear();
+  const randomPart = generateRandomAlphanumeric(12);
+  return `${certificationType}-${year}-${randomPart}`;
+}
+
+/**
+ * Generate a random alphanumeric string of given length
+ */
+function generateRandomAlphanumeric(length: number): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+/**
+ * Get the certification type from a QR code string
+ */
+export function getCertTypeFromQR(qrCode: string): CertificationType | null {
+  const match = qrCode.match(/^(IDM|BDM|BCM)-/);
+  return match ? (match[1] as CertificationType) : null;
+}
+
+/**
+ * Get color configuration for a certification type
+ */
+export function getCertificationColors(type: CertificationType) {
+  const colors = {
+    IDM: {
+      primary: '#0066CC',
+      primaryLight: '#E6F0FF',
+      primaryDark: '#004d99',
+      gradient: 'from-[#0066CC] to-[#004d99]',
+      bgLight: 'bg-[#E6F0FF]',
+      text: 'text-[#0066CC]',
+      border: 'border-[#0066CC]',
+      badge: 'bg-[#0066CC]/10 text-[#0066CC]',
+    },
+    BDM: {
+      primary: '#059669',
+      primaryLight: '#ECFDF5',
+      primaryDark: '#047857',
+      gradient: 'from-[#059669] to-[#047857]',
+      bgLight: 'bg-[#ECFDF5]',
+      text: 'text-[#059669]',
+      border: 'border-[#059669]',
+      badge: 'bg-[#059669]/10 text-[#059669]',
+    },
+    BCM: {
+      primary: '#D97706',
+      primaryLight: '#FFFBEB',
+      primaryDark: '#B45309',
+      gradient: 'from-[#D97706] to-[#B45309]',
+      bgLight: 'bg-[#FFFBEB]',
+      text: 'text-[#D97706]',
+      border: 'border-[#D97706]',
+      badge: 'bg-[#D97706]/10 text-[#D97706]',
+    },
+  };
+  return colors[type];
+}
+
+/**
+ * Get full certification name from type
+ */
+export function getCertificationName(type: CertificationType, locale: 'es' | 'en' = 'es'): string {
+  const names = {
+    es: {
+      IDM: 'Information Delivery Manager',
+      BDM: 'BIM Design Manager',
+      BCM: 'BIM Construction Manager',
+    },
+    en: {
+      IDM: 'Information Delivery Manager',
+      BDM: 'BIM Design Manager',
+      BCM: 'BIM Construction Manager',
+    },
+  };
+  return names[locale][type];
+}
+
+/**
+ * Get public profile URL from QR code
+ */
+export function getPublicProfileUrl(qrCode: string): string {
+  return `/certificate/${qrCode}`;
+}
+
+/**
+ * Validate QR code format
+ */
+export function validateQRCode(qrCode: string): boolean {
+  const pattern = /^(IDM|BDM|BCM)-\d{4}-[A-Z0-9]{12}$/;
+  return pattern.test(qrCode);
+}
+
+/**
+ * Determine certificate status based on expiry date
+ */
+export function getCertificateStatus(expiryDate: string): 'active' | 'due' | 'expired' {
+  const now = new Date();
+  const expiry = new Date(expiryDate);
+  const daysUntilExpiry = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (daysUntilExpiry < 0) return 'expired';
+  if (daysUntilExpiry <= 90) return 'due'; // Due within 90 days
+  return 'active';
+}
+
+/**
+ * Get status label and color
+ */
+export function getStatusInfo(status: 'active' | 'due' | 'expired', locale: 'es' | 'en' = 'es') {
+  const labels = {
+    es: {
+      active: { label: 'Activa', color: 'bg-green-50 text-green-700 border-green-200', dot: 'bg-green-500' },
+      due: { label: 'Por Renovar', color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500' },
+      expired: { label: 'Vencida', color: 'bg-red-50 text-red-700 border-red-200', dot: 'bg-red-500' },
+    },
+    en: {
+      active: { label: 'Active', color: 'bg-green-50 text-green-700 border-green-200', dot: 'bg-green-500' },
+      due: { label: 'Due for Renewal', color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500' },
+      expired: { label: 'Expired', color: 'bg-red-50 text-red-700 border-red-200', dot: 'bg-red-500' },
+    },
+  };
+  return labels[locale][status];
+}

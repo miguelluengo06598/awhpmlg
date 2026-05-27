@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Shadcn/Radix UI tokens */
+    --background: 30 20% 97%;
+    --foreground: 260 50% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 260 50% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 50% 10%;
+    --primary: 260 60% 28%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 20% 95%;
+    --secondary-foreground: 260 50% 10%;
+    --muted: 30 10% 92%;
+    --muted-foreground: 260 10% 40%;
+    --accent: 260 60% 28%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 260 60% 28%;
+    --radius: 0.625rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 260 5.3% 26.1%;
+    --sidebar-primary: 260 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 30 20% 95%;
+    --sidebar-accent-foreground: 260 5.9% 10%;
+    --sidebar-border: 30 13% 91%;
+    --sidebar-ring: 260 91.2% 59.8%;
+
+    /* Typography */
+    --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: var(--font-poppins), 'Poppins', system-ui, sans-serif;
+
+    /* AECMI Brand Colors */
+    --color-brand-dark:   #0F0524;
+    --color-brand-purple: #3D1A6E;
+    --color-brand-blue:   #005C8F;
+    --color-brand-teal:   #0A4F5C;
+    --color-brand-cyan:   #00A3C4;
+    --color-brand-orange: #E87722;
+    --color-brand-cream:  #FAF7F4;
+    --color-brand-beige:  #F5F0EB;
+    --color-brand-gold:   #D4A843;
+
+    /* Certification accent colors */
+    --color-cert-idm: #0066CC;
+    --color-cert-bdm: #00AA88;
+    --color-cert-bcm: #FF6B35;
+
+    /* Spacing scale (base-8) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* Elevation / shadows */
+    --shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+    --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+
+    /* Transitions */
+    --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base:   200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow:   300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-pmi-cream text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position:  1000px 0; }
+}
+
+@keyframes bounceY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* ─── Animation utilities ────────────────────────────────────────────────── */
+
+.animate-slide-up    { animation: slideInUp    0.5s ease-out both; }
+.animate-slide-down  { animation: slideInDown  0.5s ease-out both; }
+.animate-slide-left  { animation: slideInLeft  0.5s ease-out both; }
+.animate-slide-right { animation: slideInRight 0.5s ease-out both; }
+.animate-fade-in     { animation: fadeIn       0.3s ease-out both; }
+.animate-scale-in    { animation: scaleIn      0.4s ease-out both; }
+.animate-pulse-slow  { animation: pulse   2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-bounce-y    { animation: bounceY 1s ease-in-out infinite; }
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar        { width: 8px; height: 8px; }
+::-webkit-scrollbar-track  { background: #f5f5f5; }
+::-webkit-scrollbar-thumb  { background: #cccccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #999999; }
+
+/* ─── Focus ring ─────────────────────────────────────────────────────────── */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-cert-idm);
+  outline-offset: 2px;
+}
+
+/* ─── Responsive typography ──────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+  h2 { font-size: clamp(1.25rem, 4vw, 1.75rem); }
+  h3 { font-size: clamp(1.1rem, 3vw, 1.4rem); }
+}
+
+/* ─── Dark mode placeholder ──────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  /* Reserved for future dark mode tokens */
+}
