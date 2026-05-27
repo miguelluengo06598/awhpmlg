@@ -2,9 +2,5 @@
   "framework": "nextjs",
   "regions": ["cdg1"],
   "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url_secret",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key_secret"
-  }
+  "outputDirectory": ".next"
 }
