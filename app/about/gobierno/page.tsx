@@ -24,8 +24,17 @@ import {
   Zap,
   ArrowRight,
   Sparkles,
+  FileText,
+  Scale,
+  Eye,
+  Vote,
+  Trophy,
+  ClipboardList,
+  Download,
+  Lock,
 } from 'lucide-react'
 
+/* ─── Motion helpers ─────────────────────────────────────── */
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
@@ -37,12 +46,16 @@ const fadeInUp = {
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
 }
 
+const GRID_BG: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+  backgroundSize: '64px 64px',
+}
+
+/* ─── Data ───────────────────────────────────────────────── */
 const pilares = [
   {
     icon: Compass,
@@ -51,8 +64,6 @@ const pilares = [
     gradient: 'from-violet-500 to-purple-600',
     bgSoft: 'bg-purple-50',
     border: 'border-purple-100',
-    text: 'text-purple-700',
-    shadow: 'shadow-purple-200/50',
   },
   {
     icon: Users,
@@ -61,8 +72,6 @@ const pilares = [
     gradient: 'from-sky-500 to-blue-600',
     bgSoft: 'bg-sky-50',
     border: 'border-sky-100',
-    text: 'text-sky-700',
-    shadow: 'shadow-sky-200/50',
   },
   {
     icon: Star,
@@ -71,8 +80,6 @@ const pilares = [
     gradient: 'from-amber-400 to-orange-500',
     bgSoft: 'bg-amber-50',
     border: 'border-amber-100',
-    text: 'text-amber-700',
-    shadow: 'shadow-amber-200/50',
   },
   {
     icon: Leaf,
@@ -81,9 +88,23 @@ const pilares = [
     gradient: 'from-emerald-400 to-teal-600',
     bgSoft: 'bg-emerald-50',
     border: 'border-emerald-100',
-    text: 'text-emerald-700',
-    shadow: 'shadow-emerald-200/50',
   },
+]
+
+const principios = [
+  { icon: Eye,          title: 'Transparencia',  desc: 'Todas nuestras decisiones son públicas, documentadas y justificadas ante la comunidad.' },
+  { icon: Vote,         title: 'Participación',  desc: 'Procesos inclusivos que recogen las voces de expertos, instituciones y certificados.' },
+  { icon: Trophy,       title: 'Meritocracia',   desc: 'Los roles de gobierno se asignan por competencia, experiencia y trayectoria demostrada.' },
+  { icon: ClipboardList, title: 'Rendición de cuentas', desc: 'Los órganos de gobierno responden regularmente ante la comunidad sobre sus actuaciones.' },
+]
+
+const documents = [
+  { icon: FileText,     title: 'Estatutos de AECMI',          type: 'PDF',                 locked: false },
+  { icon: Scale,        title: 'Código de Ética',              type: 'PDF',                 locked: false },
+  { icon: Eye,          title: 'Política de Transparencia',    type: 'PDF',                 locked: false },
+  { icon: ClipboardList, title: 'Reporte Anual',               type: 'PDF',                 locked: false },
+  { icon: Lock,         title: 'Actas de Junta Directiva',     type: 'Acceso restringido',  locked: true  },
+  { icon: Compass,      title: 'Plan Estratégico',             type: 'PDF',                 locked: false },
 ]
 
 const funcionesAsesor = [
@@ -103,16 +124,18 @@ const funcionesEjecutivo = [
 ]
 
 const miembrosPlaceholder = [
-  { nombre: 'Miembro del Consejo', cargo: 'Presidente', especialidad: 'Estrategia & Gobierno' },
+  { nombre: 'Miembro del Consejo', cargo: 'Presidente',    especialidad: 'Estrategia & Gobierno' },
   { nombre: 'Miembro del Consejo', cargo: 'Vicepresidente', especialidad: 'Investigación BIM' },
-  { nombre: 'Miembro del Consejo', cargo: 'Director', especialidad: 'Certificaciones' },
-  { nombre: 'Miembro del Consejo', cargo: 'Asesor', especialidad: 'Buenas Prácticas' },
+  { nombre: 'Miembro del Consejo', cargo: 'Director',      especialidad: 'Certificaciones' },
+  { nombre: 'Miembro del Consejo', cargo: 'Asesor',        especialidad: 'Buenas Prácticas' },
 ]
 
+/* ─── Page ───────────────────────────────────────────────── */
 export default function GobiernoPage() {
   return (
     <main className="min-h-screen bg-pmi-cream">
-      {/* Breadcrumb */}
+
+      {/* ══ BREADCRUMB ═══════════════════════════════════════ */}
       <div className="w-full bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-[104px] z-40">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
@@ -130,22 +153,10 @@ export default function GobiernoPage() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#0B1D3F] via-[#0F2B5E] to-[#1a4a8a]">
-        {/* Patrón geométrico */}
-        <div className="absolute inset-0 opacity-[0.08]">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#hero-grid)" />
-          </svg>
-        </div>
-        {/* Círculos decorativos */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-cyan-400/20 to-transparent rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-500/20 to-transparent rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/4" />
+      {/* ══ HERO ═════════════════════════════════════════════ */}
+      <section className="relative w-full overflow-hidden bg-[#060B18]">
+        <div className="absolute inset-0 opacity-[0.04]" style={GRID_BG} />
+        <div className="absolute -top-32 -right-32 w-[700px] h-[500px] rounded-full bg-pmi-blue/[0.07] blur-[100px] pointer-events-none" />
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
           <motion.div
@@ -156,7 +167,7 @@ export default function GobiernoPage() {
           >
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm mb-8 transition-colors bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10"
+              className="inline-flex items-center gap-2 text-white/55 hover:text-white text-sm mb-8 transition-colors bg-white/[0.06] px-4 py-2 rounded-full border border-white/[0.1]"
             >
               <ArrowLeft className="w-4 h-4" />
               Volver a Sobre nosotros
@@ -168,7 +179,7 @@ export default function GobiernoPage() {
               className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05]"
             >
               Gobierno y{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
+              <span className="text-pmi-cyan">
                 Organización
               </span>
             </motion.h1>
@@ -176,26 +187,22 @@ export default function GobiernoPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-8 text-xl text-white/70 max-w-2xl leading-relaxed"
+              className="mt-8 text-lg text-white/60 max-w-2xl leading-relaxed"
             >
               Estructura de gobierno transparente y ética, fundamentada en la excelencia y el desarrollo sostenible del sector AEC.
             </motion.p>
           </motion.div>
         </div>
 
-        {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path
-              d="M0 50C240 90 480 10 720 50C960 90 1200 10 1440 50V100H0V50Z"
-              fill="#FAF7F4"
-            />
+            <path d="M0 50C240 90 480 10 720 50C960 90 1200 10 1440 50V100H0V50Z" fill="#FAF7F4" />
           </svg>
         </div>
       </section>
 
-      {/* Introducción */}
-      <section className="w-full pt-8 pb-20 sm:pb-28">
+      {/* ══ INTRO ════════════════════════════════════════════ */}
+      <section className="w-full pt-8 pb-16 sm:pb-20">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="hidden"
@@ -214,19 +221,73 @@ export default function GobiernoPage() {
               La estructura de gobierno de AECMI está diseñada para garantizar la{' '}
               <span className="text-pmi-blue font-semibold">transparencia</span>, la{' '}
               <span className="text-pmi-blue font-semibold">calidad</span> y el cumplimiento de los
-              principios éticos que inspiran todas nuestras actividades y procesos de certificación.
-              El Gobierno de AECMI es regido por dos órganos.
+              principios éticos que inspiran todas nuestras actividades. El Gobierno de AECMI es
+              regido por dos órganos.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Divider */}
+      {/* ══ ORG STRUCTURE ════════════════════════════════════ */}
+      <section className="w-full pb-20 sm:pb-28">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={fadeInUp}
+            className="max-w-3xl mx-auto"
+          >
+            {/* Top node */}
+            <div className="flex justify-center mb-0">
+              <div className="px-8 py-4 bg-pmi-dark text-white font-bold text-base rounded-2xl shadow-md text-center">
+                Gobierno de AECMI
+              </div>
+            </div>
+
+            {/* Vertical connector */}
+            <div className="flex justify-center">
+              <div className="w-px h-8 bg-gray-300" />
+            </div>
+
+            {/* Horizontal bar */}
+            <div className="flex justify-center">
+              <div className="w-[280px] sm:w-[440px] h-px bg-gray-300" />
+            </div>
+
+            {/* Two branches */}
+            <div className="grid grid-cols-2 gap-8 sm:gap-16 max-w-[500px] mx-auto">
+              {/* Left branch */}
+              <div className="flex flex-col items-center">
+                <div className="w-px h-6 bg-gray-300" />
+                <div className="px-4 py-3 bg-gradient-to-br from-pmi-purple to-pmi-darkblue text-white text-sm font-semibold rounded-xl text-center leading-snug shadow-md">
+                  Consejo Asesor
+                  <div className="text-[10px] font-normal text-white/60 mt-0.5">Estrategia</div>
+                </div>
+              </div>
+              {/* Right branch */}
+              <div className="flex flex-col items-center">
+                <div className="w-px h-6 bg-gray-300" />
+                <div className="px-4 py-3 bg-gradient-to-br from-pmi-blue to-pmi-teal text-white text-sm font-semibold rounded-xl text-center leading-snug shadow-md">
+                  Consejo Ejecutivo
+                  <div className="text-[10px] font-normal text-white/60 mt-0.5">Ejecución</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Note */}
+            <p className="mt-8 text-center text-sm text-gray-400">
+              Ambos órganos operan en plena sinergia para garantizar la excelencia de AECMI
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
       </div>
 
-      {/* Pilares */}
+      {/* ══ PILARES ══════════════════════════════════════════ */}
       <section className="w-full py-20 sm:py-28">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -258,15 +319,10 @@ export default function GobiernoPage() {
                 custom={i}
                 className={`group relative bg-white rounded-3xl p-7 sm:p-8 border ${pilar.border} shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 overflow-hidden`}
               >
-                {/* Gradient top accent */}
                 <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${pilar.gradient}`} />
-                {/* Soft bg circle on hover */}
                 <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${pilar.bgSoft} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
                 <div className="relative">
-                  <div
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pilar.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}
-                  >
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pilar.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
                     <pilar.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{pilar.title}</h3>
@@ -278,14 +334,12 @@ export default function GobiernoPage() {
         </div>
       </section>
 
-      {/* Divider */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
       </div>
 
-      {/* Consejo Asesor */}
+      {/* ══ CONSEJO ASESOR ═══════════════════════════════════ */}
       <section className="w-full py-20 sm:py-28 relative overflow-hidden">
-        {/* Fondo sutil */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50/60 via-pmi-cream to-blue-50/40" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pmi-purple via-pmi-blue to-pmi-cyan" />
 
@@ -355,9 +409,7 @@ export default function GobiernoPage() {
                       <p className="text-white/60 text-sm">Visión estratégica y estándares</p>
                     </div>
                   </div>
-
                   <div className="h-px bg-gradient-to-r from-white/20 to-transparent my-8" />
-
                   <div>
                     <h4 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-5 flex items-center gap-2">
                       <Users className="w-4 h-4" />
@@ -392,14 +444,12 @@ export default function GobiernoPage() {
         </div>
       </section>
 
-      {/* Divider */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
       </div>
 
-      {/* Consejo Ejecutivo */}
+      {/* ══ CONSEJO EJECUTIVO ════════════════════════════════ */}
       <section className="w-full py-20 sm:py-28 relative overflow-hidden">
-        {/* Fondo sutil */}
         <div className="absolute inset-0 bg-gradient-to-bl from-sky-50/50 via-pmi-cream to-gray-50/40" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pmi-cyan via-pmi-blue to-pmi-dark" />
 
@@ -423,9 +473,7 @@ export default function GobiernoPage() {
                       <p className="text-white/60 text-sm">Dirección y administración</p>
                     </div>
                   </div>
-
                   <div className="h-px bg-gradient-to-r from-white/20 to-transparent my-8" />
-
                   <div>
                     <h4 className="text-sm font-semibold text-white/80 uppercase tracking-wider mb-5 flex items-center gap-2">
                       <Users className="w-4 h-4" />
@@ -502,12 +550,11 @@ export default function GobiernoPage() {
         </div>
       </section>
 
-      {/* Divider */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
       </div>
 
-      {/* Sinergia */}
+      {/* ══ SINERGIA ═════════════════════════════════════════ */}
       <section className="w-full py-20 sm:py-28 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-pmi-cream to-purple-50/30" />
 
@@ -537,9 +584,8 @@ export default function GobiernoPage() {
             <div className="absolute -inset-8 bg-gradient-to-r from-purple-100/40 via-cyan-50/30 to-blue-100/40 rounded-[3rem] blur-2xl" />
             <div className="relative bg-white rounded-[2.5rem] p-8 sm:p-12 lg:p-16 border border-gray-100 shadow-xl">
               <div className="flex flex-col items-center">
-                {/* Diagrama visual */}
+                {/* Diagram */}
                 <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 mb-12 w-full justify-center">
-                  {/* Círculo Consejo Asesor */}
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
@@ -552,9 +598,8 @@ export default function GobiernoPage() {
                     <span className="text-[11px] text-white/60 mt-1">Estrategia</span>
                   </motion.div>
 
-                  {/* Conector */}
                   <div className="flex flex-col items-center gap-1">
-                    <div className="hidden sm:flex items-center gap-0">
+                    <div className="hidden sm:flex items-center">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: 64 }}
@@ -583,7 +628,7 @@ export default function GobiernoPage() {
                     >
                       Colaboración
                     </motion.span>
-                    <div className="hidden sm:flex items-center gap-0">
+                    <div className="hidden sm:flex items-center">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: 64 }}
@@ -602,7 +647,6 @@ export default function GobiernoPage() {
                     </div>
                   </div>
 
-                  {/* Círculo Consejo Ejecutivo */}
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}
@@ -628,8 +672,8 @@ export default function GobiernoPage() {
                 <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-2xl">
                   {[
                     { label: 'Transparencia', color: 'bg-purple-100 text-purple-700 border-purple-200' },
-                    { label: 'Calidad', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-                    { label: 'Ética', color: 'bg-cyan-100 text-cyan-700 border-cyan-200' },
+                    { label: 'Calidad',        color: 'bg-blue-100 text-blue-700 border-blue-200' },
+                    { label: 'Ética',          color: 'bg-cyan-100 text-cyan-700 border-cyan-200' },
                     { label: 'Sostenibilidad', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
                   ].map((tag) => (
                     <motion.div
@@ -647,24 +691,124 @@ export default function GobiernoPage() {
         </div>
       </section>
 
-      {/* Divider */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
       </div>
 
-      {/* Footer CTA */}
-      <section className="w-full py-20 sm:py-28 bg-gradient-to-br from-pmi-dark via-[#0A2540] to-pmi-blue relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="cta-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="1" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#cta-grid)" />
-          </svg>
+      {/* ══ PRINCIPIOS DE GOBIERNO ═══════════════════════════ */}
+      <section className="w-full py-20 sm:py-28 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeInUp}
+            className="text-center mb-14"
+          >
+            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-blue uppercase bg-blue-50 rounded-full mb-6 border border-blue-100">
+              Principios
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
+              Principios de Buen Gobierno
+            </h2>
+            <p className="mt-5 text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
+              Compromisos concretos que guían cómo AECMI toma decisiones y responde ante su comunidad.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={staggerContainer}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            {principios.map((p, i) => (
+              <motion.div
+                key={p.title}
+                variants={fadeInUp}
+                custom={i}
+                className="group p-7 rounded-2xl bg-pmi-cream border border-gray-100 hover:border-pmi-blue/20 hover:shadow-lg transition-all text-center"
+              >
+                <div className="flex items-center justify-center w-12 h-12 bg-pmi-dark rounded-xl mx-auto mb-5 group-hover:scale-105 transition-transform">
+                  <p.icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-base font-bold text-pmi-dark mb-2.5">{p.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{p.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-cyan-400/10 to-transparent rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/4" />
+      </section>
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+      </div>
+
+      {/* ══ DOCUMENTOS ═══════════════════════════════════════ */}
+      <section className="w-full py-20 sm:py-28 bg-pmi-cream">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={fadeInUp}
+            className="text-center mb-14"
+          >
+            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-blue uppercase bg-white rounded-full mb-6 border border-gray-100">
+              Documentación
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
+              Documentos y Políticas
+            </h2>
+            <p className="mt-5 text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
+              Marco normativo que regula la actuación de AECMI y garantiza la transparencia ante la comunidad.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={staggerContainer}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto"
+          >
+            {documents.map((doc, i) => (
+              <motion.a
+                key={doc.title}
+                variants={fadeInUp}
+                custom={i}
+                href="#"
+                className={`group flex items-center gap-4 p-5 rounded-2xl bg-white border transition-all duration-300 ${
+                  doc.locked
+                    ? 'border-gray-100 opacity-60 cursor-not-allowed'
+                    : 'border-gray-100 hover:border-pmi-blue/20 hover:shadow-md hover:-translate-y-0.5'
+                }`}
+                onClick={(e) => doc.locked && e.preventDefault()}
+                aria-disabled={doc.locked}
+              >
+                <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${doc.locked ? 'bg-gray-100' : 'bg-blue-50 group-hover:bg-blue-100'} transition-colors`}>
+                  <doc.icon className={`w-5 h-5 ${doc.locked ? 'text-gray-400' : 'text-pmi-blue'}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-pmi-dark leading-snug">{doc.title}</p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">{doc.type}</p>
+                </div>
+                {doc.locked ? (
+                  <Lock className="w-4 h-4 text-gray-300 shrink-0" />
+                ) : (
+                  <Download className="w-4 h-4 text-gray-300 group-hover:text-pmi-blue transition-colors shrink-0" />
+                )}
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══ FOOTER CTA ═══════════════════════════════════════ */}
+      <section className="w-full py-20 sm:py-28 bg-[#060B18] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={GRID_BG} />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pmi-cyan/[0.04] rounded-full blur-[80px] translate-x-1/3 -translate-y-1/4 pointer-events-none" />
 
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -674,31 +818,32 @@ export default function GobiernoPage() {
             variants={fadeInUp}
             className="text-center"
           >
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-8 leading-[1.15]">
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-6 leading-[1.15]">
               Conoce nuestro impacto
             </h2>
-            <p className="text-lg text-white/60 max-w-xl mx-auto mb-10">
-              Explora nuestras certificaciones o ponte en contacto con nosotros para saber más.
+            <p className="text-base text-white/40 max-w-xl mx-auto mb-10 leading-relaxed">
+              Explora nuestras certificaciones o ponte en contacto con nosotros para saber más sobre AECMI.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/certifications"
-                className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white bg-pmi-orange rounded-full hover:bg-pmi-orange/90 transition-all shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-7 py-3.5 text-[15px] font-semibold text-white bg-pmi-orange rounded-xl hover:bg-pmi-orange/90 transition-all shadow-lg shadow-pmi-orange/20 hover:shadow-xl"
               >
-                <FileBadge className="w-5 h-5" />
+                <FileBadge className="w-4 h-4" />
                 Ver nuestras certificaciones
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-7 py-3.5 text-[15px] font-medium text-white/70 border border-white/[0.14] rounded-xl hover:bg-white/[0.06] hover:text-white/90 transition-all"
               >
-                <Mail className="w-5 h-5" />
+                <Mail className="w-4 h-4" />
                 Contacta con nosotros
               </Link>
             </div>
           </motion.div>
         </div>
       </section>
+
     </main>
   )
 }
