@@ -45,7 +45,6 @@ export default function Header() {
           items: [
             { name: isEs() ? 'Sobre AECMI' : 'About AECMI', href: getLink('/about'), icon: Users },
             { name: isEs() ? 'Gobierno y Organización' : 'Governance & Organization', href: getLink('/about/gobierno'), icon: Landmark },
-            { name: isEs() ? 'Formación Especializada' : 'Specialized Training', href: getLink('/about/formacion'), icon: GraduationCap },
             { name: isEs() ? 'Guías y Estándares' : 'Guides & Standards', href: getLink('/about/guias-estandares'), icon: BookOpen },
           ],
         },
@@ -81,6 +80,7 @@ export default function Header() {
         },
       ],
     },
+    { name: t.nav.formation, href: getLink('/formacion') },
     { name: t.nav.contact, href: getLink('/contact') },
   ]
 

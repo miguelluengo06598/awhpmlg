@@ -1,14 +1,5 @@
-import FormationPage from "@/components/sections/FormationPage";
+import { redirect } from 'next/navigation'
 
-export const metadata = {
-  title: "AECMI - Formación Especializada",
-  description: "Capacitación profesional en metodología BIM y estándares internacionales",
-};
-
-export default function FormacionPage() {
-  return (
-    <div className="min-h-screen bg-pmi-cream">
-      <FormationPage />
-    </div>
-  );
+export default function FormacionRedirect() {
+  redirect('/formacion')
 }
