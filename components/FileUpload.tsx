@@ -18,7 +18,7 @@ interface FileUploadProps {
   label?: string
   accept?: string
   maxSize?: number
-  onSuccess?: (path: string, url: string) => void
+  onSuccess?: (path: string, url: string, fileSize: number) => void
   onError?: (error: string) => void
 }
 
@@ -75,7 +75,7 @@ export default function FileUpload({
         clearInterval(interval)
         setProgress(100)
         setSuccess(true)
-        onSuccess?.(path, url)
+        onSuccess?.(path, url, file.size)
         setTimeout(() => {
           setLoading(false)
           setProgress(0)

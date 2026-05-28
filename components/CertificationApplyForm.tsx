@@ -54,6 +54,7 @@ interface UploadedDoc {
   path: string
   url: string
   fileName: string
+  fileSize: number
 }
 
 const REQUIRED_DOCS = [
@@ -148,11 +149,11 @@ export default function CertificationApplyForm({ certificationType, certificatio
     setForm((prev) => ({ ...prev, [field]: value }))
   }, [])
 
-  const handleDocSuccess = (docType: string, path: string, url: string) => {
+  const handleDocSuccess = (docType: string, path: string, url: string, fileSize: number) => {
     const fileName = path.split('/').pop() || 'document'
     setDocs((prev) => {
       const filtered = prev.filter((d) => d.type !== docType)
-      return [...filtered, { type: docType, path, url, fileName }]
+      return [...filtered, { type: docType, path, url, fileName, fileSize }]
     })
     setError('')
   }
@@ -267,7 +268,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
             doc.type as any
           )
 
-          finalDocs.push({ type: doc.type, path: newPath, url: newUrl, fileName: doc.fileName })
+          finalDocs.push({ type: doc.type, path: newPath, url: newUrl, fileName: doc.fileName, fileSize: doc.fileSize })
 
           // Eliminar documento temporal
           await supabase.storage.from('application-documents').remove([doc.path])
@@ -285,6 +286,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
           file_name: d.fileName,
           file_path: d.path,
           document_type: d.type,
+          file_size: d.fileSize,
         }))
 
         const { error: docInsertError } = await supabase.from('documents').insert(inserts)
@@ -602,7 +604,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                           applicationId="temp"
                           documentType={doc.type}
                           label={docLabel}
-                          onSuccess={(path, url) => handleDocSuccess(doc.type, path, url)}
+                          onSuccess={(path, url, fileSize) => handleDocSuccess(doc.type, path, url, fileSize)}
                           onError={(err) => setError(err)}
                         />
                       ) : (
