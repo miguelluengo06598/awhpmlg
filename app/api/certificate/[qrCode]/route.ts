@@ -1,99 +1,61 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { validateQRCode } from '@/lib/qrGenerator';
+import { NextRequest, NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabaseClient'
+import { validateQRCode } from '@/lib/qrGenerator'
 
-/**
- * GET /api/certificate/[qrCode]
- * Public API endpoint to verify a certificate by QR code
- * Returns certificate data if valid and public, or 404
- */
+const CERT_NAMES: Record<string, string> = {
+  IDM: 'Information Delivery Manager',
+  BDM: 'BIM Design Manager',
+  BCM: 'BIM Construction Manager',
+}
+
 export async function GET(
-  request: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ qrCode: string }> }
 ) {
   try {
-    const { qrCode } = await params;
+    const { qrCode } = await params
 
-    // Validate QR code format
-    if (!validateQRCode(qrCode)) {
-      return NextResponse.json(
-        { error: 'Invalid QR code format' },
-        { status: 400 }
-      );
+    if (!qrCode || !validateQRCode(qrCode)) {
+      return NextResponse.json({ error: 'Código QR inválido.' }, { status: 400 })
     }
 
-    // TODO: Replace with actual Supabase query
-    // const { data, error } = await supabase
-    //   .from('certifications_applications')
-    //   .select(`
-    //     id,
-    //     qr_code,
-    //     certification_issued_date,
-    //     certification_expiry_date,
-    //     certification_code,
-    //     is_public_listed,
-    //     status,
-    //     user:users(first_name, last_name, country, company)
-    //   `)
-    //   .eq('qr_code', qrCode)
-    //   .eq('status', 'certified')
-    //   .single();
+    const { data: cert, error } = await supabase
+      .from('certificates')
+      .select(
+        'id, certification_type, certification_code, full_name, organization, issue_date, expiry_date, exam_score, status'
+      )
+      .eq('qr_code', qrCode)
+      .single()
 
-    // Mock data for demonstration
-    const mockCertificates: Record<string, any> = {
-      'IDM-2024-ABC123XYZ789': {
-        qr_code: 'IDM-2024-ABC123XYZ789',
-        certification_type: 'IDM',
-        professional_name: 'Juan García López',
-        obtained_date: '2024-03-15',
-        expiry_date: '2027-03-15',
-        certificate_number: 'AECMI-IDM-2024-0042',
-        is_public_listed: true,
-        country: 'España',
-        company: 'BuildTech Solutions',
-      },
-      'BDM-2024-DEF456ABC012': {
-        qr_code: 'BDM-2024-DEF456ABC012',
-        certification_type: 'BDM',
-        professional_name: 'María López Pérez',
-        obtained_date: '2024-01-20',
-        expiry_date: '2027-01-20',
-        certificate_number: 'AECMI-BDM-2024-0018',
-        is_public_listed: true,
-        country: 'España',
-        company: 'DesignBIM',
-      },
-    };
-
-    const certificate = mockCertificates[qrCode];
-
-    if (!certificate) {
-      return NextResponse.json(
-        { error: 'Certificate not found' },
-        { status: 404 }
-      );
+    if (error || !cert) {
+      return NextResponse.json({ error: 'Certificado no encontrado.' }, { status: 404 })
     }
 
-    // Calculate status based on expiry date
-    const now = new Date();
-    const expiry = new Date(certificate.expiry_date);
-    const daysUntilExpiry = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-
-    let status = 'active';
-    if (daysUntilExpiry < 0) status = 'expired';
-    else if (daysUntilExpiry <= 90) status = 'due';
+    const today = new Date().toISOString().split('T')[0]
+    const certStatus =
+      cert.status === 'revoked'
+        ? 'revoked'
+        : cert.expiry_date && cert.expiry_date < today
+        ? 'expired'
+        : cert.status ?? 'active'
 
     return NextResponse.json({
-      success: true,
-      data: {
-        ...certificate,
-        status,
+      valid: certStatus === 'active',
+      certificate: {
+        fullName: cert.full_name,
+        certificationCode: cert.certification_code,
+        certificationType: cert.certification_type,
+        certificationName: CERT_NAMES[cert.certification_type] ?? cert.certification_type,
+        organization: cert.organization ?? null,
+        issueDate: cert.issue_date,
+        expiryDate: cert.expiry_date ?? null,
+        examScore: cert.exam_score ?? null,
+        status: certStatus,
+        isActive: certStatus === 'active',
       },
-    });
+    })
   } catch (error) {
-    console.error('Certificate verification error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('[/api/certificate] Error:', error)
+    return NextResponse.json({ error: 'Error verificando certificado.' }, { status: 500 })
   }
 }
