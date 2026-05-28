@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Globe, Users, Award, BookOpen, FileText, GraduationCap, Landmark, FolderOpen, Wrench, MessageSquare, ClipboardList, Layers, HardHat, Search, BadgeCheck } from 'lucide-react'
+import { Menu, X, ChevronDown, Globe, Users, Award, FileText, Landmark, MessageSquare, ClipboardList, Layers, HardHat, Search, BadgeCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/useTranslation'
 
 export default function Header() {
@@ -45,14 +45,6 @@ export default function Header() {
           items: [
             { name: isEs() ? 'Sobre AECMI' : 'About AECMI', href: getLink('/about'), icon: Users },
             { name: isEs() ? 'Gobierno y Organización' : 'Governance & Organization', href: getLink('/about/gobierno'), icon: Landmark },
-            { name: isEs() ? 'Guías y Estándares' : 'Guides & Standards', href: getLink('/about/guias-estandares'), icon: BookOpen },
-          ],
-        },
-        {
-          title: isEs() ? 'Recursos' : 'Resources',
-          items: [
-            { name: isEs() ? 'Descargar Guías' : 'Download Guides', href: getLink('/about/guias-estandares'), icon: FolderOpen },
-            { name: isEs() ? 'Recursos Técnicos' : 'Technical Resources', href: getLink('/about/guias-estandares'), icon: Wrench },
             { name: isEs() ? 'Contactar' : 'Contact', href: getLink('/contact'), icon: MessageSquare },
           ],
         },

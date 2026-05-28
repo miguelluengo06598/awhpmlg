@@ -342,7 +342,7 @@ export default function AboutPage() {
       {/* ══ GOBIERNO CTA ════════════════════════════════════════ */}
       <section className="w-full bg-white py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-7">
+          <div className="max-w-2xl">
             {/* Gobierno card */}
             <motion.div
               {...fadeUp(0.05)}
@@ -363,30 +363,6 @@ export default function AboutPage() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-white/90 transition-all text-sm shadow-sm"
               >
                 Ver estructura de gobierno
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </motion.div>
-
-            {/* Guías card */}
-            <motion.div
-              {...fadeUp(0.1)}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#f5f8ff] to-white border border-[#dde8ff]/60 p-8 lg:p-10 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-cert-idm/[0.05] rounded-full pointer-events-none" />
-              <span className="inline-block px-3 py-1 text-[11px] font-semibold tracking-widest text-cert-idm uppercase bg-cert-idm-light rounded-full mb-5 border border-cert-idm/10">
-                Recursos Técnicos
-              </span>
-              <h3 className="text-2xl font-bold text-pmi-dark mb-3 leading-snug">
-                Guías y Estándares
-              </h3>
-              <p className="text-gray-500 leading-relaxed mb-7 text-sm">
-                Explora nuestro marco común de estándares BIM, guías técnicas descargables y recursos especializados para la transformación digital del sector AEC.
-              </p>
-              <Link
-                href="/about/guias-estandares"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-cert-idm text-white font-semibold rounded-xl hover:bg-[#0055aa] transition-all text-sm shadow-sm"
-              >
-                Explorar guías y estándares
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </motion.div>
