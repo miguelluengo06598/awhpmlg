@@ -32,6 +32,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/useTranslation';
+import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
 
 interface Props {
   locale: 'es' | 'en';
@@ -49,7 +50,6 @@ const staggerContainer = {
 
 export default function BDMCertificationPage({ locale }: Props) {
   const { t, getLink } = useTranslation(locale);
-  const [openResponsibility, setOpenResponsibility] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const responsibilities = [
@@ -307,70 +307,17 @@ export default function BDMCertificationPage({ locale }: Props) {
         </div>
       </section>
 
-      {/* ===== 5. RESPONSABILIDADES ===== */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-14"
-          >
-            <motion.span variants={fadeInUp} className="inline-block text-[#00AA88] font-semibold text-sm tracking-wider uppercase mb-3">
-              {t.bdm.responsibilities_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bdm.responsibilities_title}
-            </motion.h2>
-          </motion.div>
-          <div className="space-y-3">
-            {responsibilities.map((item, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden"
-              >
-                <button
-                  onClick={() => setOpenResponsibility(openResponsibility === idx ? null : idx)}
-                  className="w-full flex items-center gap-4 p-5 text-left hover:bg-slate-50/50 transition-colors"
-                >
-                  <div className="w-8 h-8 rounded-full bg-[#00AA88] text-white flex items-center justify-center text-sm font-bold shrink-0">
-                    {idx + 1}
-                  </div>
-                  <span className="font-semibold text-[#0B0F1C] flex-1">{item.title}</span>
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${
-                      openResponsibility === idx ? 'bg-[#00AA88] text-white' : 'bg-slate-100 text-slate-400'
-                    }`}
-                  >
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-300 ${openResponsibility === idx ? 'rotate-180' : ''}`}
-                    />
-                  </div>
-                </button>
-                <AnimatePresence initial={false}>
-                  {openResponsibility === idx && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    >
-                      <div className="px-5 pb-5 pl-[4.5rem] text-slate-600 leading-relaxed">
-                        {item.desc}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ===== 5. RESPONSABILIDADES (PDF Download) ===== */}
+      <ResponsibilitiesPDFSection
+        certificationName={t.bdm.hero_subtitle ?? 'BIM Design Manager'}
+        certificationCode="BDM"
+        accentColorRgb={[0, 170, 136]}
+        responsibilities={responsibilities}
+        locale={locale}
+        badgeLabel={t.bdm.responsibilities_badge}
+        sectionTitle={t.bdm.responsibilities_title}
+        bgClass="bg-slate-50"
+      />
 
       {/* ===== 6. COMPETENCIAS TÉCNICAS ===== */}
       <section className="py-20 bg-white">

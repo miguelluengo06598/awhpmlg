@@ -44,6 +44,7 @@ import {
   Scale,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/useTranslation';
+import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
 
 interface Props {
   locale: 'es' | 'en';
@@ -61,7 +62,6 @@ const staggerContainer = {
 
 export default function IDMCertificationPage({ locale }: Props) {
   const { t, getLink } = useTranslation(locale);
-  const [openResponsibility, setOpenResponsibility] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const responsibilities = [
@@ -125,12 +125,6 @@ export default function IDMCertificationPage({ locale }: Props) {
     { q: t.idm.faq_4_q, a: t.idm.faq_4_a },
     { q: t.idm.faq_5_q, a: t.idm.faq_5_a },
   ];
-
-  const getResponsibilityGroup = (idx: number) => {
-    if (idx < 5) return { color: 'bg-[#0066CC]', light: 'bg-[#0066CC]/10', text: 'text-[#0066CC]', border: 'border-[#0066CC]/20' };
-    if (idx < 10) return { color: 'bg-[#004d99]', light: 'bg-[#004d99]/10', text: 'text-[#004d99]', border: 'border-[#004d99]/20' };
-    return { color: 'bg-[#4A9EFF]', light: 'bg-[#4A9EFF]/10', text: 'text-[#4A9EFF]', border: 'border-[#4A9EFF]/20' };
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -329,70 +323,17 @@ export default function IDMCertificationPage({ locale }: Props) {
         </div>
       </section>
 
-      {/* ===== 5. RESPONSABILIDADES (Accordion) ===== */}
-      <section className="py-24 bg-[#f9fbff]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {t.idm.responsibilities_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-              {t.idm.responsibilities_title}
-            </motion.h2>
-          </motion.div>
-          {/* Group labels */}
-          <div className="space-y-4">
-            {responsibilities.map((item, idx) => {
-              const group = getResponsibilityGroup(idx);
-              const isOpen = openResponsibility === idx;
-              return (
-                <motion.div
-                  key={idx}
-                  variants={fadeInUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className={`rounded-xl border ${group.border} bg-white overflow-hidden shadow-sm`}
-                >
-                  <button
-                    onClick={() => setOpenResponsibility(isOpen ? null : idx)}
-                    className={`w-full flex items-center gap-4 p-5 text-left hover:${group.light} transition-colors duration-300`}
-                  >
-                    <span className={`flex-shrink-0 w-10 h-10 rounded-xl ${group.color} text-white text-base font-bold flex items-center justify-center`}>
-                      {idx + 1}
-                    </span>
-                    <span className="font-bold text-[#333] flex-1 text-base">{item.title}</span>
-                    <span className={`w-8 h-8 rounded-full border border-[#ddd] flex items-center justify-center transition-all duration-300 ${isOpen ? `${group.color} border-transparent text-white` : 'text-[#333]/40'}`}>
-                      <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-                    </span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-5 pb-6 pl-[4.5rem] text-[#333]/80 leading-relaxed">
-                          {item.desc}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* ===== 5. RESPONSABILIDADES (PDF Download) ===== */}
+      <ResponsibilitiesPDFSection
+        certificationName={t.idm.hero_subtitle ?? 'Information Delivery Manager'}
+        certificationCode="IDM"
+        accentColorRgb={[0, 102, 204]}
+        responsibilities={responsibilities}
+        locale={locale}
+        badgeLabel={t.idm.responsibilities_badge}
+        sectionTitle={t.idm.responsibilities_title}
+        bgClass="bg-[#f9fbff]"
+      />
 
       {/* ===== 6. COMPETENCIAS TÉCNICAS ===== */}
       <section className="py-24 bg-white">
