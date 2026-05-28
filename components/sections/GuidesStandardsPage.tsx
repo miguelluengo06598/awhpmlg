@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -41,6 +42,12 @@ import { useTranslation } from '@/lib/useTranslation';
 
 interface Props {
   locale: 'es' | 'en';
+}
+
+const GRID_BG: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+  backgroundSize: '64px 64px',
 }
 
 const fadeInUp = {
@@ -123,42 +130,29 @@ export default function GuidesStandardsPage({ locale }: Props) {
   return (
     <div className="min-h-screen bg-white">
       {/* ===== 1. HERO ===== */}
-      <section className="relative overflow-hidden py-20 md:py-28 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B0F1C] via-[#0F2B5E] to-[#1a4a8a]" />
-        <div className="absolute inset-0 opacity-[0.06]">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="gs-grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#0066CC" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#gs-grid)" />
-          </svg>
-        </div>
-        <motion.div animate={{ y: [0, -20, 0], rotate: [0, 3, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} className="hidden xl:flex absolute right-16 top-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 items-center justify-center">
-          <BookOpen className="w-24 h-24 text-white/15" />
-        </motion.div>
+      <section className="relative overflow-hidden py-28 md:py-36 lg:py-44 bg-[#060B18]">
+        <div className="absolute inset-0 opacity-[0.035]" style={GRID_BG} />
+        <div className="absolute top-[-200px] right-[-100px] w-[700px] h-[700px] rounded-full bg-pmi-blue/[0.07] blur-3xl pointer-events-none" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="text-center max-w-4xl mx-auto">
-            <motion.span variants={fadeInUp} className="inline-block px-5 py-2 rounded-full bg-white/10 text-[#4A9EFF] text-sm font-semibold mb-8 border border-white/10 backdrop-blur-sm">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl">
+            <motion.span variants={fadeInUp} className="inline-block px-4 py-1.5 rounded-full bg-white/[0.06] text-pmi-cyan text-[11px] font-semibold tracking-widest uppercase mb-8 border border-white/[0.08]">
               {isEs ? 'Recursos Técnicos' : 'Technical Resources'}
             </motion.span>
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+            <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight leading-[1.05]">
               {isEs ? 'Guías y Estándares' : 'Guides and Standards'}
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-xl md:text-2xl font-medium mb-4 text-white/90">
+            <motion.p variants={fadeInUp} className="text-xl font-medium mb-4 text-white/80">
               {isEs ? 'Marco común para la implantación de metodologías BIM' : 'Common framework for BIM methodology implementation'}
             </motion.p>
-            <motion.p variants={fadeInUp} className="text-lg text-white/70 max-w-3xl mx-auto mb-12 leading-relaxed">
+            <motion.p variants={fadeInUp} className="text-lg text-white/50 max-w-2xl mb-12 leading-relaxed">
               {isEs
                 ? 'Referencias internacionales y herramientas especializadas para profesionales y organizaciones del sector AEC.'
                 : 'International references and specialized tools for AEC sector professionals and organizations.'}
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <button className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-[#0066CC] hover:bg-[#0055aa] text-white px-10 py-4 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+              <button className="inline-flex items-center justify-center gap-3 text-base font-semibold rounded-full bg-white text-pmi-dark hover:bg-pmi-cream px-8 py-4 transition-all duration-300 shadow-lg hover:-translate-y-0.5">
                 <Download className="w-5 h-5" />
                 {isEs ? 'Descargar Guías' : 'Download Guides'}
-                <ArrowRight className="w-5 h-5" />
               </button>
             </motion.div>
           </motion.div>
@@ -496,30 +490,22 @@ export default function GuidesStandardsPage({ locale }: Props) {
       </section>
 
       {/* ===== 9. CTA FINAL ===== */}
-      <section className="relative overflow-hidden py-24 bg-gradient-to-br from-[#0066CC] via-[#0055aa] to-[#004d99]">
-        <div className="absolute inset-0 opacity-10">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="gs-cta-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="20" cy="20" r="1" fill="white" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#gs-cta-grid)" />
-          </svg>
-        </div>
+      <section className="relative overflow-hidden py-24 bg-[#060B18]">
+        <div className="absolute inset-0 opacity-[0.035]" style={GRID_BG} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-pmi-blue/[0.06] blur-3xl pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer}>
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-white mb-6 leading-[1.1]">
               {isEs ? '¿Tu Organización Necesita Implementar Estándares?' : 'Does Your Organization Need to Implement Standards?'}
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-lg text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <motion.p variants={fadeInUp} className="text-lg text-white/50 mb-12 max-w-2xl mx-auto leading-relaxed">
               {isEs ? 'Contamos con expertos para guiarte en el proceso de adopción de metodologías BIM y estándares internacionales.' : 'We have experts to guide you in the adoption of BIM methodologies and international standards.'}
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-white text-[#0066CC] px-10 py-4 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-3 text-base font-semibold rounded-full bg-white text-pmi-dark hover:bg-pmi-cream px-8 py-4 transition-all duration-300 shadow-lg hover:-translate-y-0.5">
                 {isEs ? 'Contacta con Nosotros' : 'Contact Us'} <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link href={getLink('/certifications')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl border-2 border-white/40 text-white hover:bg-white/10 px-10 py-4 transition-all duration-300 hover:-translate-y-1">
+              <Link href={getLink('/certifications')} className="inline-flex items-center justify-center gap-3 text-base font-semibold rounded-full border border-white/20 text-white hover:bg-white/10 px-8 py-4 transition-all duration-300 hover:-translate-y-0.5">
                 {isEs ? 'Ver Certificaciones' : 'View Certifications'}
               </Link>
             </motion.div>

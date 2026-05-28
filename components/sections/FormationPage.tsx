@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import React from 'react'
 import {
   BookOpen,
   Briefcase,
@@ -25,8 +26,19 @@ import {
   Laptop,
   BarChart3,
   Mail,
+  ClipboardList,
+  Layers,
+  HardHat,
+  Globe,
+  Handshake,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/useTranslation'
+
+const GRID_BG: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+  backgroundSize: '64px 64px',
+}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 24 },
@@ -43,8 +55,9 @@ const staggerItem = {
 }
 
 export default function FormationPage() {
-  const { t, getLink } = useTranslation()
+  const { t, getLink, currentLang } = useTranslation()
   const f = t.formation
+  const isEn = currentLang === 'en'
 
   const [openReq, setOpenReq] = useState<number | null>(null)
 
@@ -55,32 +68,43 @@ export default function FormationPage() {
   return (
     <>
       {/* ========== HERO ========== */}
-      <section className="relative w-full bg-gradient-to-br from-pmi-dark via-[#0A2540] to-pmi-blue overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-cyan-400 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/4" />
-        </div>
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-40">
+      <section className="relative w-full bg-[#060B18] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.035]" style={GRID_BG} />
+        <div className="absolute top-[-200px] left-[-100px] w-[700px] h-[700px] rounded-full bg-pmi-blue/[0.07] blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-44">
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl"
           >
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-white/80 uppercase bg-white/[0.06] rounded-full mb-6 border border-white/[0.08]">
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-cyan uppercase bg-white/[0.06] rounded-full mb-8 border border-white/[0.08]">
               {f.title}
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.05] tracking-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white leading-[1.05] tracking-tight">
               {f.hero_title}
             </h1>
-            <p className="mt-5 text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl mx-auto">
+            <p className="mt-6 text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl">
               {f.hero_subtitle}
             </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-pmi-dark bg-white rounded-full hover:bg-pmi-cream transition-all hover:-translate-y-0.5 shadow-lg"
+              >
+                <Mail className="w-5 h-5" />
+                {f.alliances_cta}
+              </Link>
+              <Link
+                href="/certifications"
+                className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
+              >
+                {f.mission_cta}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </motion.div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 80L60 74C120 68 240 56 360 50C480 44 600 44 720 48C840 52 960 60 1080 64C1200 68 1320 68 1380 68L1440 68V80H1380C1320 80 1200 80 1080 80C960 80 840 80 720 80C600 80 480 80 360 80C240 80 120 80 60 80H0Z" fill="white" />
-          </svg>
         </div>
       </section>
 
@@ -163,7 +187,7 @@ export default function FormationPage() {
         </div>
       </section>
 
-      {/* ========== ALIANZAS ACADÉMICAS ========== */}
+      {/* ========== CURSOS PREPARATORIOS ========== */}
       <section className="w-full bg-white py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-14">
@@ -184,20 +208,69 @@ export default function FormationPage() {
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            {[1, 2, 3].map((_, i) => (
-              <motion.div
-                key={i}
-                {...staggerItem}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="p-6 rounded-2xl bg-pmi-cream border border-gray-100 text-center"
-              >
-                <div className="w-14 h-14 bg-white rounded-xl border border-gray-100 flex items-center justify-center mx-auto mb-4">
-                  <School className="w-6 h-6 text-gray-300" />
-                </div>
-                <p className="text-sm text-gray-400 italic">{f.alliances_empty}</p>
-              </motion.div>
-            ))}
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                icon: ClipboardList,
+                title: 'IDM',
+                full: 'Information Delivery Manager',
+                desc: isEn
+                  ? 'Preparatory programme for the IDM certification. Information governance, CDE and ISO 19650 compliance.'
+                  : 'Programa preparatorio para la certificación IDM. Gobierno de la información, CDE y cumplimiento ISO 19650.',
+                color: 'from-slate-700 to-blue-900',
+                border: 'border-blue-100',
+                href: '/certifications/information-delivery-manager',
+              },
+              {
+                icon: Layers,
+                title: 'BDM',
+                full: 'BIM Design Manager',
+                desc: isEn
+                  ? 'Preparatory programme for the BDM certification. Interdisciplinary coordination and digital model auditing.'
+                  : 'Programa preparatorio para la certificación BDM. Coordinación interdisciplinar y auditoría de modelos digitales.',
+                color: 'from-teal-600 to-emerald-800',
+                border: 'border-teal-100',
+                href: '/certifications/bim-design-manager',
+              },
+              {
+                icon: HardHat,
+                title: 'BCM',
+                full: 'BIM Construction Manager',
+                desc: isEn
+                  ? 'Preparatory programme for the BCM certification. BIM implementation on site and federated model management.'
+                  : 'Programa preparatorio para la certificación BCM. Implantación BIM en obra y gestión de modelos federados.',
+                color: 'from-orange-600 to-red-800',
+                border: 'border-orange-100',
+                href: '/certifications/bim-construction-manager',
+              },
+            ].map((item, i) => {
+              const Icon = item.icon
+              return (
+                <motion.div
+                  key={i}
+                  {...staggerItem}
+                  transition={{ duration: 0.45, delay: i * 0.1 }}
+                  className={`group relative flex flex-col rounded-2xl overflow-hidden border ${item.border} shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1`}
+                >
+                  <div className={`bg-gradient-to-br ${item.color} p-6 pb-8`}>
+                    <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center mb-4">
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="text-3xl font-black text-white mb-1">{item.title}</div>
+                    <div className="text-sm text-white/70 font-medium">{item.full}</div>
+                  </div>
+                  <div className="flex-1 flex flex-col bg-white p-6">
+                    <p className="text-sm text-gray-600 leading-relaxed flex-1">{item.desc}</p>
+                    <Link
+                      href={item.href}
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-pmi-dark hover:text-pmi-blue transition-colors group-hover:gap-3"
+                    >
+                      {isEn ? 'View certification' : 'Ver certificación'} <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
 
           <motion.div {...fadeInUp} className="mt-12 text-center">
@@ -351,24 +424,22 @@ export default function FormationPage() {
       </section>
 
       {/* ========== CTA FINAL ========== */}
-      <section className="relative w-full bg-gradient-to-br from-pmi-dark via-[#0A2540] to-pmi-blue overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-gradient-to-br from-pmi-cyan/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-gradient-to-tl from-pmi-orange/15 rounded-full blur-3xl" />
-        </div>
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <section className="relative w-full bg-[#060B18] overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.035]" style={GRID_BG} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-pmi-blue/[0.06] blur-3xl pointer-events-none" />
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <motion.div {...fadeInUp} className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+            <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1]">
               {f.final_cta_title}
             </h2>
-            <p className="mt-4 text-lg text-white/70">
+            <p className="mt-5 text-lg text-white/60 leading-relaxed">
               {f.final_cta_subtitle}
             </p>
-            <p className="mt-3 text-base text-white/50 leading-relaxed">
+            <p className="mt-3 text-base text-white/40 leading-relaxed">
               {f.final_cta_desc}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-white/90 transition-all text-[15px]">
+              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-pmi-cream transition-all shadow-lg text-[15px]">
                 {f.final_cta_primary} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white font-medium rounded-xl border border-white/20 hover:bg-white/5 transition-all text-[15px]">
