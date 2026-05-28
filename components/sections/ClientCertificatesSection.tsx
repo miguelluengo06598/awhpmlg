@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { getCertificationName } from '@/lib/qrGenerator'
+import { CertificateRenewalSection } from './CertificateRenewalSection'
 
 interface Certificate {
   id: string
@@ -14,6 +16,8 @@ interface Certificate {
   issue_date: string
   expiry_date: string | null
   status: string
+  renewal_price: number | null
+  can_renew: boolean
 }
 
 const certColors: Record<string, string> = {
@@ -25,11 +29,13 @@ const certColors: Record<string, string> = {
 export function ClientCertificatesSection({ userId }: { userId: string }) {
   const [certs, setCerts] = useState<Certificate[]>([])
   const [loading, setLoading] = useState(true)
+  const searchParams = useSearchParams()
+  const renewalStatus = searchParams.get('renewal')
 
   useEffect(() => {
     supabase
       .from('certificates')
-      .select('id, certification_type, certification_code, full_name, issue_date, expiry_date, status')
+      .select('id, certification_type, certification_code, full_name, issue_date, expiry_date, status, renewal_price, can_renew')
       .eq('user_id', userId)
       .in('status', ['active', 'expired'])
       .order('issue_date', { ascending: false })
@@ -47,6 +53,18 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
         Mis Certificaciones
       </h2>
 
+      {/* Renewal status banners */}
+      {renewalStatus === 'success' && (
+        <div style={{ padding: spacing.md, backgroundColor: colors.semantic.success + '14', border: `1px solid ${colors.semantic.success}55`, borderRadius: 10, marginBottom: spacing.lg, fontFamily: typography.family.body, fontSize: '0.9rem', fontWeight: 600, color: colors.semantic.success }}>
+          ✅ ¡Renovación completada! Tu certificado es válido por 2 años más.
+        </div>
+      )}
+      {renewalStatus === 'canceled' && (
+        <div style={{ padding: spacing.md, backgroundColor: colors.semantic.warning + '14', border: `1px solid ${colors.semantic.warning}55`, borderRadius: 10, marginBottom: spacing.lg, fontFamily: typography.family.body, fontSize: '0.9rem', fontWeight: 600, color: colors.semantic.warning }}>
+          ⚠️ Renovación cancelada. Puedes intentarlo de nuevo cuando quieras.
+        </div>
+      )}
+
       {certs.length === 0 ? (
         <div style={{ padding: spacing.xl, backgroundColor: colors.neutral[50], borderRadius: 12, textAlign: 'center' }}>
           <p style={{ fontFamily: typography.family.body, color: colors.neutral[500], margin: 0 }}>
@@ -54,7 +72,7 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
           </p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: spacing.lg }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: spacing.lg }}>
           {certs.map((cert) => {
             const accentColor = certColors[cert.certification_type] ?? colors.primary.idm
             const isActive = cert.status === 'active'
@@ -80,7 +98,7 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
                   <p style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: colors.neutral[500], margin: `0 0 ${spacing.md}` }}>
                     {cert.certification_code}
                   </p>
-                  <p style={{ fontFamily: typography.family.body, fontSize: '0.8rem', color: colors.neutral[500], margin: `0 0 ${spacing.lg}` }}>
+                  <p style={{ fontFamily: typography.family.body, fontSize: '0.8rem', color: colors.neutral[500], margin: `0 0 ${spacing.md}` }}>
                     Emitido: {new Date(cert.issue_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                     {cert.expiry_date && ` · Vence: ${new Date(cert.expiry_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}`}
                   </p>
@@ -93,6 +111,8 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
                   >
                     Ver certificado
                   </Link>
+
+                  <CertificateRenewalSection certificate={cert} />
                 </div>
               </div>
             )
