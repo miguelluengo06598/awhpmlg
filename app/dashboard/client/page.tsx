@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/hooks/useAuth'
 import { AnimatedCard, Card, Badge, Button } from '@/components/ui'
 import { colors, spacing, typography } from '@/lib/design-system'
+import { ClientCertificatesSection } from '@/components/sections/ClientCertificatesSection'
 
 interface Stats {
   totalApplications: number
@@ -134,6 +135,9 @@ export default function ClientDashboardPage() {
           </AnimatedCard>
         ))}
       </div>
+
+      {/* Certificates */}
+      <ClientCertificatesSection userId={user.id} />
 
       {/* Quick actions */}
       <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap', marginBottom: spacing.xl }}>

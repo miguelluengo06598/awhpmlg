@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/hooks/useAuth'
 import { AnimatedCard, Card, Badge, Button } from '@/components/ui'
 import { colors, spacing, typography } from '@/lib/design-system'
+import { AdminCreateCertificateSection } from '@/components/sections/AdminCreateCertificateSection'
 
 interface Stats {
   pendingApplications: number
@@ -205,6 +206,8 @@ export default function AdminDashboardPage() {
           </div>
         )}
       </Card>
+
+      <AdminCreateCertificateSection />
 
     </div>
   )

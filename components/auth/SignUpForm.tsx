@@ -20,6 +20,7 @@ import {
 import Link from 'next/link'
 import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
+import { assignCertificatesToUser } from '@/lib/certificateService'
 import AuthLayout from './AuthLayout'
 
 interface FormData {
@@ -198,6 +199,13 @@ export default function SignUpForm() {
           setStatusMessage(isEn ? 'This email is already registered.' : 'Este email ya está registrado.')
           setIsSubmitting(false)
           return
+        }
+
+        // Asignar certificados pendientes que coincidan con este email
+        try {
+          await assignCertificatesToUser(formData.email.trim().toLowerCase(), authData.user.id)
+        } catch {
+          // No bloquear el registro si falla la asignación
         }
 
         setSubmitStatus('success')
