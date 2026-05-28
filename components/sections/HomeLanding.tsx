@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import {
   ArrowRight,
-  Star, Globe, Award, TrendingUp,
+  Globe, Award, TrendingUp,
   Users, ClipboardList, Layers, HardHat,
   CheckCircle2, FileText, Search, CreditCard,
   GraduationCap, Briefcase, UserCircle, ShieldCheck,
@@ -157,41 +157,6 @@ export default function HomeLanding() {
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
             <path d="M0 80L60 74C120 68 240 56 360 50C480 44 600 44 720 48C840 52 960 60 1080 64C1200 68 1320 68 1380 68L1440 68V80H1380C1320 80 1200 80 1080 80C960 80 840 80 720 80C600 80 480 80 360 80C240 80 120 80 60 80H0Z" fill="#FAF7F4" />
           </svg>
-        </div>
-      </section>
-
-      {/* ═══ STATS ══════════════════════════════════════════════════════════ */}
-      <section className="w-full bg-pmi-cream py-20 md:py-24">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-blue-50/70 rounded-full mb-4 border border-blue-100/60">
-              {h.stats_badge}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-[40px] font-bold text-pmi-dark tracking-tight">
-              {h.stats_title}
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-5 lg:gap-7">
-            {[
-              { value: h.stat_1_value, label: h.stat_1_label, icon: Star, color: 'text-pmi-blue', bg: 'bg-blue-50', border: 'border-blue-100/60' },
-              { value: h.stat_2_value, label: h.stat_2_label, icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100/60' },
-              { value: h.stat_3_value, label: h.stat_3_label, icon: Award, color: 'text-pmi-orange', bg: 'bg-orange-50', border: 'border-orange-100/60' },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                {...staggerItem}
-                transition={{ duration: 0.45, delay: i * 0.1 }}
-                className={`p-8 lg:p-10 rounded-2xl bg-white border ${stat.border} hover:shadow-md transition-all duration-300 text-center`}
-              >
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${stat.bg} ${stat.color} mb-5`}>
-                  <stat.icon className="w-6 h-6" />
-                </div>
-                <div className="text-4xl sm:text-5xl font-extrabold text-pmi-dark tracking-tight">{stat.value}</div>
-                <div className="mt-2 text-[12px] font-semibold text-gray-400 tracking-widest uppercase">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
