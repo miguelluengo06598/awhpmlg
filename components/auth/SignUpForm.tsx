@@ -246,11 +246,13 @@ export default function SignUpForm() {
       benefits={benefits}
       authType="signup"
     >
-      <div className="bg-white p-7 sm:p-9 rounded-2xl border border-gray-100 shadow-sm w-full">
-        <h2 className="text-xl sm:text-2xl font-bold text-pmi-dark mb-1">{a.signUp_title}</h2>
-        <p className="text-sm text-gray-500 mb-8">
-          {isEn ? 'Complete the form to register' : 'Completa el formulario para registrarte'}
-        </p>
+      <div className="w-full">
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signUp_title}</h2>
+          <p className="text-sm text-gray-400 mt-1.5">
+            {isEn ? 'Complete the form to get started.' : 'Completa el formulario para empezar.'}
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           {/* Nombre completo */}
@@ -454,8 +456,8 @@ export default function SignUpForm() {
           </AnimatePresence>
         </form>
 
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+          <p className="text-sm text-gray-500">
             {a.signUp_hasAccount}{' '}
             <Link href={getLink('/auth/signin')} className="text-[#0066CC] font-semibold hover:underline">
               {a.signUp_signInLink}

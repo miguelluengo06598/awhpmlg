@@ -18,7 +18,6 @@ import {
 import Link from 'next/link'
 import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
-import { Button } from '@/components/ui'
 import AuthLayout from './AuthLayout'
 
 // Fallback test users for offline/development mode
@@ -198,11 +197,13 @@ export default function SignInForm() {
       benefits={benefits}
       authType="signin"
     >
-      <div className="bg-white p-7 sm:p-9 rounded-2xl border border-gray-100 shadow-sm w-full">
-        <h2 className="text-xl sm:text-2xl font-bold text-pmi-dark mb-1">{a.signIn_title}</h2>
-        <p className="text-sm text-gray-500 mb-8">
-          {isEn ? 'Enter your credentials to access your account.' : 'Introduce tus credenciales para acceder a tu cuenta.'}
-        </p>
+      <div className="w-full">
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signIn_title}</h2>
+          <p className="text-sm text-gray-400 mt-1.5">
+            {isEn ? 'Enter your credentials to continue.' : 'Introduce tus credenciales para continuar.'}
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           {/* Email */}
@@ -271,11 +272,17 @@ export default function SignInForm() {
           </div>
 
           {/* Submit */}
-          <Button type="submit" variant="primary" size="lg" fullWidth loading={isSubmitting}
-            icon={!isSubmitting ? <ArrowRight className="w-4 h-4" /> : undefined}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#0066CC] text-white font-semibold rounded-xl hover:bg-[#0052a3] focus:outline-none focus:ring-2 focus:ring-[#0066CC]/40 transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-md text-[0.95rem]"
           >
-            {isSubmitting ? (isEn ? 'Verifying...' : 'Verificando...') : a.signIn_submit}
-          </Button>
+            {isSubmitting ? (
+              <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {isEn ? 'Verifying...' : 'Verificando...'}</>
+            ) : (
+              <>{a.signIn_submit} <ArrowRight className="w-4 h-4" /></>
+            )}
+          </button>
 
           <AnimatePresence mode="wait">
             {submitStatus !== 'idle' && (
@@ -289,18 +296,19 @@ export default function SignInForm() {
         </form>
 
         {/* Test users hint (solo desarrollo) */}
-        <div className="mt-4 p-3 rounded-lg bg-gray-50 border border-gray-100">
-          <p className="text-xs text-gray-400 font-medium mb-1.5 uppercase tracking-wider">
-            {isEn ? 'Test accounts (offline mode)' : 'Cuentas de prueba (modo offline)'}
-          </p>
-          <div className="space-y-1 text-xs text-gray-500 font-mono">
+        <details className="mt-5 group">
+          <summary className="text-[11px] text-gray-300 cursor-pointer hover:text-gray-400 transition-colors select-none list-none flex items-center gap-1.5">
+            <span className="w-3.5 h-3.5 rounded-full border border-gray-200 flex items-center justify-center text-[9px] font-bold text-gray-400">?</span>
+            {isEn ? 'Test accounts' : 'Cuentas de prueba'}
+          </summary>
+          <div className="mt-2 p-3 rounded-lg bg-gray-50 border border-gray-100 font-mono text-[11px] text-gray-400 space-y-0.5">
             <p>admin@aecmi.com / Admin123</p>
             <p>user@aecmi.com / User123</p>
           </div>
-        </div>
+        </details>
 
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+          <p className="text-sm text-gray-500">
             {a.signIn_noAccount}{' '}
             <Link href={getLink('/auth/signup')} className="text-[#0066CC] font-semibold hover:underline">
               {a.signIn_signUpLink}
