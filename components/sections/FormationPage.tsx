@@ -150,6 +150,9 @@ const certColors: Record<string, string> = {
   BCM: 'bg-orange-600',
 }
 
+// Set to true once real partner data is confirmed and loaded above
+const SHOW_ACADEMIC_PARTNERS = false
+
 export default function FormationPage() {
   const { getLink, currentLang } = useTranslation()
   const isEn = currentLang === 'en'
@@ -206,6 +209,8 @@ export default function FormationPage() {
       </section>
 
       {/* ========== PARTNERS ACADÉMICOS ========== */}
+      {/* Hidden until real partner data is confirmed — flip SHOW_ACADEMIC_PARTNERS to true to enable */}
+      {SHOW_ACADEMIC_PARTNERS && (
       <section className="w-full bg-white py-20 md:py-28">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-14">
@@ -260,6 +265,7 @@ export default function FormationPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ========== CÓMO ELEGIR ========== */}
       <section className="w-full bg-pmi-cream py-20 md:py-28">
