@@ -1,10 +1,5 @@
-/**
- * PDF Certificate Generator for AECMI
- * Uses jsPDF to generate professional certificate PDFs
- */
-
 import { jsPDF } from 'jspdf';
-import { CertificationType, getCertificationColors, getCertificationName } from './qrGenerator';
+import { CertificationType, getCertificationName } from './qrGenerator';
 
 export interface CertificatePDFData {
   professionalName: string;
@@ -16,209 +11,259 @@ export interface CertificatePDFData {
   verificationUrl: string;
 }
 
-/**
- * Generate a professional certificate PDF
- */
+const CERT_COLORS: Record<CertificationType, [number, number, number]> = {
+  IDM: [0, 102, 204],
+  BDM: [0, 170, 136],
+  BCM: [255, 107, 53],
+};
+
+const CERT_DARK: Record<CertificationType, [number, number, number]> = {
+  IDM: [0, 77, 153],
+  BDM: [0, 128, 102],
+  BCM: [204, 85, 42],
+};
+
 export async function generateCertificatePDF(data: CertificatePDFData): Promise<Blob> {
   const { professionalName, certificationType, qrCode, certificateNumber, obtainedDate, expiryDate, verificationUrl } = data;
-  const colors = getCertificationColors(certificationType);
-  
-  const doc = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4',
-  });
 
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const margin = 20;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
-  // Helper to convert hex to RGB
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : { r: 0, g: 0, b: 0 };
+  const pw = doc.internal.pageSize.getWidth();   // 297 mm
+  const ph = doc.internal.pageSize.getHeight();  // 210 mm
+
+  const [r, g, b]     = CERT_COLORS[certificationType] ?? CERT_COLORS.IDM;
+  const [rd, gd, bd]  = CERT_DARK[certificationType]   ?? CERT_DARK.IDM;
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 1. WHITE BACKGROUND
+  // ─────────────────────────────────────────────────────────────────────────
+  doc.setFillColor(255, 255, 255);
+  doc.rect(0, 0, pw, ph, 'F');
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 2. WATERMARK — drawn first, behind everything
+  // ─────────────────────────────────────────────────────────────────────────
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(90);
+  doc.setTextColor(235, 235, 235);
+  doc.text('AECMI', pw / 2, ph / 2 + 20, { align: 'center', angle: 30 });
+
+  doc.setFontSize(18);
+  doc.setTextColor(242, 242, 242);
+  doc.text('CERTIFIED', pw / 2 + 60, ph / 2 - 10, { align: 'center', angle: 30 });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 3. COLORED TOP BAND
+  // ─────────────────────────────────────────────────────────────────────────
+  doc.setFillColor(r, g, b);
+  doc.rect(0, 0, pw, 22, 'F');
+
+  // Left accent strip
+  doc.setFillColor(rd, gd, bd);
+  doc.rect(0, 0, 6, ph, 'F');
+
+  // Bottom band
+  doc.setFillColor(rd, gd, bd);
+  doc.rect(0, ph - 12, pw, 12, 'F');
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 4. HEADER: AECMI logo (left) + cert type badge (right)
+  // ─────────────────────────────────────────────────────────────────────────
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('AECMI', 14, 11);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.text('ASOCIACIÓN ESPAÑOLA DE CERTIFICACIÓN BIM', 14, 17);
+
+  // Badge right
+  const badgeLabel = certificationType;
+  const badgeW = 28;
+  const badgeH = 12;
+  const badgeX = pw - badgeW - 10;
+  const badgeY = 5;
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(badgeX, badgeY, badgeW, badgeH, 3, 3, 'F');
+  doc.setTextColor(r, g, b);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text(badgeLabel, badgeX + badgeW / 2, badgeY + 8.5, { align: 'center' });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 5. MAIN CONTENT — left column (14 → 185 mm)
+  // ─────────────────────────────────────────────────────────────────────────
+  const lx = 16; // left content X (after strip)
+  let y = 36;
+
+  // "CERTIFICA QUE"
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(140, 140, 140);
+  doc.text('CERTIFICA QUE', lx, y);
+  y += 7;
+
+  // Professional name — large
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(26);
+  doc.setTextColor(30, 30, 30);
+  const nameLines: string[] = doc.splitTextToSize(professionalName.toUpperCase(), 175);
+  doc.text(nameLines, lx, y);
+  y += nameLines.length * 11 + 2;
+
+  // Thin divider
+  doc.setDrawColor(r, g, b);
+  doc.setLineWidth(0.8);
+  doc.line(lx, y, 185, y);
+  y += 7;
+
+  // "HA OBTENIDO..."
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(80, 80, 80);
+  const desc = `ha demostrado las competencias profesionales acreditadas por AECMI en la especialidad de ${getCertificationName(certificationType, 'es')}, cumpliendo los requisitos establecidos por los estándares internacionales BIM.`;
+  const descLines: string[] = doc.splitTextToSize(desc, 175);
+  doc.text(descLines, lx, y);
+  y += descLines.length * 5 + 8;
+
+  // Certification name — highlighted
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(r, g, b);
+  doc.text(getCertificationName(certificationType, 'es').toUpperCase(), lx, y);
+  y += 9;
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 6. DETAILS GRID
+  // ─────────────────────────────────────────────────────────────────────────
+  const detailsY = y + 4;
+  const col2X = lx + 70;
+  const col3X = lx + 140;
+
+  const drawDetail = (label: string, value: string, x: number, dy: number) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(140, 140, 140);
+    doc.text(label, x, dy);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.5);
+    doc.setTextColor(30, 30, 30);
+    doc.text(value, x, dy + 5.5);
   };
 
-  const primaryRgb = hexToRgb(colors.primary);
-  const primaryDarkRgb = hexToRgb(colors.primaryDark);
+  drawDetail('NÚMERO DE CERTIFICADO', certificateNumber, lx, detailsY);
+  drawDetail('FECHA DE EMISIÓN', formatDate(obtainedDate), col2X, detailsY);
+  drawDetail('VÁLIDO HASTA', formatDate(expiryDate), col3X, detailsY);
 
-  // === BACKGROUND ===
-  // White background
-  doc.setFillColor(255, 255, 255);
-  doc.rect(0, 0, pageWidth, pageHeight, 'F');
+  // ─────────────────────────────────────────────────────────────────────────
+  // 7. SIGNATURES
+  // ─────────────────────────────────────────────────────────────────────────
+  const sigY = detailsY + 24;
+  const sig1X = lx;
+  const sig2X = lx + 80;
 
-  // Top decorative band
-  doc.setFillColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.rect(0, 0, pageWidth, 25, 'F');
+  doc.setDrawColor(180, 180, 180);
+  doc.setLineWidth(0.4);
+  doc.line(sig1X, sigY, sig1X + 55, sigY);
+  doc.line(sig2X, sigY, sig2X + 55, sigY);
 
-  // Bottom decorative band
-  doc.setFillColor(primaryDarkRgb.r, primaryDarkRgb.g, primaryDarkRgb.b);
-  doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
-
-  // Side accent lines
-  doc.setDrawColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setLineWidth(0.5);
-  doc.line(margin, 35, margin, pageHeight - 25);
-  doc.line(pageWidth - margin, 35, pageWidth - margin, pageHeight - 25);
-
-  // === HEADER ===
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text('AECMI — ASOCIACIÓN ESPAÑOLA DE CERTIFICACIÓN BIM', pageWidth / 2, 10, { align: 'center' });
-  doc.setFontSize(8);
-  doc.text('International BIM Certification Organization', pageWidth / 2, 16, { align: 'center' });
-
-  // === TITLE ===
-  doc.setTextColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
-  doc.text('CERTIFICADO PROFESIONAL', pageWidth / 2, 50, { align: 'center' });
-
-  // Subtitle
-  doc.setTextColor(100, 100, 100);
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'italic');
-  doc.text('Professional Certificate', pageWidth / 2, 57, { align: 'center' });
-
-  // Decorative line under title
-  doc.setDrawColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setLineWidth(1);
-  const titleLineWidth = 80;
-  doc.line((pageWidth - titleLineWidth) / 2, 62, (pageWidth + titleLineWidth) / 2, 62);
-
-  // === CERTIFICATION BADGE ===
-  const badgeY = 72;
-  doc.setFillColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.roundedRect((pageWidth - 100) / 2, badgeY - 5, 100, 14, 3, 3, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'bold');
-  doc.text(getCertificationName(certificationType, 'es').toUpperCase(), pageWidth / 2, badgeY + 3, { align: 'center' });
-
-  // === PROFESSIONAL NAME ===
-  doc.setTextColor(40, 40, 40);
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Otorgado a / Awarded to', pageWidth / 2, 92, { align: 'center' });
-
-  doc.setTextColor(primaryDarkRgb.r, primaryDarkRgb.g, primaryDarkRgb.b);
-  doc.setFontSize(20);
-  doc.setFont('helvetica', 'bold');
-  doc.text(professionalName, pageWidth / 2, 102, { align: 'center' });
-
-  // === DESCRIPTION ===
-  doc.setTextColor(80, 80, 80);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  const description = `Por haber demostrado competencias profesionales avaladas por AECMI en la especialidad de ${getCertificationName(certificationType, 'es')}.\nFor having demonstrated professional competencies endorsed by AECMI in the specialty of ${getCertificationName(certificationType, 'en')}.`;
-  const descLines = doc.splitTextToSize(description, pageWidth - 2 * margin - 20);
-  doc.text(descLines, pageWidth / 2, 114, { align: 'center' });
-
-  // === DETAILS BOX ===
-  const boxY = 132;
-  const boxHeight = 50;
-  doc.setDrawColor(200, 200, 200);
-  doc.setLineWidth(0.3);
-  doc.roundedRect(margin + 5, boxY, pageWidth - 2 * margin - 10, boxHeight, 2, 2, 'S');
-
-  // Left column - Dates
-  doc.setTextColor(100, 100, 100);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text('FECHA DE OBTENCIÓN / ISSUE DATE:', margin + 12, boxY + 10);
-  doc.text('FECHA DE VENCIMIENTO / EXPIRY DATE:', margin + 12, boxY + 22);
-  doc.text('NÚMERO DE CERTIFICADO / CERTIFICATE NO.:', margin + 12, boxY + 34);
-  doc.text('CÓDIGO DE VERIFICACIÓN / VERIFICATION CODE:', margin + 12, boxY + 46);
-
-  doc.setTextColor(40, 40, 40);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.text(obtainedDate, margin + 80, boxY + 10);
-  doc.text(expiryDate, margin + 80, boxY + 22);
-  doc.text(certificateNumber, margin + 80, boxY + 34);
-  doc.text(qrCode, margin + 80, boxY + 46);
-
-  // === QR CODE PLACEHOLDER BOX (Right side) ===
-  const qrSize = 32;
-  const qrX = pageWidth - margin - qrSize - 10;
-  const qrY = boxY + 8;
-  doc.setDrawColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setLineWidth(0.5);
-  doc.rect(qrX, qrY, qrSize, qrSize, 'S');
-  
-  doc.setTextColor(150, 150, 150);
-  doc.setFontSize(6);
-  doc.setFont('helvetica', 'normal');
-  doc.text('QR CODE', qrX + qrSize / 2, qrY + qrSize / 2, { align: 'center' });
-  doc.text('(Escanea para verificar)', qrX + qrSize / 2, qrY + qrSize / 2 + 4, { align: 'center' });
-
-  // === VERIFICATION URL ===
-  doc.setTextColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Verifica este certificado en: ${verificationUrl}`, pageWidth / 2, boxY + boxHeight + 10, { align: 'center' });
-
-  // === SIGNATURES ===
-  const sigY = 205;
-  const sigWidth = 50;
-  const sigGap = 30;
-  const centerX = pageWidth / 2;
-
-  // Left signature
-  doc.setDrawColor(80, 80, 80);
-  doc.setLineWidth(0.3);
-  doc.line(centerX - sigGap - sigWidth, sigY, centerX - sigGap, sigY);
+  doc.setFontSize(7.5);
   doc.setTextColor(60, 60, 60);
-  doc.setFontSize(8);
-  doc.text('DIRECTOR EJECUTIVO', centerX - sigGap - sigWidth / 2, sigY + 5, { align: 'center' });
-  doc.setFontSize(7);
-  doc.text('Executive Director', centerX - sigGap - sigWidth / 2, sigY + 9, { align: 'center' });
+  doc.text('DIRECTOR EJECUTIVO', sig1X, sigY + 5);
+  doc.text('PRESIDENTE DEL CONSEJO', sig2X, sigY + 5);
 
-  // Right signature
-  doc.line(centerX + sigGap, sigY, centerX + sigGap + sigWidth, sigY);
-  doc.setFontSize(8);
-  doc.text('PRESIDENTE DEL CONSEJO', centerX + sigGap + sigWidth / 2, sigY + 5, { align: 'center' });
-  doc.setFontSize(7);
-  doc.text('Board President', centerX + sigGap + sigWidth / 2, sigY + 9, { align: 'center' });
-
-  // === SEAL ===
-  const sealY = sigY - 5;
-  doc.setDrawColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setLineWidth(1);
-  doc.circle(centerX, sealY, 10, 'S');
-  doc.setTextColor(primaryRgb.r, primaryRgb.g, primaryRgb.b);
-  doc.setFontSize(5);
-  doc.text('AECMI', centerX, sealY + 2, { align: 'center' });
-
-  // === FOOTER INFO ===
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(7);
   doc.setFont('helvetica', 'normal');
-  doc.text('www.aecmi.com | info@aecmi.com | Madrid, España', pageWidth / 2, pageHeight - 8, { align: 'center' });
+  doc.setFontSize(6.5);
+  doc.setTextColor(140, 140, 140);
+  doc.text('AECMI — Executive Director', sig1X, sigY + 9);
+  doc.text('AECMI — Board President', sig2X, sigY + 9);
 
-  // === SECURITY WATERMARK ===
-  doc.setTextColor(240, 240, 240);
-  doc.setFontSize(60);
+  // ─────────────────────────────────────────────────────────────────────────
+  // 8. RIGHT PANEL — QR area
+  // ─────────────────────────────────────────────────────────────────────────
+  const rightX = 200;
+  const rightW = pw - rightX - 8;
+
+  // Panel background
+  doc.setFillColor(249, 249, 249);
+  doc.roundedRect(rightX, 27, rightW, ph - 27 - 14, 4, 4, 'F');
+
+  // Seal circle
+  const sealCX = rightX + rightW / 2;
+  const sealCY = 52;
+  doc.setFillColor(r, g, b);
+  doc.circle(sealCX, sealCY, 18, 'F');
+  doc.setFillColor(rd, gd, bd);
+  doc.circle(sealCX, sealCY, 14, 'F');
+
   doc.setFont('helvetica', 'bold');
-  doc.text('AECMI', pageWidth / 2, pageHeight / 2, { align: 'center', angle: 45 });
+  doc.setFontSize(13);
+  doc.setTextColor(255, 255, 255);
+  doc.text(certificationType, sealCX, sealCY + 2.5, { align: 'center' });
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(5.5);
+  doc.text('AECMI CERTIFIED', sealCX, sealCY + 8, { align: 'center' });
+
+  // QR placeholder box
+  const qrBoxY = sealCY + 25;
+  const qrSide = 42;
+  const qrBoxX = sealCX - qrSide / 2;
+  doc.setDrawColor(r, g, b);
+  doc.setLineWidth(0.6);
+  doc.roundedRect(qrBoxX, qrBoxY, qrSide, qrSide, 2, 2, 'S');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.setTextColor(r, g, b);
+  doc.text('QR', sealCX, qrBoxY + qrSide / 2 - 2, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(5);
+  doc.setTextColor(160, 160, 160);
+  doc.text('Escanea para', sealCX, qrBoxY + qrSide / 2 + 3, { align: 'center' });
+  doc.text('verificar', sealCX, qrBoxY + qrSide / 2 + 7, { align: 'center' });
+
+  // Verification code below QR
+  const codeY = qrBoxY + qrSide + 8;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.setTextColor(140, 140, 140);
+  doc.text('CÓDIGO DE VERIFICACIÓN', sealCX, codeY, { align: 'center' });
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(30, 30, 30);
+  doc.text(qrCode, sealCX, codeY + 5.5, { align: 'center' });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 9. FOOTER
+  // ─────────────────────────────────────────────────────────────────────────
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(6.5);
+  doc.setTextColor(255, 255, 255);
+  doc.text(
+    `Verifica este certificado en: ${verificationUrl}   ·   www.aecmi.tech   ·   info@aecmi.com`,
+    pw / 2,
+    ph - 5,
+    { align: 'center' }
+  );
 
   return doc.output('blob');
 }
 
-/**
- * Download a certificate PDF
- */
+function formatDate(dateStr: string): string {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
 export function downloadCertificatePDF(data: CertificatePDFData, filename?: string): void {
   generateCertificatePDF(data).then((blob) => {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename || `AECMI-Certificado-${data.qrCode}.pdf`;
+    link.download = filename || `AECMI-${data.certificationType}-${data.qrCode}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
