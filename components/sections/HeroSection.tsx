@@ -23,7 +23,7 @@ export default function HeroSection() {
             <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
               <img
                 src="/images/hero-summit.jpg"
-                alt="PMI Global Summit Seoul"
+                alt="AECMI Certificación BIM Internacional"
                 className="w-full h-full object-cover"
               />
               {/* Subtle overlay gradient */}
@@ -41,9 +41,9 @@ export default function HeroSection() {
             className="flex-1 text-center lg:text-left"
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-tight tracking-tight">
-              PMI<sup className="text-lg">®</sup> Global Summit Series
+              AECMI — Certificación
               <br />
-              Seoul
+              BIM Internacional
             </h1>
             <p className="mt-6 text-base sm:text-lg text-white/85 leading-relaxed max-w-xl mx-auto lg:mx-0">
               Registration is now open — two dynamic days, one global stage, and endless opportunities to connect across the region. Secure your pass by{' '}

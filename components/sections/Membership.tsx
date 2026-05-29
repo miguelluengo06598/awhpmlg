@@ -47,17 +47,17 @@ export default function Membership() {
               <div className="flex-1 max-w-lg">
                 <div className="flex items-center gap-2 mb-6">
                   <Sparkles className="w-5 h-5 text-purple-300" />
-                  <span className="text-sm font-medium text-purple-200">PMI Membership</span>
+                  <span className="text-sm font-medium text-purple-200">AECMI Membership</span>
                 </div>
                 
                 <h2 className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold text-white leading-tight">
-                  Unlock opportunity with
+                  Desbloquea tu potencial con
                   <br />
-                  PMI membership
+                  AECMI membership
                 </h2>
-                
+
                 <p className="mt-6 text-base text-white/75 leading-relaxed">
-                  Join PMI for exclusive access to career development resources, project tools, and a global community.
+                  Únete a AECMI para acceder a recursos de desarrollo profesional, herramientas BIM y una comunidad global de expertos.
                 </p>
                 
                 <motion.a

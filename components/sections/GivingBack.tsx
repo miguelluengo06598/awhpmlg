@@ -21,7 +21,7 @@ export default function GivingBack() {
                 Your Path to Giving Back
               </h2>
               <p className="mt-4 text-base text-white/80 leading-relaxed max-w-sm">
-                PMI membership unlocks local chapter volunteer opportunities
+                La membresía AECMI abre oportunidades de voluntariado en capítulos locales
               </p>
               <motion.a
                 href="#"

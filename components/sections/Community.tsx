@@ -37,7 +37,7 @@ export default function Community() {
             transition={{ duration: 0.6 }}
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-pmi-dark tracking-tight leading-[1.1] max-w-md"
           >
-            The PMI community is active where you are
+            La comunidad AECMI está donde estás
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ export default function Community() {
           <div className="absolute inset-0">
             <img
               src="/images/chapters-bg.jpg"
-              alt="PMI Chapters"
+              alt="AECMI Chapters"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />

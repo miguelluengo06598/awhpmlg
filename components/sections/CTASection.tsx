@@ -16,7 +16,7 @@ export default function CTASection() {
             Start learning for free.
           </h2>
           <p className="mt-6 text-xl sm:text-2xl md:text-3xl font-bold text-pmi-purple leading-snug">
-            Sign up for a free PMI account to unlock dozens of free online courses, digital tools, virtual events, and thought leadership insights to accelerate your career.
+            Regístrate gratis en AECMI para acceder a recursos exclusivos, herramientas digitales, eventos virtuales e insights para acelerar tu carrera en BIM.
           </p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

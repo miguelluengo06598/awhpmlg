@@ -4,8 +4,8 @@ import { useRef, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
 
 const certs = [
-  'PMP®', 'PgMP®', 'PfMP®', 'CAPM®', 'PMI-CP™', 'PMI-PMOCP™', 
-  'PMI-ACP®', 'PMI-RMP®', 'PMI-PBA®', 'PMI-CPMAI™', 'GPM-b™', 'PMI-SP®',
+  'IDM™', 'BDM™', 'BCM™', 'BIM Manager', 'BIM Coordinator', 'ISO 19650',
+  'Information Delivery Manager', 'BIM Design Manager', 'BIM Construction Manager', 'Level 2 BIM', 'LOD 500', 'OpenBIM™',
 ]
 
 export default function CertTicker() {
@@ -30,13 +30,13 @@ export default function CertTicker() {
             <div
               key={index}
               className={`flex-shrink-0 px-4 ${
-                cert === 'PfMP®' 
-                  ? 'py-3 border-2 border-pmi-orange rounded-full' 
+                cert === 'IDM™'
+                  ? 'py-3 border-2 border-pmi-orange rounded-full'
                   : ''
               }`}
             >
               <span className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight ${
-                cert === 'PfMP®' ? 'text-pmi-orange' : 'text-gray-400'
+                cert === 'IDM™' ? 'text-pmi-orange' : 'text-gray-400'
               }`}>
                 {cert}
               </span>
