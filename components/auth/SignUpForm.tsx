@@ -20,7 +20,6 @@ import {
 import Link from 'next/link'
 import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
-import { assignCertificatesToUser } from '@/lib/certificateService'
 import AuthLayout from './AuthLayout'
 
 interface FormData {
@@ -201,9 +200,15 @@ export default function SignUpForm() {
           return
         }
 
-        // Asignar certificados pendientes que coincidan con este email
+        // Asignar certificados pendientes que coincidan con este email (server-side)
         try {
-          await assignCertificatesToUser(formData.email.trim().toLowerCase(), authData.user.id)
+          const session = (await supabase.auth.getSession()).data.session
+          if (session) {
+            await fetch('/api/assign-certificates', {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${session.access_token}` },
+            })
+          }
         } catch {
           // No bloquear el registro si falla la asignación
         }

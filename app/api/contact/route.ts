@@ -3,7 +3,9 @@ import { supabase } from '@/lib/supabaseClient'
 import { rateLimit } from '@/lib/rateLimit'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 const ADMIN_EMAIL = 'info@aecmi.com'
 const FROM_EMAIL = 'noreply@aecmi.es'
@@ -67,7 +69,7 @@ export async function POST(req: NextRequest) {
     const refId = saved.id as string
 
     await Promise.allSettled([
-      resend.emails.send({
+      getResend().emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: 'Hemos recibido tu mensaje — AECMI',
@@ -78,7 +80,7 @@ export async function POST(req: NextRequest) {
           <p style="color:#666;font-size:12px">Ref: ${refId}</p>
         `,
       }),
-      resend.emails.send({
+      getResend().emails.send({
         from: FROM_EMAIL,
         to: ADMIN_EMAIL,
         subject: `[Contacto] ${subject}`,

@@ -1,19 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabaseClient'
+import { createServiceClient } from '@/lib/supabaseServer'
 import { createCertificate } from '@/lib/certificateService'
 
-async function getAuthUser(req: NextRequest) {
-  const token = req.headers.get('authorization')?.replace('Bearer ', '')
-  if (!token) return null
-  const { data: { user } } = await supabase.auth.getUser(token)
-  return user
-}
-
 async function requireAdmin(req: NextRequest) {
-  const user = await getAuthUser(req)
+  const token = req.headers.get('authorization')?.replace('Bearer ', '')
+  if (!token) return { user: null, error: NextResponse.json({ error: 'No autenticado.' }, { status: 401 }) }
+
+  const { data: { user } } = await supabase.auth.getUser(token)
   if (!user) return { user: null, error: NextResponse.json({ error: 'No autenticado.' }, { status: 401 }) }
 
-  const { data: row } = await supabase.from('users').select('role').eq('id', user.id).single()
+  // Use service client to bypass RLS when reading the role
+  const svc = createServiceClient()
+  const { data: row } = await svc.from('users').select('role').eq('id', user.id).single()
   if (row?.role !== 'admin') return { user: null, error: NextResponse.json({ error: 'No autorizado.' }, { status: 403 }) }
 
   return { user, error: null }

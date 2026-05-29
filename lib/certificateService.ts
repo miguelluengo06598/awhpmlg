@@ -1,5 +1,6 @@
 import QRCode from 'qrcode'
 import { supabase } from './supabaseClient'
+import { createServiceClient } from './supabaseServer'
 import { getCertificationName } from './qrGenerator'
 
 export interface CreateCertificateInput {
@@ -36,7 +37,8 @@ export async function createCertificate(input: CreateCertificateInput) {
   const verificationUrl = `${APP_URL}/verify-certificate/${id}`
   const qrImageBase64 = await buildQRImage(verificationUrl)
 
-  const { data: cert, error } = await supabase
+  const svc = createServiceClient()
+  const { data: cert, error } = await svc
     .from('certificates')
     .insert({
       id,
@@ -60,7 +62,8 @@ export async function createCertificate(input: CreateCertificateInput) {
 }
 
 export async function getCertificate(certificateId: string) {
-  const { data: cert, error } = await supabase
+  const svc = createServiceClient()
+  const { data: cert, error } = await svc
     .from('certificates')
     .select('id, certification_type, certification_code, full_name, organization, email, issue_date, expiry_date, exam_score, status, qr_data, user_id')
     .eq('id', certificateId)
@@ -80,7 +83,8 @@ export async function getCertificate(certificateId: string) {
 }
 
 export async function getCertificatesByEmail(email: string) {
-  const { data, error } = await supabase
+  const svc = createServiceClient()
+  const { data, error } = await svc
     .from('certificates')
     .select('id, certification_type, certification_code')
     .eq('email', email.toLowerCase().trim())
@@ -95,7 +99,8 @@ export async function assignCertificatesToUser(email: string, userId: string) {
   const pending = await getCertificatesByEmail(email)
   if (pending.length === 0) return 0
 
-  const { error } = await supabase
+  const svc = createServiceClient()
+  const { error } = await svc
     .from('certificates')
     .update({ user_id: userId })
     .in('id', pending.map((c) => c.id))

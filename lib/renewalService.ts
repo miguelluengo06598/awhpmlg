@@ -1,14 +1,15 @@
-import { supabase } from './supabaseClient'
+import { createServiceClient } from './supabaseServer'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-05-27.dahlia',
-})
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-05-27.dahlia',
+  })
+}
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecmi.com'
 
 export function calculateNewExpiryDate(currentDate: string | null): string {
-  // If expired or no date, extend from today; otherwise extend from current expiry
   const base = currentDate ? new Date(currentDate) : new Date()
   const today = new Date()
   const from = base > today ? base : today
@@ -21,7 +22,8 @@ export async function createRenewalPaymentSession(
   userEmail: string,
   userId: string
 ): Promise<{ sessionId: string; url: string }> {
-  const { data: cert, error } = await supabase
+  const svc = createServiceClient()
+  const { data: cert, error } = await svc
     .from('certificates')
     .select('id, certification_type, certification_code, expiry_date, status, renewal_price, can_renew')
     .eq('id', certificateId)
@@ -34,7 +36,7 @@ export async function createRenewalPaymentSession(
 
   const price: number = cert.renewal_price ?? 299.99
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     payment_method_types: ['card'],
     mode: 'payment',
     customer_email: userEmail,
@@ -68,7 +70,9 @@ export async function processRenewalPayment(
   userId: string,
   stripePaymentId: string
 ): Promise<void> {
-  const { data: cert, error } = await supabase
+  const svc = createServiceClient()
+
+  const { data: cert, error } = await svc
     .from('certificates')
     .select('expiry_date, renewal_price, renewal_count')
     .eq('id', certificateId)
@@ -79,29 +83,29 @@ export async function processRenewalPayment(
 
   const newExpiryDate = calculateNewExpiryDate(cert.expiry_date)
 
-  const { error: updateError } = await supabase
+  const { error: updateError } = await svc
     .from('certificates')
     .update({
-      expiry_date:      newExpiryDate,
-      renewal_count:    (cert.renewal_count ?? 0) + 1,
-      last_renewed_at:  new Date().toISOString(),
-      status:           'active',
+      expiry_date:     newExpiryDate,
+      renewal_count:   (cert.renewal_count ?? 0) + 1,
+      last_renewed_at: new Date().toISOString(),
+      status:          'active',
     })
     .eq('id', certificateId)
 
   if (updateError) throw updateError
 
-  const { error: renewalError } = await supabase
+  const { error: renewalError } = await svc
     .from('certificate_renewals')
     .insert({
-      certificate_id:   certificateId,
-      user_id:          userId,
-      old_expiry_date:  cert.expiry_date ?? new Date().toISOString().split('T')[0],
-      new_expiry_date:  newExpiryDate,
-      amount:           cert.renewal_price ?? 299.99,
-      payment_method:   'stripe',
+      certificate_id:    certificateId,
+      user_id:           userId,
+      old_expiry_date:   cert.expiry_date ?? new Date().toISOString().split('T')[0],
+      new_expiry_date:   newExpiryDate,
+      amount:            cert.renewal_price ?? 299.99,
+      payment_method:    'stripe',
       stripe_payment_id: stripePaymentId,
-      status:           'completed',
+      status:            'completed',
     })
 
   if (renewalError) throw renewalError
