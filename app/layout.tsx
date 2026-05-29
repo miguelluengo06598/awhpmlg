@@ -3,7 +3,6 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
-import InfinityBadge from "@/components/sections/InfinityBadge";
 import ServiceWorkerCleanup from "@/components/ServiceWorkerCleanup";
 import { PageTransition } from "@/components/PageTransition";
 
@@ -40,7 +39,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <InfinityBadge />
       </body>
     </html>
   );
