@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
@@ -36,10 +37,11 @@ export default function GivingBack() {
 
             {/* Image */}
             <div className="flex-1 relative min-h-[250px] md:min-h-[320px]">
-              <img
+              <Image
                 src="/images/giving-back.jpg"
                 alt="Volunteers giving back to the community"
-                className="absolute inset-0 w-full h-full object-cover md:rounded-r-3xl"
+                fill
+                className="object-cover md:rounded-r-3xl"
               />
               {/* Purple overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-pmi-purple/60 via-pmi-purple/20 to-transparent md:rounded-r-3xl" />

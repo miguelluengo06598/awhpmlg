@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
@@ -59,10 +60,11 @@ export default function Community() {
           className="relative overflow-hidden rounded-3xl mb-8"
         >
           <div className="absolute inset-0">
-            <img
+            <Image
               src="/images/chapters-bg.jpg"
               alt="AECMI Chapters"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
           </div>
@@ -110,11 +112,12 @@ export default function Community() {
                   {card.cta}
                   <ArrowRight className="w-4 h-4" />
                 </a>
-                <div className="w-32 h-20 rounded-xl overflow-hidden md:w-40 md:h-24">
-                  <img
+                <div className="relative w-32 h-20 rounded-xl overflow-hidden md:w-40 md:h-24">
+                  <Image
                     src={card.image}
                     alt={card.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
               </div>

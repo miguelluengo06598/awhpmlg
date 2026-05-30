@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
@@ -21,10 +22,12 @@ export default function HeroSection() {
             className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[480px] shrink-0"
           >
             <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
-              <img
+              <Image
                 src="/images/hero-summit.jpg"
                 alt="AECMI Certificación BIM Internacional"
-                className="w-full h-full object-cover"
+                fill
+                priority
+                className="object-cover"
               />
               {/* Subtle overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-tr from-pmi-purple/30 to-transparent" />

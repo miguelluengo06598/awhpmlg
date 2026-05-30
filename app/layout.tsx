@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${inter.variable} ${poppins.variable}`}>
+      <head>
+        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
+      </head>
       <body className="min-h-screen bg-pmi-cream antialiased">
         <PageTransition />
         <ServiceWorkerCleanup />

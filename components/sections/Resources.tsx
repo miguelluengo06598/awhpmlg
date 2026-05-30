@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
@@ -197,11 +198,12 @@ export default function Resources() {
               </div>
 
               {resources[0]?.image && (
-                <div className="w-28 h-28 mb-4">
-                  <img
+                <div className="relative w-28 h-28 mb-4">
+                  <Image
                     src={resources[0].image}
                     alt=""
-                    className="w-full h-full object-contain"
+                    fill
+                    className="object-contain"
                   />
                 </div>
               )}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabaseClient'
 import { validateQRCode } from '@/lib/qrGenerator'
+import { rateLimit } from '@/lib/rateLimit'
 
 const CERT_NAMES: Record<string, string> = {
   IDM: 'Information Delivery Manager',
@@ -9,9 +10,14 @@ const CERT_NAMES: Record<string, string> = {
 }
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ qrCode: string }> }
 ) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!rateLimit(`cert-verify:${ip}`, 60, 60_000)) {
+    return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
+  }
+
   try {
     const { qrCode } = await params
 

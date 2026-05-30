@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCertificate, getCertificationName } from '@/lib/certificateService'
+import { rateLimit } from '@/lib/rateLimit'
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!rateLimit(`cert-id:${ip}`, 60, 60_000)) {
+    return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
+  }
+
   try {
     const { id } = await params
     if (!id?.trim()) {
