@@ -52,8 +52,13 @@ export async function POST(req: NextRequest) {
       shareUrl: cert.qr_code,
     })
   } catch (error) {
-    console.error('[/api/admin/certificates] POST:', error)
-    return NextResponse.json({ error: 'Error creando el certificado.' }, { status: 500 })
+    const msg = error instanceof Error ? error.message : String(error)
+    const code = (error as { code?: string }).code
+    console.error('[/api/admin/certificates] POST error:', msg, '| code:', code, '| full:', error)
+    return NextResponse.json(
+      { error: msg || 'Error creando el certificado.', code },
+      { status: 500 }
+    )
   }
 }
 
@@ -64,7 +69,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabase
       .from('certificates')
-      .select('id, certification_type, certification_code, full_name, email, organization, issue_date, expiry_date, status, qr_code, created_at')
+      .select('id, certification_type, certification_code, full_name, email, organization, issue_date, expiry_date, status, user_id, qr_code, created_at')
       .eq('issued_by_admin', user!.id)
       .order('created_at', { ascending: false })
       .limit(100)

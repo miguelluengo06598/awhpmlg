@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { AnimatedCard, Card, Badge, Button } from '@/components/ui'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { AdminCreateCertificateSection } from '@/components/sections/AdminCreateCertificateSection'
+import { AdminIssuedCertificatesSection } from '@/components/sections/AdminIssuedCertificatesSection'
 
 interface Stats {
   pendingApplications: number
@@ -29,6 +30,8 @@ interface RecentApp {
 export default function AdminDashboardPage() {
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
+
+  const [certRefreshKey, setCertRefreshKey] = useState(0)
 
   const [stats, setStats] = useState<Stats>({
     pendingApplications: 0,
@@ -207,7 +210,9 @@ export default function AdminDashboardPage() {
         )}
       </Card>
 
-      <AdminCreateCertificateSection />
+      <AdminCreateCertificateSection onCreated={() => setCertRefreshKey((k) => k + 1)} />
+
+      <AdminIssuedCertificatesSection refreshKey={certRefreshKey} />
 
     </div>
   )

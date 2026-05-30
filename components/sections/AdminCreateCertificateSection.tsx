@@ -41,7 +41,7 @@ const labelStyle = {
   marginBottom: spacing.sm,
 }
 
-export function AdminCreateCertificateSection() {
+export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () => void }) {
   const [form, setForm] = useState({
     certification_type: 'IDM',
     email: '',
@@ -86,6 +86,7 @@ export function AdminCreateCertificateSection() {
 
       setCreated(data.certificate)
       setForm({ certification_type: 'IDM', email: '', full_name: '', organization: '', exam_score: '', expiry_date: '' })
+      onCreated?.()
     } catch {
       setError('Error de red. Inténtalo de nuevo.')
     } finally {
