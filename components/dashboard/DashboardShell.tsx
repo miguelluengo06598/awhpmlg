@@ -54,6 +54,7 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
     await supabase.auth.signOut()
     localStorage.removeItem('aecmi_session')
     sessionStorage.removeItem('aecmi_session')
+    document.cookie = 'aecmi-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
     router.push('/auth/signin')
   }
 

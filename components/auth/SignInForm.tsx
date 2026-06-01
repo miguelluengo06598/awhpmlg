@@ -109,6 +109,9 @@ export default function SignInForm() {
           ? `${userData.first_name} ${userData.last_name}`
           : (authData.user.email || 'Usuario')
 
+        // Set a hint cookie so middleware can redirect instantly on next visit
+        document.cookie = 'aecmi-auth=1; path=/; max-age=604800; SameSite=Lax'
+
         setSubmitStatus('success')
         setStatusMessage(`${isEn ? 'Welcome' : 'Bienvenido'}, ${name}! ${isEn ? 'Redirecting...' : 'Redirigiendo...'}`)
         setTimeout(() => {
