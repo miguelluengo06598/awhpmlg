@@ -204,6 +204,8 @@ export default function SignUpForm() {
         try {
           const session = (await supabase.auth.getSession()).data.session
           if (session) {
+            // If email confirmation is disabled, a session exists immediately — set the hint cookie
+            document.cookie = 'aecmi-auth=1; path=/; max-age=604800; SameSite=Lax'
             await fetch('/api/assign-certificates', {
               method: 'POST',
               headers: { Authorization: `Bearer ${session.access_token}` },

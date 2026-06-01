@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mail,
@@ -42,6 +42,7 @@ export default function SignInForm() {
   const { t, getLink, currentLang } = useTranslation()
   const a = t.auth
   const router = useRouter()
+  const searchParams = useSearchParams()
   const isEn = currentLang === 'en'
 
   const [email, setEmail] = useState('')
@@ -109,14 +110,17 @@ export default function SignInForm() {
           ? `${userData.first_name} ${userData.last_name}`
           : (authData.user.email || 'Usuario')
 
-        // Set a hint cookie so middleware can redirect instantly on next visit
+        // Set a hint cookie so the proxy can redirect instantly on next visit
         document.cookie = 'aecmi-auth=1; path=/; max-age=604800; SameSite=Lax'
+
+        // Redirect to the originally-requested page (from proxy ?next=) or default dashboard
+        const next = searchParams.get('next')
+        const defaultDashboard = role === 'admin' ? '/dashboard/admin' : '/dashboard/client'
+        const destination = (next?.startsWith('/dashboard') ? next : null) ?? defaultDashboard
 
         setSubmitStatus('success')
         setStatusMessage(`${isEn ? 'Welcome' : 'Bienvenido'}, ${name}! ${isEn ? 'Redirecting...' : 'Redirigiendo...'}`)
-        setTimeout(() => {
-          router.push(role === 'admin' ? '/dashboard/admin' : '/dashboard/client')
-        }, 800)
+        setTimeout(() => { router.push(destination) }, 800)
         return
       }
 
