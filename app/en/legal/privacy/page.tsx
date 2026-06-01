@@ -1,8 +1,8 @@
 import LegalPage from '@/components/sections/LegalPage';
 
 export const metadata = {
-  title: 'Privacy Policy — AECMI',
-  description: 'AECMI Privacy Policy. Personal data protection in accordance with GDPR.',
+  title: 'Privacy Policy — AECOMI',
+  description: 'AECOMI Privacy Policy. Personal data protection in accordance with GDPR.',
 };
 
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
     title: 'Introduction',
     content: (
       <>
-        <p>At AECMI, we value your privacy and are committed to protecting your personal data. This Privacy Policy describes how we collect, use, store and protect the information you provide when using our website, certification services, training and any other related services.</p>
+        <p>At AECOMI, we value your privacy and are committed to protecting your personal data. This Privacy Policy describes how we collect, use, store and protect the information you provide when using our website, certification services, training and any other related services.</p>
         <p>By accessing and using our services, you accept the practices described in this policy. If you do not agree with any of the terms set forth herein, we recommend that you do not use our services.</p>
         <p>This policy complies with the General Data Protection Regulation (GDPR) of the European Union and the Spanish Organic Law on Personal Data Protection and Guarantee of Digital Rights (LOPDGDD).</p>
       </>
@@ -22,9 +22,9 @@ const sections = [
     title: '1. Data Controller',
     content: (
       <>
-        <p><strong>Identity:</strong> AECMI — International BIM Certification Organization</p>
+        <p><strong>Identity:</strong> AECOMI — International BIM Certification Organization</p>
         <p><strong>Postal address:</strong> Madrid, Spain</p>
-        <p><strong>Email:</strong> <a href="mailto:privacy@aecmi.com" className="text-[#0066CC] hover:underline">privacy@aecmi.com</a></p>
+        <p><strong>Email:</strong> <a href="mailto:privacy@aecomi.com" className="text-[#0066CC] hover:underline">privacy@aecomi.com</a></p>
         <p><strong>Main activity:</strong> BIM competency certification, specialized training and research applied to the AEC sector (Architecture, Engineering and Construction).</p>
         <p>For any queries related to data protection, you can contact our Data Protection Officer (DPO) through the email address provided.</p>
       </>
@@ -104,7 +104,7 @@ const sections = [
     title: '5. Data Sharing',
     content: (
       <>
-        <p>AECMI does not sell, rent or trade your personal data to third parties. However, we may share information in the following circumstances:</p>
+        <p>AECOMI does not sell, rent or trade your personal data to third parties. However, we may share information in the following circumstances:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li><strong>Service providers:</strong> Companies that provide us with hosting, email management, online exam platforms and analytics tools. These providers act as data processors under contract and adequate guarantees.</li>
           <li><strong>Partner institutions:</strong> Accredited universities and training centers with which we have agreements, only when necessary for the academic validation of certifications.</li>
@@ -129,7 +129,7 @@ const sections = [
           <li><strong>Right to object:</strong> Object to the processing of your data based on legitimate interests, including profiling.</li>
           <li><strong>Right not to be subject to automated decisions:</strong> Including profiling, which produce significant legal effects.</li>
         </ul>
-        <p className="mt-4">To exercise any of these rights, please send a written request to <a href="mailto:privacy@aecmi.com" className="text-[#0066CC] hover:underline">privacy@aecmi.com</a>, including a copy of your identification document. We will respond within a maximum period of 30 days.</p>
+        <p className="mt-4">To exercise any of these rights, please send a written request to <a href="mailto:privacy@aecomi.com" className="text-[#0066CC] hover:underline">privacy@aecomi.com</a>, including a copy of your identification document. We will respond within a maximum period of 30 days.</p>
         <p>You also have the right to lodge a complaint with the Spanish Data Protection Agency (AEPD) if you consider that the processing of your data violates applicable regulations.</p>
       </>
     ),
@@ -175,8 +175,8 @@ const sections = [
       <>
         <p>For any queries, requests or complaints related to personal data protection, you can contact us through:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Email:</strong> <a href="mailto:privacy@aecmi.com" className="text-[#0066CC] hover:underline">privacy@aecmi.com</a></li>
-          <li><strong>Postal address:</strong> AECMI — Data Protection Officer, Madrid, Spain</li>
+          <li><strong>Email:</strong> <a href="mailto:privacy@aecomi.com" className="text-[#0066CC] hover:underline">privacy@aecomi.com</a></li>
+          <li><strong>Postal address:</strong> AECOMI — Data Protection Officer, Madrid, Spain</li>
           <li><strong>Contact form:</strong> Available on our <a href="/en/contact" className="text-[#0066CC] hover:underline">contact page</a></li>
         </ul>
         <p className="mt-4">We are committed to responding to all requests within a maximum period of 30 calendar days.</p>
@@ -188,7 +188,7 @@ const sections = [
     title: '10. Changes to the Privacy Policy',
     content: (
       <>
-        <p>AECMI reserves the right to modify this Privacy Policy at any time to adapt it to legislative developments, changes in our services or improvements in our data protection practices.</p>
+        <p>AECOMI reserves the right to modify this Privacy Policy at any time to adapt it to legislative developments, changes in our services or improvements in our data protection practices.</p>
         <p>When we make significant changes, we will notify you through:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li>A prominent notice on our website</li>

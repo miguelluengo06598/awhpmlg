@@ -404,7 +404,7 @@ function CertificateCard({ cert }: { cert: Certificate }) {
         <button
           onClick={() => {
             const url = `/verify-certificate/${cert.id}`
-            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL || 'https://aecmi.tech'}${url}`)
+            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL || 'https://aecomi.tech'}${url}`)
             alert('Link copiado al portapapeles')
           }}
           style={{

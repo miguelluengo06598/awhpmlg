@@ -105,7 +105,7 @@ const criteria = [
   { icon: Clock, title: 'Duración', desc: 'Los programas varían entre 8 y 16 semanas. Considera tu agenda laboral actual.' },
   { icon: Users, title: 'Experiencia del Instructor', desc: 'Verifica que los instructores tengan experiencia práctica en la industria, no solo teórica.' },
   { icon: DollarSign, title: 'Costo', desc: 'Compara precios pero considera la calidad. No siempre lo más caro es lo mejor.' },
-  { icon: BarChart3, title: 'Tasa de Aprobación', desc: 'Pregunta por el porcentaje de estudiantes que aprueban el examen de certificación AECMI.' },
+  { icon: BarChart3, title: 'Tasa de Aprobación', desc: 'Pregunta por el porcentaje de estudiantes que aprueban el examen de certificación AECOMI.' },
   { icon: Network, title: 'Comunidad', desc: 'Una buena comunidad de estudiantes es valiosa para networking y apoyo mutuo.' },
 ]
 
@@ -114,17 +114,17 @@ const processSteps = [
   { number: '02', title: 'Análisis personalizado', desc: 'Analizamos qué certificación es ideal para tu perfil y qué entidad se adapta mejor a tu situación.' },
   { number: '03', title: 'Recomendación', desc: 'Te recomendamos 2-3 opciones con sus ventajas y desventajas claramente explicadas.' },
   { number: '04', title: 'Apoyo durante la formación', desc: 'Estamos disponibles para resolver dudas mientras realizas el curso preparatorio.' },
-  { number: '05', title: 'Examen y Certificación', desc: 'Realizas el examen de certificación AECMI y obtienes tu credencial profesional.' },
+  { number: '05', title: 'Examen y Certificación', desc: 'Realizas el examen de certificación AECOMI y obtienes tu credencial profesional.' },
 ]
 
 const faqs = [
   {
-    question: '¿AECMI vende formación?',
-    answer: 'No. AECMI es el organismo certificador, no un proveedor de formación. Nosotros validamos y emitimos certificaciones. Recomendamos entidades académicas de calidad para que te prepares adecuadamente.',
+    question: '¿AECOMI vende formación?',
+    answer: 'No. AECOMI es el organismo certificador, no un proveedor de formación. Nosotros validamos y emitimos certificaciones. Recomendamos entidades académicas de calidad para que te prepares adecuadamente.',
   },
   {
     question: '¿Puedo prepararme en otra entidad que no esté en la lista?',
-    answer: 'Sí, puedes. La lista es de recomendaciones basadas en calidad verificada. Si encuentras otro proveedor que cumpla los estándares requeridos, puedes utilizarlo. Lo importante es que estés bien preparado para el examen AECMI.',
+    answer: 'Sí, puedes. La lista es de recomendaciones basadas en calidad verificada. Si encuentras otro proveedor que cumpla los estándares requeridos, puedes utilizarlo. Lo importante es que estés bien preparado para el examen AECOMI.',
   },
   {
     question: '¿Cuál es la diferencia entre las entidades recomendadas?',
@@ -132,7 +132,7 @@ const faqs = [
   },
   {
     question: '¿Qué pasa si elijo una formación que no recomiendan?',
-    answer: 'Nada cambia. Nuestras recomendaciones son orientativas. Al final, lo que importa es que apruebes el examen AECMI. Muchos estudiantes de otros proveedores también obtienen la certificación exitosamente.',
+    answer: 'Nada cambia. Nuestras recomendaciones son orientativas. Al final, lo que importa es que apruebes el examen AECOMI. Muchos estudiantes de otros proveedores también obtienen la certificación exitosamente.',
   },
   {
     question: '¿Puedo estudiar sin hacer formación formal?',
@@ -140,7 +140,7 @@ const faqs = [
   },
   {
     question: '¿Hacen descuentos para sus estudiantes?',
-    answer: 'Los descuentos dependen de cada entidad académica. Algunas ofrecen condiciones especiales para miembros de AECMI. Consulta directamente con ellas mencionando que vienes de nuestra recomendación.',
+    answer: 'Los descuentos dependen de cada entidad académica. Algunas ofrecen condiciones especiales para miembros de AECOMI. Consulta directamente con ellas mencionando que vienes de nuestra recomendación.',
   },
 ]
 
@@ -185,8 +185,8 @@ export default function FormationPage() {
             </p>
             <p className="mt-4 text-base text-white/40 leading-relaxed max-w-2xl">
               {isEn
-                ? 'AECMI does not offer training directly, but we have validated and partnered with the best academic institutions so you receive quality preparation.'
-                : 'AECMI no ofrece formación directa, pero hemos validado y aliado con las mejores instituciones académicas para que recibas una preparación de calidad.'}
+                ? 'AECOMI does not offer training directly, but we have validated and partnered with the best academic institutions so you receive quality preparation.'
+                : 'AECOMI no ofrece formación directa, pero hemos validado y aliado con las mejores instituciones académicas para que recibas una preparación de calidad.'}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
@@ -405,7 +405,7 @@ export default function FormationPage() {
                 : 'Contacta con nuestro equipo. Te ayudaremos a elegir la formación y entidad académica que mejor se adapte a tu perfil profesional.'}
             </p>
             <p className="mt-3 text-base text-white/40">
-              formacion@aecmi.com &nbsp;·&nbsp; +34 91 234 5678
+              formacion@aecomi.com &nbsp;·&nbsp; +34 91 234 5678
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

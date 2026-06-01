@@ -27,7 +27,7 @@ const STATUS_MAP: Record<string, { label: string; color: string; nextStep: strin
   pending:        { label: 'Pendiente',       color: 'bg-orange-50 text-orange-700 border-orange-200',    nextStep: 'El equipo revisará tu solicitud' },
   in_review:      { label: 'En revisión',     color: 'bg-blue-50 text-blue-700 border-blue-100',          nextStep: 'Revisión en curso, te avisaremos' },
   approved:       { label: 'Aprobado',        color: 'bg-green-50 text-green-700 border-green-100',       nextStep: 'Pendiente de programar examen' },
-  rejected:       { label: 'Rechazado',       color: 'bg-red-50 text-red-700 border-red-100',             nextStep: 'Contacta con AECMI para más info' },
+  rejected:       { label: 'Rechazado',       color: 'bg-red-50 text-red-700 border-red-100',             nextStep: 'Contacta con AECOMI para más info' },
   exam_scheduled: { label: 'Examen prog.',    color: 'bg-violet-50 text-violet-700 border-violet-100',    nextStep: 'Prepárate para el examen' },
   exam_passed:    { label: 'Examen superado', color: 'bg-emerald-50 text-emerald-700 border-emerald-100', nextStep: 'Certificado en proceso de emisión' },
   certified:      { label: 'Certificado',     color: 'bg-teal-50 text-teal-700 border-teal-100',          nextStep: 'Certificación emitida' },

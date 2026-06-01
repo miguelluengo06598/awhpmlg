@@ -1,8 +1,8 @@
 import SignUpForm from "@/components/auth/SignUpForm";
 
 export const metadata = {
-  title: "AECMI - Sign Up",
-  description: "Create your AECMI account",
+  title: "AECOMI - Sign Up",
+  description: "Create your AECOMI account",
 };
 
 export default function SignUpPage() {

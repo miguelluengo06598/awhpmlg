@@ -160,7 +160,7 @@ export default function VerifyCertificatePage() {
 
         <div style={{ padding: `${spacing.md} ${spacing['2xl']}`, borderTop: `1px solid ${colors.neutral[100]}`, textAlign: 'center' }}>
           <p style={{ fontFamily: typography.family.body, fontSize: '0.8rem', color: colors.neutral[400], margin: 0 }}>
-            Certificado emitido por <strong>AECMI</strong> · aecmi.com
+            Certificado emitido por <strong>AECOMI</strong> · aecomi.com
           </p>
         </div>
       </div>

@@ -13,7 +13,7 @@ const resourcesData: Record<string, any[]> = {
       type: 'featured',
       badges: ['Certificación', 'Gratis para Miembros'],
       title: 'Information Delivery Manager — IDM™',
-      description: 'La certificación IDM de AECMI acredita tu competencia para gestionar la entrega de información BIM en proyectos de construcción.',
+      description: 'La certificación IDM de AECOMI acredita tu competencia para gestionar la entrega de información BIM en proyectos de construcción.',
       cta: 'Ver Certificación',
       bgClass: 'bg-gradient-to-br from-pmi-teal to-[#0A3A44]',
       isDark: true,
@@ -33,7 +33,7 @@ const resourcesData: Record<string, any[]> = {
     {
       type: 'link',
       badges: ['eLearning', 'Certificación'],
-      title: 'AECMI BDM™: Certifica tu expertise en diseño BIM',
+      title: 'AECOMI BDM™: Certifica tu expertise en diseño BIM',
     },
   ],
   Construcción: [
@@ -61,14 +61,14 @@ const resourcesData: Record<string, any[]> = {
     {
       type: 'link',
       badges: ['Certificación'],
-      title: 'AECMI BCM™: Valida tu experiencia en construcción BIM',
+      title: 'AECOMI BCM™: Valida tu experiencia en construcción BIM',
     },
   ],
   Carrera: [
     {
       type: 'featured',
       badges: ['Herramienta', 'Gratis'],
-      title: 'Ruta de Certificación AECMI',
+      title: 'Ruta de Certificación AECOMI',
       description: 'Descubre qué certificación BIM se adapta mejor a tu perfil profesional y diseña tu camino hacia la acreditación internacional.',
       cta: 'Explorar Ruta',
       bgClass: 'bg-gradient-to-br from-pmi-purple to-[#2D1157]',
@@ -78,7 +78,7 @@ const resourcesData: Record<string, any[]> = {
       type: 'card',
       badges: ['Informe'],
       title: 'Salarios BIM 2026: impacto de la certificación en la remuneración',
-      description: 'Descubre cómo las certificaciones AECMI impactan el potencial de ingresos de los profesionales BIM en todo el mundo.',
+      description: 'Descubre cómo las certificaciones AECOMI impactan el potencial de ingresos de los profesionales BIM en todo el mundo.',
       cta: 'Leer Informe',
     },
     {
@@ -117,7 +117,7 @@ const resourcesData: Record<string, any[]> = {
     {
       type: 'link',
       badges: ['Certificación'],
-      title: 'AECMI Green BIM: acreditación en construcción sostenible',
+      title: 'AECOMI Green BIM: acreditación en construcción sostenible',
     },
   ],
 }

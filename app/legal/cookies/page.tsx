@@ -1,8 +1,8 @@
 import LegalPage from '@/components/sections/LegalPage';
 
 export const metadata = {
-  title: 'Política de Cookies — AECMI',
-  description: 'Política de cookies de AECMI. Información sobre el uso de cookies y tecnologías de seguimiento en nuestro sitio web.',
+  title: 'Política de Cookies — AECOMI',
+  description: 'Política de cookies de AECOMI. Información sobre el uso de cookies y tecnologías de seguimiento en nuestro sitio web.',
 };
 
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
     title: 'Introducción',
     content: (
       <>
-        <p>En AECMI, utilizamos cookies y tecnologías similares para mejorar tu experiencia en nuestro sitio web, analizar el tráfico y personalizar el contenido. Esta Política de Cookies explica qué son las cookies, cómo las utilizamos, qué tipos de cookies empleamos y cómo puedes gestionar tus preferencias.</p>
+        <p>En AECOMI, utilizamos cookies y tecnologías similares para mejorar tu experiencia en nuestro sitio web, analizar el tráfico y personalizar el contenido. Esta Política de Cookies explica qué son las cookies, cómo las utilizamos, qué tipos de cookies empleamos y cómo puedes gestionar tus preferencias.</p>
         <p>Al continuar navegando por nuestro sitio web sin cambiar la configuración de cookies, entendemos que consientes el uso de cookies conforme a lo establecido en esta política.</p>
       </>
     ),
@@ -24,7 +24,7 @@ const sections = [
         <p>Una cookie es un pequeño archivo de texto que se almacena en tu dispositivo (ordenador, tableta, teléfono móvil) cuando visitas un sitio web. Las cookies permiten que el sitio web recuerde tus acciones y preferencias durante un período de tiempo, de modo que no tengas que volver a introducirlas cada vez que regreses al sitio o navegues entre páginas.</p>
         <p>Las cookies pueden ser:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Cookies propias:</strong> Enviadas y gestionadas directamente por AECMI.</li>
+          <li><strong>Cookies propias:</strong> Enviadas y gestionadas directamente por AECOMI.</li>
           <li><strong>Cookies de terceros:</strong> Enviadas por dominios externos que prestan servicios en nuestro sitio (por ejemplo, análisis, publicidad, redes sociales).</li>
           <li><strong>Cookies de sesión:</strong> Se eliminan automáticamente cuando cierras el navegador.</li>
           <li><strong>Cookies persistentes:</strong> Permanecen en tu dispositivo durante un período de tiempo determinado o hasta que las elimines manualmente.</li>
@@ -123,7 +123,7 @@ const sections = [
     title: '5. Cookies de Terceros',
     content: (
       <>
-        <p>En AECMI utilizamos servicios de terceros que pueden establecer cookies en tu dispositivo. A continuación detallamos los principales proveedores:</p>
+        <p>En AECOMI utilizamos servicios de terceros que pueden establecer cookies en tu dispositivo. A continuación detallamos los principales proveedores:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li><strong>Google Analytics 4:</strong> Utilizamos este servicio para analizar el tráfico del sitio web. Google puede utilizar los datos recopilados para contextualizar y personalizar los anuncios de su propia red publicitaria. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#0066CC] hover:underline">Política de privacidad de Google</a></li>
           <li><strong>Google Fonts:</strong> Utilizamos Google Fonts para la tipografía del sitio. Google puede recopilar información sobre tu navegador cuando cargas las fuentes.</li>
@@ -155,8 +155,8 @@ const sections = [
       <>
         <p>Si tienes alguna pregunta sobre nuestra Política de Cookies o sobre cómo gestionamos las cookies en nuestro sitio web, puedes contactar con nosotros a través de:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecmi.com" className="text-[#0066CC] hover:underline">privacidad@aecmi.com</a></li>
-          <li><strong>Formulario de contacto:</strong> <a href="/contact" className="text-[#0066CC] hover:underline">aecmi.com/contact</a></li>
+          <li><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecomi.com" className="text-[#0066CC] hover:underline">privacidad@aecomi.com</a></li>
+          <li><strong>Formulario de contacto:</strong> <a href="/contact" className="text-[#0066CC] hover:underline">aecomi.com/contact</a></li>
         </ul>
       </>
     ),

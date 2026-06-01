@@ -13,7 +13,7 @@ export interface CreateCertificateInput {
   issued_by_admin_id: string
 }
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecmi.com'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecomi.com'
 
 function generateCertificationCode(type: string): string {
   const year = new Date().getFullYear()

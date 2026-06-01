@@ -43,7 +43,7 @@ export default function Header() {
         {
           title: isEs() ? 'Información' : 'Information',
           items: [
-            { name: isEs() ? 'Sobre AECMI' : 'About AECMI', href: getLink('/about'), icon: Users },
+            { name: isEs() ? 'Sobre AECOMI' : 'About AECOMI', href: getLink('/about'), icon: Users },
             { name: isEs() ? 'Gobierno y Organización' : 'Governance & Organization', href: getLink('/about/gobierno'), icon: Landmark },
             { name: isEs() ? 'Contactar' : 'Contact', href: getLink('/contact'), icon: MessageSquare },
           ],
@@ -94,7 +94,7 @@ export default function Header() {
                 <rect x="28" y="12" width="10" height="20" fill="#003B5C" rx="1"/>
               </svg>
               <div className="ml-2.5 hidden sm:block">
-                <div className="text-[11px] font-bold text-gray-900 leading-tight tracking-widest uppercase">AECMI</div>
+                <div className="text-[11px] font-bold text-gray-900 leading-tight tracking-widest uppercase">AECOMI</div>
                 <div className="text-[10px] font-medium text-gray-500 leading-tight tracking-wide">BIM Certification</div>
               </div>
             </div>

@@ -22,9 +22,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AECMI - Certificación de Competencias BIM",
+  title: "AECOMI - Certificación de Competencias BIM",
   description:
-    "AECMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector AEC.",
+    "AECOMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector AEC.",
 };
 
 export default function RootLayout({

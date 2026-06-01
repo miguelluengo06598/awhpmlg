@@ -1,4 +1,4 @@
-# AECMI — Informe de Auditoría Pre-Producción
+# AECOMI — Informe de Auditoría Pre-Producción
 
 **Fecha:** 2026-05-29  
 **Rama:** `main`  
@@ -54,7 +54,7 @@
 | # | Ítem | Estado | Notas |
 |---|------|--------|-------|
 | 3.1 | `/api/contact` conectado a Supabase | ✅ | Guarda en tabla `contact_messages` + envía emails de confirmación y notificación via Resend |
-| 3.2 | `/api/contact` envía emails | ✅ | Email de confirmación al usuario + notificación a `info@aecmi.com` via `RESEND_API_KEY` |
+| 3.2 | `/api/contact` envía emails | ✅ | Email de confirmación al usuario + notificación a `info@aecomi.com` via `RESEND_API_KEY` |
 | 3.3 | `/api/certificate/[qrCode]` con datos reales | ✅ | Consulta tabla `certificates` en Supabase; elimina mock data |
 | 3.4 | `/about/formacion` → `/formacion` redirect | ✅ | `redirect('/formacion')` en `app/about/formacion/page.tsx` |
 | 3.5 | Guías y Estándares eliminado | ✅ | Archivos de página y componente borrados; referencias de navegación eliminadas |

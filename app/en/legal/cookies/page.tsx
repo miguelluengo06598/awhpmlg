@@ -1,8 +1,8 @@
 import LegalPage from '@/components/sections/LegalPage';
 
 export const metadata = {
-  title: 'Cookie Policy — AECMI',
-  description: 'AECMI Cookie Policy. Information about the use of cookies and tracking technologies on our website.',
+  title: 'Cookie Policy — AECOMI',
+  description: 'AECOMI Cookie Policy. Information about the use of cookies and tracking technologies on our website.',
 };
 
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
     title: 'Introduction',
     content: (
       <>
-        <p>At AECMI, we use cookies and similar technologies to enhance your experience on our website, analyze traffic and personalize content. This Cookie Policy explains what cookies are, how we use them, what types of cookies we employ and how you can manage your preferences.</p>
+        <p>At AECOMI, we use cookies and similar technologies to enhance your experience on our website, analyze traffic and personalize content. This Cookie Policy explains what cookies are, how we use them, what types of cookies we employ and how you can manage your preferences.</p>
         <p>By continuing to browse our website without changing your cookie settings, we understand that you consent to the use of cookies as established in this policy.</p>
       </>
     ),
@@ -24,7 +24,7 @@ const sections = [
         <p>A cookie is a small text file that is stored on your device (computer, tablet, mobile phone) when you visit a website. Cookies allow the website to remember your actions and preferences for a period of time, so you don't have to re-enter them each time you return to the site or browse between pages.</p>
         <p>Cookies can be:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>First-party cookies:</strong> Sent and managed directly by AECMI.</li>
+          <li><strong>First-party cookies:</strong> Sent and managed directly by AECOMI.</li>
           <li><strong>Third-party cookies:</strong> Sent by external domains that provide services on our site (for example, analytics, advertising, social networks).</li>
           <li><strong>Session cookies:</strong> Automatically deleted when you close your browser.</li>
           <li><strong>Persistent cookies:</strong> Remain on your device for a determined period or until you manually delete them.</li>
@@ -123,7 +123,7 @@ const sections = [
     title: '5. Third-Party Cookies',
     content: (
       <>
-        <p>At AECMI we use third-party services that may set cookies on your device. The main providers are detailed below:</p>
+        <p>At AECOMI we use third-party services that may set cookies on your device. The main providers are detailed below:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li><strong>Google Analytics 4:</strong> We use this service to analyze website traffic. Google may use the data collected to contextualize and personalize ads on its own advertising network. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-[#0066CC] hover:underline">Google Privacy Policy</a></li>
           <li><strong>Google Fonts:</strong> We use Google Fonts for site typography. Google may collect information about your browser when loading fonts.</li>
@@ -155,8 +155,8 @@ const sections = [
       <>
         <p>If you have any questions about our Cookie Policy or how we manage cookies on our website, you can contact us through:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Email:</strong> <a href="mailto:privacy@aecmi.com" className="text-[#0066CC] hover:underline">privacy@aecmi.com</a></li>
-          <li><strong>Contact form:</strong> <a href="/en/contact" className="text-[#0066CC] hover:underline">aecmi.com/contact</a></li>
+          <li><strong>Email:</strong> <a href="mailto:privacy@aecomi.com" className="text-[#0066CC] hover:underline">privacy@aecomi.com</a></li>
+          <li><strong>Contact form:</strong> <a href="/en/contact" className="text-[#0066CC] hover:underline">aecomi.com/contact</a></li>
         </ul>
       </>
     ),

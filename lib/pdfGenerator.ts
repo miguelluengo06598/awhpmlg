@@ -51,13 +51,13 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
   doc.setLineWidth(0.6);
   doc.line(m, ph - m - 9, pw - m, ph - m - 9);
 
-  // ─── HEADER: AECMI ────────────────────────────────────────────────────────
+  // ─── HEADER: AECOMI ────────────────────────────────────────────────────────
   let y = 26;
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(20);
   doc.setTextColor(r, g, b);
-  doc.text('AECMI', pw / 2, y, { align: 'center' });
+  doc.text('AECOMI', pw / 2, y, { align: 'center' });
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
@@ -82,7 +82,7 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10.5);
   doc.setTextColor(100, 100, 100);
-  doc.text('AECMI se complace en otorgar el siguiente', pw / 2, y, { align: 'center' });
+  doc.text('AECOMI se complace en otorgar el siguiente', pw / 2, y, { align: 'center' });
 
   y += 8;
   doc.setFont('helvetica', 'bold');
@@ -175,8 +175,8 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(150, 150, 150);
-  doc.text('AECMI', col1, sigY + 10);
-  doc.text('AECMI', col2, sigY + 10);
+  doc.text('AECOMI', col1, sigY + 10);
+  doc.text('AECOMI', col2, sigY + 10);
 
   // ─── VERIFICATION CODE ────────────────────────────────────────────────────
   const codeY = ph - 38;
@@ -208,7 +208,7 @@ export function downloadCertificatePDF(data: CertificatePDFData, filename?: stri
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename || `AECMI-${data.certificationType}-${data.qrCode}.pdf`;
+    link.download = filename || `AECOMI-${data.certificationType}-${data.qrCode}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

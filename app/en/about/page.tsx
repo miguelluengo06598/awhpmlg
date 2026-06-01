@@ -29,7 +29,7 @@ const misionItems = [
   {
     icon: Globe,
     title: 'International Reference',
-    description: 'We position AECMI as a reference in BIM and information management applied to construction.',
+    description: 'We position AECOMI as a reference in BIM and information management applied to construction.',
   },
   {
     icon: Target,
@@ -168,7 +168,7 @@ export default function AboutPage() {
               About Us
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.1] tracking-tight">
-              About AECMI
+              About AECOMI
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">
               Leaders in international BIM certification. We develop standards, train
@@ -204,7 +204,7 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              AECMI was born with the vocation to become an international reference
+              AECOMI was born with the vocation to become an international reference
               within the field of BIM and information management applied to construction.
             </p>
           </motion.div>
@@ -331,7 +331,7 @@ export default function AboutPage() {
               What We Do?
             </h2>
             <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              AECMI develops professional certification programs aimed at recognizing the
+              AECOMI develops professional certification programs aimed at recognizing the
               competencies of the most relevant BIM profiles within the AEC sector.
             </p>
           </motion.div>
@@ -417,7 +417,7 @@ export default function AboutPage() {
               Corporate Values
             </h2>
             <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              AECMI is driven by a clear mission and a set of values that inspire the
+              AECOMI is driven by a clear mission and a set of values that inspire the
               way we act. These values are fundamental, enduring, and deeply
               rooted, guiding our behavior at all times.
             </p>
@@ -478,7 +478,7 @@ export default function AboutPage() {
                 Governance and Organization
               </h2>
               <p className="mt-6 text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
-                Discover how AECMI guarantees transparency, quality, and compliance with
+                Discover how AECOMI guarantees transparency, quality, and compliance with
                 ethical principles through its governance bodies.
               </p>
               <div className="mt-10">
@@ -555,7 +555,7 @@ export default function AboutPage() {
                 href="/en/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-pmi-dark font-semibold rounded-full hover:bg-white/90 transition-all shadow-lg hover:shadow-xl text-base"
               >
-                Join AECMI
+                Join AECOMI
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link

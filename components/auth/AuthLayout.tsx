@@ -20,7 +20,7 @@ const GRID_BG: React.CSSProperties = {
   backgroundSize: '64px 64px',
 }
 
-const AecmiLogo = ({ size = 36 }: { size?: number }) => (
+const AecomiLogo = ({ size = 36 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="8" width="14" height="24" fill="#00A3C4" rx="1" />
     <rect x="18" y="4" width="8" height="18" fill="#E87722" rx="1" />
@@ -50,9 +50,9 @@ export default function AuthLayout({ children, leftTitle, leftDescription, benef
         {/* Logo */}
         <div className="relative z-10">
           <Link href={getLink('/')} className="inline-flex items-center gap-2.5 group">
-            <AecmiLogo size={38} />
+            <AecomiLogo size={38} />
             <span className="text-white font-bold text-lg tracking-wide group-hover:text-white/80 transition-colors">
-              AECMI
+              AECOMI
             </span>
           </Link>
         </div>
@@ -90,7 +90,7 @@ export default function AuthLayout({ children, leftTitle, leftDescription, benef
 
         {/* Footer */}
         <div className="relative z-10 text-[11px] text-white/25 tracking-wide uppercase">
-          © {new Date().getFullYear()} AECMI — {authType === 'signup' ? 'Registro seguro' : 'Acceso seguro'}
+          © {new Date().getFullYear()} AECOMI — {authType === 'signup' ? 'Registro seguro' : 'Acceso seguro'}
         </div>
       </motion.div>
 
@@ -104,8 +104,8 @@ export default function AuthLayout({ children, leftTitle, leftDescription, benef
         {/* Mobile logo */}
         <div className="lg:hidden mb-10">
           <Link href={getLink('/')} className="inline-flex items-center gap-2.5">
-            <AecmiLogo size={30} />
-            <span className="text-pmi-dark font-bold text-base tracking-wide">AECMI</span>
+            <AecomiLogo size={30} />
+            <span className="text-pmi-dark font-bold text-base tracking-wide">AECOMI</span>
           </Link>
         </div>
 

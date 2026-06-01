@@ -23,7 +23,7 @@ export const supabase = createClient(
     },
     global: {
       headers: {
-        'x-application-name': 'aecmi-next',
+        'x-application-name': 'aecomi-next',
       },
     },
   }

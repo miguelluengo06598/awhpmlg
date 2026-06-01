@@ -769,7 +769,7 @@ export default function RegistryPage({ locale }: Props) {
               },
               {
                 icon: <FileCheck className="w-10 h-10" />,
-                title: isEs ? 'Estándares AECMI' : 'AECMI Standards',
+                title: isEs ? 'Estándares AECOMI' : 'AECOMI Standards',
                 desc: isEs ? 'Solo profesionales que cumplen estándares internacionales aparecen en el directorio.' : 'Only professionals who meet international standards appear in the directory.',
               },
               {
@@ -827,7 +827,7 @@ export default function RegistryPage({ locale }: Props) {
                 title: isEs ? 'Privacidad y Protección de Datos' : 'Privacy & Data Protection',
                 content: (
                   <div className="space-y-3">
-                    <p>{isEs ? 'AECMI cumple con el Reglamento General de Protección de Datos (GDPR). La información mostrada es limitada y el número de certificado se muestra parcialmente por seguridad. Los profesionales pueden solicitar la eliminación de sus datos en cualquier momento.' : 'AECMI complies with the General Data Protection Regulation (GDPR). The displayed information is limited and the certificate number is partially shown for security. Professionals can request deletion of their data at any time.'}</p>
+                    <p>{isEs ? 'AECOMI cumple con el Reglamento General de Protección de Datos (GDPR). La información mostrada es limitada y el número de certificado se muestra parcialmente por seguridad. Los profesionales pueden solicitar la eliminación de sus datos en cualquier momento.' : 'AECOMI complies with the General Data Protection Regulation (GDPR). The displayed information is limited and the certificate number is partially shown for security. Professionals can request deletion of their data at any time.'}</p>
                   </div>
                 ),
               },
@@ -914,7 +914,7 @@ export default function RegistryPage({ locale }: Props) {
               {isEs ? '¿No estás en el Registro?' : 'Not in the Registry?'}
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-lg text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-              {isEs ? 'Obtén tu certificación AECMI y únete al directorio de profesionales BIM de clase mundial.' : 'Get your AECMI certification and join the directory of world-class BIM professionals.'}
+              {isEs ? 'Obtén tu certificación AECOMI y únete al directorio de profesionales BIM de clase mundial.' : 'Get your AECOMI certification and join the directory of world-class BIM professionals.'}
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={getLink('/certifications')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-white text-[#0066CC] px-10 py-4 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">

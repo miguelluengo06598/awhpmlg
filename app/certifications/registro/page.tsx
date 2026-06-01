@@ -1,8 +1,8 @@
 import RegistryPage from '@/components/sections/RegistryPage';
 
 export const metadata = {
-  title: 'Registro de Certificaciones — AECMI',
-  description: 'Directorio de profesionales certificados AECMI. Verifica la vigencia de certificaciones internacionales BIM.',
+  title: 'Registro de Certificaciones — AECOMI',
+  description: 'Directorio de profesionales certificados AECOMI. Verifica la vigencia de certificaciones internacionales BIM.',
 };
 
 export default function Page() {

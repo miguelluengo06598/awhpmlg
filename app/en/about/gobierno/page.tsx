@@ -67,7 +67,7 @@ const pilares = [
   {
     icon: Star,
     title: 'Excellence',
-    description: 'Unsurpassed quality in every decision that guarantees the prestige and trust in AECMI.',
+    description: 'Unsurpassed quality in every decision that guarantees the prestige and trust in AECOMI.',
     gradient: 'from-amber-400 to-orange-500',
     bgSoft: 'bg-amber-50',
     border: 'border-amber-100',
@@ -95,7 +95,7 @@ const funcionesAsesor = [
 ]
 
 const funcionesEjecutivo = [
-  'Direction and administration of AECMI',
+  'Direction and administration of AECOMI',
   'Execution of activities',
   'Fulfillment of strategic objectives',
   'Observance of governance policies',
@@ -208,14 +208,14 @@ export default function GobiernoPage() {
               Two Bodies, One Purpose
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              AECMI Governance Structure
+              AECOMI Governance Structure
             </h2>
             <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">
-              AECMI's governance structure is designed to guarantee{' '}
+              AECOMI's governance structure is designed to guarantee{' '}
               <span className="text-pmi-blue font-semibold">transparency</span>,{' '}
               <span className="text-pmi-blue font-semibold">quality</span>, and compliance with the
               ethical principles that inspire all our activities and certification processes.
-              AECMI Governance is governed by two bodies.
+              AECOMI Governance is governed by two bodies.
             </p>
           </motion.div>
         </div>
@@ -307,7 +307,7 @@ export default function GobiernoPage() {
               </h2>
               <p className="text-gray-600 leading-relaxed text-lg mb-8">
                 It is made up of internationally renowned professionals and specialists. The mission of the
-                Advisory Council is to define the standards to be followed by AECMI, as well as the requirements to be met and the
+                Advisory Council is to define the standards to be followed by AECOMI, as well as the requirements to be met and the
                 competency map required in the different certifications, guide the institute's research lines,
                 guide the definition of best practices in BIM uses and their implementation in
                 organizations.
@@ -472,7 +472,7 @@ export default function GobiernoPage() {
                 Executive Council
               </h2>
               <p className="text-gray-600 leading-relaxed text-lg mb-8">
-                The mission of the Executive Council is to lead and administer AECMI to execute the organization's
+                The mission of the Executive Council is to lead and administer AECOMI to execute the organization's
                 activities, guaranteeing the fulfillment of strategic objectives through the observance of
                 the governing governance policies that give fulfillment to our foundational purposes.
               </p>
@@ -620,7 +620,7 @@ export default function GobiernoPage() {
                   <p className="text-gray-700 text-lg leading-relaxed text-center">
                     Both bodies work together to consolidate an institution oriented toward excellence and
                     the sustainable development of the AEC sector. Collective wisdom, experience, diversity, and
-                    the passion of the members of AECMI's two governance bodies are the pillars
+                    the passion of the members of AECOMI's two governance bodies are the pillars
                     on which our ideology, purpose, and core values are established and executed.
                   </p>
                 </div>

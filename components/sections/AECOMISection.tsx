@@ -21,7 +21,7 @@ const highlights = [
   },
 ]
 
-export default function AECMISection() {
+export default function AECOMISection() {
   return (
     <>
       {/* Hero Section */}
@@ -41,13 +41,13 @@ export default function AECMISection() {
               Organización Internacional
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-              AECMI
+              AECOMI
             </h1>
             <p className="mt-4 text-xl sm:text-2xl text-white/90 font-medium leading-relaxed">
               Especialistas en la certificación de competencias BIM
             </p>
             <p className="mt-6 text-base sm:text-lg text-white/80 leading-relaxed max-w-3xl">
-              AECMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector de la Arquitectura, la Ingeniería y la Construcción. Nuestro propósito es contribuir al desarrollo de una industria más eficiente, colaborativa y digitalizada mediante la promoción de estándares internacionales, programas de certificación y formación especializada orientada a las necesidades reales del mercado.
+              AECOMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector de la Arquitectura, la Ingeniería y la Construcción. Nuestro propósito es contribuir al desarrollo de una industria más eficiente, colaborativa y digitalizada mediante la promoción de estándares internacionales, programas de certificación y formación especializada orientada a las necesidades reales del mercado.
             </p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -128,7 +128,7 @@ export default function AECMISection() {
                 Trabajamos para acreditar las capacidades técnicas, estratégicas y de liderazgo de los profesionales que participan en todas las fases del ciclo de vida de los proyectos constructivos. A través de nuestras certificaciones, recursos técnicos y actividades de investigación ayudamos a empresas y profesionales a fortalecer su posicionamiento y mejorar la calidad de sus procesos y resultados.
               </p>
               <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                AECMI reúne a expertos, instituciones académicas, organizaciones y profesionales comprometidos con la excelencia y la innovación dentro del sector AEC. Nuestra comunidad internacional comparte una visión común basada en el conocimiento, la mejora continua y el impulso de buenas prácticas que permitan afrontar con garantías los desafíos actuales y futuros de la industria.
+                AECOMI reúne a expertos, instituciones académicas, organizaciones y profesionales comprometidos con la excelencia y la innovación dentro del sector AEC. Nuestra comunidad internacional comparte una visión común basada en el conocimiento, la mejora continua y el impulso de buenas prácticas que permitan afrontar con garantías los desafíos actuales y futuros de la industria.
               </p>
             </motion.div>
           </div>

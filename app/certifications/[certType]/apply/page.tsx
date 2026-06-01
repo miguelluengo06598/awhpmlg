@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { certType } = await params
   const cert = certificationMap[certType]
   return {
-    title: cert ? `Solicitar ${cert.name} — AECMI` : 'Solicitud de Certificación — AECMI',
-    description: cert?.description || 'Solicita tu certificación profesional BIM con AECMI.',
+    title: cert ? `Solicitar ${cert.name} — AECOMI` : 'Solicitud de Certificación — AECOMI',
+    description: cert?.description || 'Solicita tu certificación profesional BIM con AECOMI.',
   }
 }
 

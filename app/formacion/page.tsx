@@ -1,7 +1,7 @@
 import FormationPage from "@/components/sections/FormationPage";
 
 export const metadata = {
-  title: "AECMI - Formación en BIM",
+  title: "AECOMI - Formación en BIM",
   description: "Entidades académicas recomendadas para tu preparación en certificaciones BIM",
 };
 

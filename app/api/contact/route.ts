@@ -7,8 +7,8 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-const ADMIN_EMAIL = 'info@aecmi.com'
-const FROM_EMAIL = 'noreply@aecmi.es'
+const ADMIN_EMAIL = 'info@aecomi.com'
+const FROM_EMAIL = 'noreply@aecomi.es'
 
 function validateContactForm(data: Record<string, unknown>) {
   const errors: string[] = []
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       getResend().emails.send({
         from: FROM_EMAIL,
         to: email,
-        subject: 'Hemos recibido tu mensaje — AECMI',
+        subject: 'Hemos recibido tu mensaje — AECOMI',
         html: `
           <p>Hola ${name},</p>
           <p>Hemos recibido tu mensaje sobre <strong>${subject}</strong>.</p>

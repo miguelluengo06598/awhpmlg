@@ -38,7 +38,7 @@ export default function Community() {
             transition={{ duration: 0.6 }}
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-pmi-dark tracking-tight leading-[1.1] max-w-md"
           >
-            La comunidad AECMI está donde estás
+            La comunidad AECOMI está donde estás
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -62,7 +62,7 @@ export default function Community() {
           <div className="absolute inset-0">
             <Image
               src="/images/chapters-bg.jpg"
-              alt="AECMI Chapters"
+              alt="AECOMI Chapters"
               fill
               className="object-cover"
             />

@@ -146,7 +146,7 @@ export default function HomeLanding() {
                 </motion.div>
               ))}
               <p className="mt-1 text-center text-[11px] text-white/20 tracking-wide">
-                {h.certifications_badge} · AECMI
+                {h.certifications_badge} · AECOMI
               </p>
             </div>
           </div>

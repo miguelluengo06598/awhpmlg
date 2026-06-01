@@ -52,7 +52,7 @@ const mockUserCert: UserCertification | null = {
   certificationType: 'IDM',
   professionalName: 'Juan García López',
   qrCode: 'IDM-2024-ABC123XYZ789',
-  certificateNumber: 'AECMI-IDM-2024-0042',
+  certificateNumber: 'AECOMI-IDM-2024-0042',
   obtainedDate: '2024-03-15',
   expiryDate: '2027-03-15',
   status: 'active',
@@ -131,7 +131,7 @@ export default function ClientCertificatePage() {
       canvas.height = img.height;
       ctx?.drawImage(img, 0, 0);
       const link = document.createElement('a');
-      link.download = `AECMI-QR-${cert?.qrCode}.png`;
+      link.download = `AECOMI-QR-${cert?.qrCode}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     };

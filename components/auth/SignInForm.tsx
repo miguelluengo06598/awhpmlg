@@ -22,8 +22,8 @@ import AuthLayout from './AuthLayout'
 
 // Fallback test users for offline/development mode
 const TEST_USERS: Record<string, { password: string; role: 'admin' | 'client'; name: string }> = {
-  'admin@aecmi.com': { password: 'Admin123', role: 'admin', name: 'Administrador' },
-  'user@aecmi.com': { password: 'User123', role: 'client', name: 'Usuario Demo' },
+  'admin@aecomi.com': { password: 'Admin123', role: 'admin', name: 'Administrador' },
+  'user@aecomi.com': { password: 'User123', role: 'client', name: 'Usuario Demo' },
 }
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -111,7 +111,7 @@ export default function SignInForm() {
           : (authData.user.email || 'Usuario')
 
         // Set a hint cookie so the proxy can redirect instantly on next visit
-        document.cookie = 'aecmi-auth=1; path=/; max-age=604800; SameSite=Lax'
+        document.cookie = 'aecomi-auth=1; path=/; max-age=604800; SameSite=Lax'
 
         // Redirect to the originally-requested page (from proxy ?next=) or default dashboard
         const next = searchParams.get('next')
@@ -134,8 +134,8 @@ export default function SignInForm() {
           loggedInAt: new Date().toISOString(),
           supabaseUserId: null,
         }
-        if (rememberMe) localStorage.setItem('aecmi_session', JSON.stringify(sessionData))
-        else sessionStorage.setItem('aecmi_session', JSON.stringify(sessionData))
+        if (rememberMe) localStorage.setItem('aecomi_session', JSON.stringify(sessionData))
+        else sessionStorage.setItem('aecomi_session', JSON.stringify(sessionData))
 
         setSubmitStatus('success')
         setStatusMessage(`${isEn ? 'Welcome' : 'Bienvenido'}, ${testUser.name}! ${isEn ? 'Redirecting...' : 'Redirigiendo...'}`)
@@ -309,8 +309,8 @@ export default function SignInForm() {
             {isEn ? 'Test accounts' : 'Cuentas de prueba'}
           </summary>
           <div className="mt-2 p-3 rounded-lg bg-gray-50 border border-gray-100 font-mono text-[11px] text-gray-400 space-y-0.5">
-            <p>admin@aecmi.com / Admin123</p>
-            <p>user@aecmi.com / User123</p>
+            <p>admin@aecomi.com / Admin123</p>
+            <p>user@aecomi.com / User123</p>
           </div>
         </details>
 

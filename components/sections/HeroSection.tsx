@@ -24,7 +24,7 @@ export default function HeroSection() {
             <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
               <Image
                 src="/images/hero-summit.jpg"
-                alt="AECMI Certificación BIM Internacional"
+                alt="AECOMI Certificación BIM Internacional"
                 fill
                 priority
                 className="object-cover"
@@ -44,7 +44,7 @@ export default function HeroSection() {
             className="flex-1 text-center lg:text-left"
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-tight tracking-tight">
-              AECMI — Certificación
+              AECOMI — Certificación
               <br />
               BIM Internacional
             </h1>

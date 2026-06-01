@@ -287,7 +287,7 @@ const consejos = [
 
 const faqGeneral = [
   {
-    q: 'How do I obtain an AECMI certification?',
+    q: 'How do I obtain an AECOMI certification?',
     a: 'You must meet the eligibility criteria, complete the online application, pass the review of your experience, make the payment, and pass the technical exam along with the personal interview.',
   },
   {
@@ -323,7 +323,7 @@ const faqExamen = [
   },
   {
     q: 'How do I schedule my personal interview?',
-    a: 'After passing the technical exam, our team will contact you to coordinate the personal interview with an AECMI senior evaluator.',
+    a: 'After passing the technical exam, our team will contact you to coordinate the personal interview with an AECOMI senior evaluator.',
   },
   {
     q: 'How do I conduct my personal interview?',
@@ -331,7 +331,7 @@ const faqExamen = [
   },
   {
     q: 'Who conducts the interview?',
-    a: 'The interview is conducted by a senior evaluator certified by AECMI with extensive experience in international BIM project management.',
+    a: 'The interview is conducted by a senior evaluator certified by AECOMI with extensive experience in international BIM project management.',
   },
   {
     q: 'What happens if I do not meet the requirements?',
@@ -478,7 +478,7 @@ export default function CertificationsPage() {
               Ventajas
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              Why Get Certified with AECMI?
+              Why Get Certified with AECOMI?
             </h2>
           </motion.div>
 
@@ -975,7 +975,7 @@ export default function CertificationsPage() {
                 </div>
                 <h3 className="text-3xl font-bold mb-4">Maintain Your Certification</h3>
                 <p className="text-white/70 leading-relaxed mb-8">
-                  AECMI certifications require periodic renewal processes aimed at ensuring that
+                  AECOMI certifications require periodic renewal processes aimed at ensuring that
                   professionals keep their knowledge and competencies up to date.
                 </p>
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-pmi-dark font-bold rounded-xl hover:bg-white/90 transition-all shadow-lg">
@@ -1000,7 +1000,7 @@ export default function CertificationsPage() {
                 </div>
                 <h3 className="text-3xl font-bold text-pmi-dark mb-4">Register Publicly</h3>
                 <p className="text-gray-600 leading-relaxed mb-8">
-                  AECMI maintains an updated registry of certified professionals to provide transparency and
+                  AECOMI maintains an updated registry of certified professionals to provide transparency and
                   trust to the market. Verify credentials quickly and securely.
                 </p>
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-pmi-dark text-white font-bold rounded-xl hover:bg-pmi-blue transition-all shadow-lg">

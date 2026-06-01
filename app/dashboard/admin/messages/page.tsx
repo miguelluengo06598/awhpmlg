@@ -230,7 +230,7 @@ export default function AdminMessagesPage() {
                           </button>
                         )}
                         <a
-                          href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Tu mensaje en AECMI')}`}
+                          href={`mailto:${msg.email}?subject=Re: ${encodeURIComponent(msg.subject || 'Tu mensaje en AECOMI')}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-pmi-dark hover:bg-pmi-blue rounded-lg transition-colors"
                         >
                           <Mail className="w-3.5 h-3.5" /> Responder por email

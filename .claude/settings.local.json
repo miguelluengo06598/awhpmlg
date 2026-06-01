@@ -3,8 +3,8 @@
     "allow": [
       "Bash(npx tsc *)",
       "Bash(not exist *)",
-      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\app\\\\dashboard\\\\admin\\\\reports\\\\page.tsx\" -Force)",
-      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\app\\\\dashboard\\\\admin\\\\settings\\\\page.tsx\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next\\\\app\\\\dashboard\\\\admin\\\\reports\\\\page.tsx\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next\\\\app\\\\dashboard\\\\admin\\\\settings\\\\page.tsx\" -Force)",
       "Bash(Write-Output \"Eliminados\")",
       "Bash(npm show *)",
       "Bash(npm run *)",
@@ -13,16 +13,16 @@
       "Bash(git push *)",
       "Bash(git commit *)",
       "Bash(findstr /i \"idm bdm bcm cert\")",
-      "Bash(dir C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\lib *)",
+      "Bash(dir C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next\\\\lib *)",
       "Bash(node -e \"require\\('jspdf'\\); console.log\\('jspdf already installed'\\)\")",
       "Bash(Select-String -Pattern \"error TS\")",
       "Bash(Select-Object -First 20)",
       "PowerShell($output = npx tsc --noEmit 2>&1; $sourceErrors = $output | Where-Object { $_ -match 'error TS' -and $_ -notmatch '\\\\.next' }; if \\($sourceErrors\\) { $sourceErrors } else { \"No source errors\" })",
-      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next; $out = npx tsc --noEmit 2>&1; $src = $out | Where-Object { $_ -match 'error TS' -and $_ -notmatch '\\\\.next' }; if \\($src\\) { $src } else { \"No source errors\" })",
+      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next; $out = npx tsc --noEmit 2>&1; $src = $out | Where-Object { $_ -match 'error TS' -and $_ -notmatch '\\\\.next' }; if \\($src\\) { $src } else { \"No source errors\" })",
       "PowerShell(git add *)",
       "PowerShell(Get-Content *)",
       "Bash(curl -s http://localhost:3000/api/contact -X GET)",
-      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next; Start-Process -NoNewWindow -FilePath \"npm\" -ArgumentList \"run\",\"dev\" -RedirectStandardOutput \"$env:TEMP\\\\devserver_out.txt\" -RedirectStandardError \"$env:TEMP\\\\devserver_err.txt\")",
+      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next; Start-Process -NoNewWindow -FilePath \"npm\" -ArgumentList \"run\",\"dev\" -RedirectStandardOutput \"$env:TEMP\\\\devserver_out.txt\" -RedirectStandardError \"$env:TEMP\\\\devserver_err.txt\")",
       "Bash(echo \"PID: $!\")",
       "Bash(curl -s http://localhost:3000 -o /dev/null -w \"%{http_code}\")",
       "Bash(curl -s http://localhost:3000/api/verify-certificate/00000000-0000-0000-0000-000000000000)",
@@ -35,7 +35,7 @@
       "Bash(curl -s https://fvkljscbyafvhiihlbnm.supabase.co/rest/v1/certificate_renewals?limit=1 -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -o /dev/null -w 'HTTP %{http_code}\\\\n')",
       "Bash(curl -s https://fvkljscbyafvhiihlbnm.supabase.co/rest/v1/contact_messages?limit=1 -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -o /dev/null -w 'HTTP %{http_code}\\\\n')",
       "Bash(curl -s https://fvkljscbyafvhiihlbnm.supabase.co/rest/v1/users?limit=1 -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -o /dev/null -w 'HTTP %{http_code}\\\\n')",
-      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next; npx tsc --noEmit 2>&1 | Where-Object { $_ -match \"error TS\" -and $_ -notmatch \"\\\\.next\" })",
+      "PowerShell(cd C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next; npx tsc --noEmit 2>&1 | Where-Object { $_ -match \"error TS\" -and $_ -notmatch \"\\\\.next\" })",
       "Bash(curl -s http://localhost:3000/api/verify-certificate/31437366-80ca-47ab-ab74-f162b9a72b3c)",
       "Bash(curl -s 'https://fvkljscbyafvhiihlbnm.supabase.co/rest/v1/certificates?id=eq.31437366-80ca-47ab-ab74-f162b9a72b3c&select=can_renew,renewal_price,expiry_date,last_renewed_at,renewal_count' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI')",
       "Bash(curl -s https://fvkljscbyafvhiihlbnm.supabase.co/rest/v1/certificate_renewals?limit=1 -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2a2xqc2NieWFmdmhpaWhsYm5tIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgyMzMyMiwiZXhwIjoyMDk1Mzk5MzIyfQ.KOVrFm46Nm0HVk2Gaq0DkfcD0ShjUOyhElZUwGBmKSI' -I)",
@@ -44,10 +44,11 @@
       "Bash(node *)",
       "Bash(kill %1)",
       "Bash(findstr \"env\")",
-      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecmi-next\\\\app\\\\api\\\\health\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\mluen\\\\Desktop\\\\aecomi-next\\\\app\\\\api\\\\health\")",
       "Bash(Out-Null)",
       "Bash(Write-Host \"dir created\")",
-      "Bash(Remove-Item middleware.ts)"
+      "Bash(Remove-Item middleware.ts)",
+      "Bash(git mv *)"
     ]
   }
 }

@@ -75,7 +75,7 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
               <ShieldCheck className="w-4 h-4 text-white" />
             </div>
             <div>
-              <span className="font-bold text-white text-sm block leading-tight">AECMI</span>
+              <span className="font-bold text-white text-sm block leading-tight">AECOMI</span>
               <span className="text-[10px] text-slate-400 uppercase tracking-wider">Admin Panel</span>
             </div>
           </Link>

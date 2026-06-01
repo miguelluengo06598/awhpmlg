@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 import { Award, Download, Clock, CheckCircle2 } from 'lucide-react'
 
 const certs = [
-  { name: 'Information Delivery Manager', code: 'AECMI-IDM-2026-0042', issued: '12/04/2026', expiry: '12/04/2029', status: 'Activa', statusColor: 'bg-green-50 text-green-700 border-green-100', needsRenewal: false },
-  { name: 'BIM Design Manager', code: 'AECMI-BDM-2025-0018', issued: '03/02/2025', expiry: '03/02/2028', status: 'Activa', statusColor: 'bg-green-50 text-green-700 border-green-100', needsRenewal: false },
+  { name: 'Information Delivery Manager', code: 'AECOMI-IDM-2026-0042', issued: '12/04/2026', expiry: '12/04/2029', status: 'Activa', statusColor: 'bg-green-50 text-green-700 border-green-100', needsRenewal: false },
+  { name: 'BIM Design Manager', code: 'AECOMI-BDM-2025-0018', issued: '03/02/2025', expiry: '03/02/2028', status: 'Activa', statusColor: 'bg-green-50 text-green-700 border-green-100', needsRenewal: false },
 ]
 
 export default function ClientCertificationsPage() {

@@ -1,5 +1,5 @@
 /**
- * QR Code Generator Utilities for AECMI Certificate Verification
+ * QR Code Generator Utilities for AECOMI Certificate Verification
  */
 
 export type CertificationType = 'IDM' | 'BDM' | 'BCM';

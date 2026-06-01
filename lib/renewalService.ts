@@ -7,7 +7,7 @@ function getStripe() {
   })
 }
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecmi.com'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecomi.com'
 
 export function calculateNewExpiryDate(currentDate: string | null): string {
   const base = currentDate ? new Date(currentDate) : new Date()

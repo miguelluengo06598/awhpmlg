@@ -287,7 +287,7 @@ const consejos = [
 
 const faqGeneral = [
   {
-    q: '¿Cómo obtengo una certificación AECMI?',
+    q: '¿Cómo obtengo una certificación AECOMI?',
     a: 'Debes cumplir con los criterios de elegibilidad, completar la solicitud en línea, pasar la revisión de tu experiencia, realizar el pago y aprobar el examen técnico junto con la entrevista personal.',
   },
   {
@@ -323,7 +323,7 @@ const faqExamen = [
   },
   {
     q: '¿Cómo programo mi entrevista personal?',
-    a: 'Tras aprobar el examen técnico, nuestro equipo te contactará para coordinar la entrevista personal con un evaluador senior de AECMI.',
+    a: 'Tras aprobar el examen técnico, nuestro equipo te contactará para coordinar la entrevista personal con un evaluador senior de AECOMI.',
   },
   {
     q: '¿Cómo realizo mi entrevista personal?',
@@ -331,7 +331,7 @@ const faqExamen = [
   },
   {
     q: '¿Con quién realizo la entrevista?',
-    a: 'La entrevista la realiza un evaluador senior certificado por AECMI con amplia experiencia en gestión de proyectos BIM a nivel internacional.',
+    a: 'La entrevista la realiza un evaluador senior certificado por AECOMI con amplia experiencia en gestión de proyectos BIM a nivel internacional.',
   },
   {
     q: '¿Qué sucede si no cumplo los requisitos?',
@@ -478,7 +478,7 @@ export default function CertificationsPage() {
               Ventajas
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              ¿Por qué certificarte con AECMI?
+              ¿Por qué certificarte con AECOMI?
             </h2>
           </motion.div>
 
@@ -975,7 +975,7 @@ export default function CertificationsPage() {
                 </div>
                 <h3 className="text-3xl font-bold mb-4">Mantén tu Certificación</h3>
                 <p className="text-white/70 leading-relaxed mb-8">
-                  Las certificaciones AECMI requieren procesos periódicos de renovación orientados a garantizar que
+                  Las certificaciones AECOMI requieren procesos periódicos de renovación orientados a garantizar que
                   los profesionales mantienen actualizados sus conocimientos y competencias.
                 </p>
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-pmi-dark font-bold rounded-xl hover:bg-white/90 transition-all shadow-lg">
@@ -1000,7 +1000,7 @@ export default function CertificationsPage() {
                 </div>
                 <h3 className="text-3xl font-bold text-pmi-dark mb-4">Regístrate Públicamente</h3>
                 <p className="text-gray-600 leading-relaxed mb-8">
-                  AECMI mantiene un registro actualizado de profesionales certificados para aportar transparencia y
+                  AECOMI mantiene un registro actualizado de profesionales certificados para aportar transparencia y
                   confianza al mercado. Verifica credenciales de forma rápida y segura.
                 </p>
                 <Link href="/certifications/registro" className="inline-flex items-center gap-2 px-6 py-3 bg-pmi-dark text-white font-bold rounded-xl hover:bg-pmi-blue transition-all shadow-lg">

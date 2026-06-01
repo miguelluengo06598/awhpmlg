@@ -69,7 +69,7 @@ const pilares = [
   {
     icon: Star,
     title: 'Excelencia',
-    description: 'Calidad insuperable en cada decisión que garantiza el prestigio y la confianza en AECMI.',
+    description: 'Calidad insuperable en cada decisión que garantiza el prestigio y la confianza en AECOMI.',
     gradient: 'from-amber-400 to-orange-500',
     bgSoft: 'bg-amber-50',
     border: 'border-amber-100',
@@ -92,7 +92,7 @@ const principios = [
 ]
 
 const documents = [
-  { icon: FileText,     title: 'Estatutos de AECMI',          type: 'PDF',                 locked: false },
+  { icon: FileText,     title: 'Estatutos de AECOMI',          type: 'PDF',                 locked: false },
   { icon: Scale,        title: 'Código de Ética',              type: 'PDF',                 locked: false },
   { icon: Eye,          title: 'Política de Transparencia',    type: 'PDF',                 locked: false },
   { icon: ClipboardList, title: 'Reporte Anual',               type: 'PDF',                 locked: false },
@@ -101,7 +101,7 @@ const documents = [
 ]
 
 const funcionesEjecutivo = [
-  'Dirección y administración de AECMI',
+  'Dirección y administración de AECOMI',
   'Ejecución de actividades',
   'Cumplimiento de objetivos estratégicos',
   'Observancia de políticas de gobierno',
@@ -182,13 +182,13 @@ export default function GobiernoPage() {
               Gobierno y estructura
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              Estructura de Gobierno AECMI
+              Estructura de Gobierno AECOMI
             </h2>
             <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">
-              La estructura de gobierno de AECMI está diseñada para garantizar la{' '}
+              La estructura de gobierno de AECOMI está diseñada para garantizar la{' '}
               <span className="text-pmi-blue font-semibold">transparencia</span>, la{' '}
               <span className="text-pmi-blue font-semibold">calidad</span> y el cumplimiento de los
-              principios éticos que inspiran todas nuestras actividades. El Gobierno de AECMI es
+              principios éticos que inspiran todas nuestras actividades. El Gobierno de AECOMI es
               dirigido por el <span className="text-pmi-blue font-semibold">Consejo Ejecutivo</span>.
             </p>
           </motion.div>
@@ -208,7 +208,7 @@ export default function GobiernoPage() {
             {/* Top node */}
             <div className="flex justify-center mb-0">
               <div className="px-8 py-4 bg-pmi-dark text-white font-bold text-base rounded-2xl shadow-md text-center">
-                Gobierno de AECMI
+                Gobierno de AECOMI
               </div>
             </div>
 
@@ -227,7 +227,7 @@ export default function GobiernoPage() {
 
             {/* Note */}
             <p className="mt-8 text-center text-sm text-gray-400">
-              El Consejo Ejecutivo dirige y administra AECMI para garantizar la excelencia de la organización
+              El Consejo Ejecutivo dirige y administra AECOMI para garantizar la excelencia de la organización
             </p>
           </motion.div>
         </div>
@@ -360,7 +360,7 @@ export default function GobiernoPage() {
                 Consejo Ejecutivo
               </h2>
               <p className="text-gray-600 leading-relaxed text-lg mb-8">
-                La misión del Consejo Ejecutivo es dirigir y administrar AECMI para ejecutar las actividades de la
+                La misión del Consejo Ejecutivo es dirigir y administrar AECOMI para ejecutar las actividades de la
                 organización, garantizando el cumplimiento de los objetivos estratégicos mediante la observancia de
                 las políticas de gobierno rectoras que dan cumplimiento a nuestros fines fundacionales.
               </p>
@@ -411,7 +411,7 @@ export default function GobiernoPage() {
               Principios de Buen Gobierno
             </h2>
             <p className="mt-5 text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
-              Compromisos concretos que guían cómo AECMI toma decisiones y responde ante su comunidad.
+              Compromisos concretos que guían cómo AECOMI toma decisiones y responde ante su comunidad.
             </p>
           </motion.div>
 
@@ -461,7 +461,7 @@ export default function GobiernoPage() {
               Documentos y Políticas
             </h2>
             <p className="mt-5 text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
-              Marco normativo que regula la actuación de AECMI y garantiza la transparencia ante la comunidad.
+              Marco normativo que regula la actuación de AECOMI y garantiza la transparencia ante la comunidad.
             </p>
           </motion.div>
 
@@ -521,7 +521,7 @@ export default function GobiernoPage() {
               Conoce nuestro impacto
             </h2>
             <p className="text-base text-white/40 max-w-xl mx-auto mb-10 leading-relaxed">
-              Explora nuestras certificaciones o ponte en contacto con nosotros para saber más sobre AECMI.
+              Explora nuestras certificaciones o ponte en contacto con nosotros para saber más sobre AECOMI.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

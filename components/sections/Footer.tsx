@@ -29,7 +29,7 @@ export default function Footer() {
                 <rect x="28" y="12" width="10" height="20" fill="#003B5C" rx="1"/>
               </svg>
               <div>
-                <div className="text-sm font-bold tracking-widest uppercase text-white">AECMI</div>
+                <div className="text-sm font-bold tracking-widest uppercase text-white">AECOMI</div>
                 <div className="text-[10px] font-medium text-gray-400 tracking-wide">BIM Certification</div>
               </div>
             </Link>
@@ -120,9 +120,9 @@ export default function Footer() {
             <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-5">{f.contact_title}</h4>
             <ul className="space-y-4">
               <li>
-                <a href="mailto:info@aecmi.com" className="flex items-start gap-3 text-sm text-gray-400 hover:text-white transition-colors group">
+                <a href="mailto:info@aecomi.com" className="flex items-start gap-3 text-sm text-gray-400 hover:text-white transition-colors group">
                   <Mail className="w-4 h-4 mt-0.5 text-gray-500 group-hover:text-pmi-cyan transition-colors" />
-                  <span>info@aecmi.com</span>
+                  <span>info@aecomi.com</span>
                 </a>
               </li>
               <li>
@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="mt-14 pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-xs text-gray-500">
-              © {new Date().getFullYear()} AECMI. {f.rights}
+              © {new Date().getFullYear()} AECOMI. {f.rights}
             </span>
             <div className="flex items-center gap-6">
               <Link href={getLink('/legal/privacidad')} className="text-xs text-gray-500 hover:text-gray-300 transition-colors">

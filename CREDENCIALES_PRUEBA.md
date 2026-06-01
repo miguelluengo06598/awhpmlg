@@ -1,10 +1,10 @@
-# 🔐 Credenciales de Prueba - AECMI
+# 🔐 Credenciales de Prueba - AECOMI
 
 ## Acceder a los Dashboards
 
 ### Panel de ADMINISTRACIÓN
 
-**Email:** admin@aecmi.com  
+**Email:** admin@aecomi.com  
 **Contraseña:** Admin@123456
 
 **Acceso:** [https://tu-dominio.com/auth/signin](https://tu-dominio.com/auth/signin)
@@ -22,7 +22,7 @@
 
 ### Panel de CLIENTE
 
-**Email:** usuario@aecmi.com  
+**Email:** usuario@aecomi.com  
 **Contraseña:** Cliente@123456
 
 **Acceso:** [https://tu-dominio.com/auth/signin](https://tu-dominio.com/auth/signin)
@@ -40,14 +40,14 @@
 
 ### 1. Prueba como CLIENTE
 1. Abre [https://tu-dominio.com/auth/signin](https://tu-dominio.com/auth/signin)
-2. Email: `usuario@aecmi.com`
+2. Email: `usuario@aecomi.com`
 3. Contraseña: `Cliente@123456`
 4. Accederás a `/dashboard/client`
 
 ### 2. Prueba como ADMIN
 1. Logout (botón en dashboard)
 2. Ve a [https://tu-dominio.com/auth/signin](https://tu-dominio.com/auth/signin)
-3. Email: `admin@aecmi.com`
+3. Email: `admin@aecomi.com`
 4. Contraseña: `Admin@123456`
 5. Accederás a `/dashboard/admin`
 

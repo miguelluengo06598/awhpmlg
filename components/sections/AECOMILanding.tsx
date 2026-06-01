@@ -63,7 +63,7 @@ const stats = [
   { value: '50+', label: 'Instituciones aliadas' },
 ]
 
-export default function AECMILanding() {
+export default function AECOMILanding() {
   return (
     <>
       {/* ========== HERO SECTION ========== */}
@@ -84,7 +84,7 @@ export default function AECMILanding() {
               Organización Internacional
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight">
-              AECMI
+              AECOMI
               <span className="block text-pmi-cyan mt-2">Certificación BIM Internacional</span>
             </h1>
             <p className="mt-8 text-lg sm:text-xl text-white/80 leading-relaxed max-w-2xl">
@@ -263,7 +263,7 @@ export default function AECMILanding() {
             className="text-center"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-              Impulsa tu carrera con AECMI
+              Impulsa tu carrera con AECOMI
             </h2>
             <p className="mt-6 text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
               Únete a la comunidad internacional de profesionales certificados en BIM y marca la

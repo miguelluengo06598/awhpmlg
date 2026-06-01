@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function proxy(req: NextRequest) {
-  // 'aecmi-auth' is a hint cookie set on login and cleared on logout.
+  // 'aecomi-auth' is a hint cookie set on login and cleared on logout.
   // It lets the proxy make instant routing decisions without reading the
   // Supabase JWT (which lives in localStorage, inaccessible server-side).
-  const isAuthenticated = req.cookies.has('aecmi-auth')
+  const isAuthenticated = req.cookies.has('aecomi-auth')
   const { pathname } = req.nextUrl
 
   // Authenticated users visiting auth pages → send straight to dashboard

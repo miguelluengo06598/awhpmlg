@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { User, Mail, Phone, Lock, Camera, Save, Trash2 } from 'lucide-react'
 
 export default function ClientSettingsPage() {
-  const [form, setForm] = useState({ fullName: 'Usuario Demo', email: 'user@aecmi.com', phone: '+34 600 000 000', currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [form, setForm] = useState({ fullName: 'Usuario Demo', email: 'user@aecomi.com', phone: '+34 600 000 000', currentPassword: '', newPassword: '', confirmPassword: '' })
 
   return (
     <div className="space-y-8 max-w-3xl">

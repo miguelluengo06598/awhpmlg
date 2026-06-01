@@ -25,7 +25,7 @@ const GRID_BG = {
 
 /* ─── Data ──────────────────────────────────────────────────── */
 const misionItems = [
-  { icon: Globe,    text: 'Posicionamos a AECMI como referencia internacional en BIM y gestión de la información.' },
+  { icon: Globe,    text: 'Posicionamos a AECOMI como referencia internacional en BIM y gestión de la información.' },
   { icon: Target,   text: 'Desarrollamos estándares profesionales que marcan la diferencia en el sector AEC.' },
   { icon: BookOpen, text: 'Impulsamos la formación y el reconocimiento de competencias alineadas al mercado.' },
 ]
@@ -84,13 +84,13 @@ export default function AboutPage() {
               Conócenos
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.06] tracking-tight">
-              Sobre AECMI
+              Sobre AECOMI
             </h1>
             <p className="mt-5 text-lg sm:text-xl text-white/65 font-medium leading-relaxed max-w-2xl">
               Líderes en certificación BIM internacional
             </p>
             <p className="mt-4 text-base text-white/45 leading-[1.8] max-w-xl">
-              AECMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector AEC. Promovemos estándares globales, formación especializada y una comunidad comprometida con la transformación digital de la industria de la construcción.
+              AECOMI es una organización internacional especializada en la certificación de competencias BIM para profesionales del sector AEC. Promovemos estándares globales, formación especializada y una comunidad comprometida con la transformación digital de la industria de la construcción.
             </p>
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -144,7 +144,7 @@ export default function AboutPage() {
                 Nuestra Misión
               </h3>
               <p className="text-gray-600 leading-[1.8] mb-7">
-                AECMI nace con la vocación de convertirse en una referencia internacional dentro del ámbito BIM y de la gestión de la información aplicada a la construcción. Certificamos competencias técnicas, estratégicas y de liderazgo en todas las fases del ciclo de vida de los proyectos.
+                AECOMI nace con la vocación de convertirse en una referencia internacional dentro del ámbito BIM y de la gestión de la información aplicada a la construcción. Certificamos competencias técnicas, estratégicas y de liderazgo en todas las fases del ciclo de vida de los proyectos.
               </p>
               <ul className="space-y-3">
                 {misionItems.map((item, i) => (
@@ -208,13 +208,13 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-5 text-gray-600 leading-[1.85]">
                 <p>
-                  AECMI surge de una necesidad real de la industria: contar con un marco internacional reconocido que permita validar las competencias de los profesionales que gestionan proyectos BIM. Un sector en plena transformación digital requería criterios claros, rigurosos y aplicables en cualquier contexto geográfico.
+                  AECOMI surge de una necesidad real de la industria: contar con un marco internacional reconocido que permita validar las competencias de los profesionales que gestionan proyectos BIM. Un sector en plena transformación digital requería criterios claros, rigurosos y aplicables en cualquier contexto geográfico.
                 </p>
                 <p>
                   A lo largo de los años, hemos construido un ecosistema de certificación respaldado por expertos internacionales, instituciones académicas de prestigio y empresas comprometidas con la mejora continua. Nuestras certificaciones IDM, BDM y BCM cubren los roles más demandados en proyectos BIM multidisciplinares.
                 </p>
                 <p>
-                  Hoy AECMI está presente en más de 30 países, con una comunidad activa de profesionales certificados que lideran la transformación digital del sector AEC en sus organizaciones.
+                  Hoy AECOMI está presente en más de 30 países, con una comunidad activa de profesionales certificados que lideran la transformación digital del sector AEC en sus organizaciones.
                 </p>
               </div>
             </motion.div>
@@ -254,7 +254,7 @@ export default function AboutPage() {
               ¿Qué Hacemos?
             </h2>
             <p className="mt-5 text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              AECMI desarrolla programas de certificación orientados a reconocer las competencias de los perfiles BIM más relevantes dentro del sector AEC.
+              AECOMI desarrolla programas de certificación orientados a reconocer las competencias de los perfiles BIM más relevantes dentro del sector AEC.
             </p>
           </motion.div>
 
@@ -287,7 +287,7 @@ export default function AboutPage() {
               Nuestros Valores
             </h2>
             <p className="mt-5 text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
-              Principios duraderos que guían cada decisión, proceso y relación en AECMI.
+              Principios duraderos que guían cada decisión, proceso y relación en AECOMI.
             </p>
           </motion.div>
 
@@ -319,7 +319,7 @@ export default function AboutPage() {
               En números
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              AECMI en Cifras
+              AECOMI en Cifras
             </h2>
           </motion.div>
 
@@ -356,7 +356,7 @@ export default function AboutPage() {
                 Gobierno y Organización
               </h3>
               <p className="text-white/60 leading-relaxed mb-7 text-sm">
-                Descubre cómo AECMI garantiza la transparencia, la calidad y el cumplimiento de principios éticos a través de sus órganos de gobierno.
+                Descubre cómo AECOMI garantiza la transparencia, la calidad y el cumplimiento de principios éticos a través de sus órganos de gobierno.
               </p>
               <Link
                 href="/about/gobierno"
@@ -419,7 +419,7 @@ export default function AboutPage() {
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-white/90 transition-all text-[15px] shadow-md"
               >
-                Únete a AECMI
+                Únete a AECOMI
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link

@@ -205,7 +205,7 @@ export default function SignUpForm() {
           const session = (await supabase.auth.getSession()).data.session
           if (session) {
             // If email confirmation is disabled, a session exists immediately — set the hint cookie
-            document.cookie = 'aecmi-auth=1; path=/; max-age=604800; SameSite=Lax'
+            document.cookie = 'aecomi-auth=1; path=/; max-age=604800; SameSite=Lax'
             await fetch('/api/assign-certificates', {
               method: 'POST',
               headers: { Authorization: `Bearer ${session.access_token}` },
@@ -256,7 +256,7 @@ export default function SignUpForm() {
 
   return (
     <AuthLayout
-      leftTitle={isEn ? 'Join AECMI' : 'Únete a AECMI'}
+      leftTitle={isEn ? 'Join AECOMI' : 'Únete a AECOMI'}
       leftDescription={isEn ? 'Access internationally recognized certifications and join a global network of BIM professionals.' : 'Accede a certificaciones reconocidas internacionalmente y únete a una red global de profesionales BIM.'}
       benefits={benefits}
       authType="signup"

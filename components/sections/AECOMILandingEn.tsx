@@ -63,7 +63,7 @@ const stats = [
   { value: '50+', label: 'Partner institutions' },
 ]
 
-export default function AECMILandingEn() {
+export default function AECOMILandingEn() {
   return (
     <>
       {/* ========== HERO SECTION ========== */}
@@ -84,7 +84,7 @@ export default function AECMILandingEn() {
               International Organization
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight">
-              AECMI
+              AECOMI
               <span className="block text-pmi-cyan mt-2">International BIM Certification</span>
             </h1>
             <p className="mt-8 text-lg sm:text-xl text-white/80 leading-relaxed max-w-2xl">
@@ -263,7 +263,7 @@ export default function AECMILandingEn() {
             className="text-center"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-              Boost your career with AECMI
+              Boost your career with AECOMI
             </h2>
             <p className="mt-6 text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
               Join the international community of BIM-certified professionals and make the

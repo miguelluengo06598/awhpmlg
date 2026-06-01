@@ -74,7 +74,7 @@ export default function ClientSidebar({ onLogout }: ClientSidebarProps) {
               <rect x="18" y="24" width="8" height="12" fill="#5B2D8E" rx="1"/>
               <rect x="28" y="12" width="10" height="20" fill="#003B5C" rx="1"/>
             </svg>
-            <span className="font-bold text-pmi-dark text-sm">AECMI</span>
+            <span className="font-bold text-pmi-dark text-sm">AECOMI</span>
           </Link>
         </div>
 

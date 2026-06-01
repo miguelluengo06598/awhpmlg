@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DESIGN SYSTEM AECMI - Basado en UI UX Pro Max v2.0
+// DESIGN SYSTEM AECOMI - Basado en UI UX Pro Max v2.0
 // ═══════════════════════════════════════════════════════════════════════════
 
 // COLORES

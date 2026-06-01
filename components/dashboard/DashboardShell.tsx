@@ -52,9 +52,9 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    localStorage.removeItem('aecmi_session')
-    sessionStorage.removeItem('aecmi_session')
-    document.cookie = 'aecmi-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
+    localStorage.removeItem('aecomi_session')
+    sessionStorage.removeItem('aecomi_session')
+    document.cookie = 'aecomi-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
     router.push('/auth/signin')
   }
 
@@ -116,7 +116,7 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
               <rect x="28" y="12" width="10" height="20" fill="#003B5C" rx="1"/>
             </svg>
             <div>
-              <span className={`font-bold text-sm block leading-tight ${brandColor === 'slate' ? 'text-white' : 'text-pmi-dark'}`}>AECMI</span>
+              <span className={`font-bold text-sm block leading-tight ${brandColor === 'slate' ? 'text-white' : 'text-pmi-dark'}`}>AECOMI</span>
               <span className={`text-[10px] uppercase tracking-wider ${brandColor === 'slate' ? 'text-slate-400' : 'text-gray-400'}`}>{role === 'admin' ? 'Admin Panel' : 'Client'}</span>
             </div>
           </Link>

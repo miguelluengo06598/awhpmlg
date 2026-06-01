@@ -84,13 +84,13 @@ function getStatusBanner(app: ApplicationDetail): {
     pending: {
       icon: <Clock className="w-5 h-5 text-orange-500" />,
       title: 'Tu solicitud está siendo revisada',
-      body: 'Hemos recibido tu solicitud. El equipo AECMI la revisará en los próximos días laborables y recibirás una notificación con el resultado.',
+      body: 'Hemos recibido tu solicitud. El equipo AECOMI la revisará en los próximos días laborables y recibirás una notificación con el resultado.',
       bg: 'bg-orange-50', border: 'border-orange-100',
     },
     in_review: {
       icon: <Info className="w-5 h-5 text-blue-500" />,
       title: 'Tu solicitud está en revisión activa',
-      body: 'El equipo AECMI está evaluando tu candidatura y documentación. Te contactaremos pronto.',
+      body: 'El equipo AECOMI está evaluando tu candidatura y documentación. Te contactaremos pronto.',
       bg: 'bg-blue-50', border: 'border-blue-100',
     },
     approved: {
@@ -104,7 +104,7 @@ function getStatusBanner(app: ApplicationDetail): {
       title: 'Solicitud rechazada',
       body: app.notes
         ? `Motivo: ${app.notes}`
-        : 'Tu solicitud no ha sido aprobada en esta ocasión. Contacta con AECMI para más información.',
+        : 'Tu solicitud no ha sido aprobada en esta ocasión. Contacta con AECOMI para más información.',
       bg: 'bg-red-50', border: 'border-red-100',
     },
     exam_scheduled: {
@@ -124,7 +124,7 @@ function getStatusBanner(app: ApplicationDetail): {
     certified: {
       icon: <Award className="w-5 h-5 text-teal-600" />,
       title: '¡Certificado emitido!',
-      body: 'Tu certificación AECMI está disponible. Puedes descargarlo a continuación.',
+      body: 'Tu certificación AECOMI está disponible. Puedes descargarlo a continuación.',
       bg: 'bg-teal-50', border: 'border-teal-100',
     },
   }
@@ -132,7 +132,7 @@ function getStatusBanner(app: ApplicationDetail): {
   return maps[app.status] ?? {
     icon: <Info className="w-5 h-5 text-gray-500" />,
     title: `Estado: ${app.status}`,
-    body: 'Contacta con AECMI para más información sobre tu solicitud.',
+    body: 'Contacta con AECOMI para más información sobre tu solicitud.',
     bg: 'bg-gray-50', border: 'border-gray-200',
   }
 }

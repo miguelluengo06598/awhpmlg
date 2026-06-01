@@ -1,8 +1,8 @@
 import LegalPage from '@/components/sections/LegalPage';
 
 export const metadata = {
-  title: 'Política de Privacidad — AECMI',
-  description: 'Política de privacidad de AECMI. Protección de datos personales conforme al GDPR y LOPDGDD.',
+  title: 'Política de Privacidad — AECOMI',
+  description: 'Política de privacidad de AECOMI. Protección de datos personales conforme al GDPR y LOPDGDD.',
 };
 
 const sections = [
@@ -11,7 +11,7 @@ const sections = [
     title: 'Introducción',
     content: (
       <>
-        <p>En AECMI, valoramos tu privacidad y estamos comprometidos con proteger tus datos personales. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos la información que nos proporcionas cuando utilizas nuestro sitio web, servicios de certificación, formación y cualquier otro servicio relacionado.</p>
+        <p>En AECOMI, valoramos tu privacidad y estamos comprometidos con proteger tus datos personales. Esta Política de Privacidad describe cómo recopilamos, utilizamos, almacenamos y protegemos la información que nos proporcionas cuando utilizas nuestro sitio web, servicios de certificación, formación y cualquier otro servicio relacionado.</p>
         <p>Al acceder y utilizar nuestros servicios, aceptas las prácticas descritas en esta política. Si no estás de acuerdo con alguno de los términos aquí expuestos, te recomendamos no utilizar nuestros servicios.</p>
         <p>Esta política se ajusta al Reglamento General de Protección de Datos (GDPR) de la Unión Europea y a la Ley Orgánica de Protección de Datos Personales y Garantía de los Derechos Digitales (LOPDGDD) de España.</p>
       </>
@@ -22,9 +22,9 @@ const sections = [
     title: '1. Responsable del Tratamiento',
     content: (
       <>
-        <p><strong>Identidad:</strong> AECMI — Organización Internacional de Certificación BIM</p>
+        <p><strong>Identidad:</strong> AECOMI — Organización Internacional de Certificación BIM</p>
         <p><strong>Dirección postal:</strong> Madrid, España</p>
-        <p><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecmi.com" className="text-[#0066CC] hover:underline">privacidad@aecmi.com</a></p>
+        <p><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecomi.com" className="text-[#0066CC] hover:underline">privacidad@aecomi.com</a></p>
         <p><strong>Actividad principal:</strong> Certificación de competencias BIM, formación especializada e investigación aplicada al sector AEC (Arquitectura, Ingeniería y Construcción).</p>
         <p>Para cualquier consulta relacionada con la protección de datos, puedes contactar con nuestro Delegado de Protección de Datos (DPD) a través del correo electrónico indicado.</p>
       </>
@@ -104,7 +104,7 @@ const sections = [
     title: '5. Compartición de Datos',
     content: (
       <>
-        <p>AECMI no vende, alquila ni comercializa tus datos personales a terceros. No obstante, podemos compartir información en los siguientes supuestos:</p>
+        <p>AECOMI no vende, alquila ni comercializa tus datos personales a terceros. No obstante, podemos compartir información en los siguientes supuestos:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li><strong>Proveedores de servicios:</strong> Empresas que nos prestan servicios de hosting, gestión de correo electrónico, plataformas de exámenes online y herramientas de análisis. Estos proveedores actúan como encargados del tratamiento bajo contrato y garantías adecuadas.</li>
           <li><strong>Instituciones colaboradoras:</strong> Universidades y centros de formación acreditados con los que mantenemos acuerdos, únicamente cuando sea necesario para la validación académica de certificaciones.</li>
@@ -129,7 +129,7 @@ const sections = [
           <li><strong>Derecho de oposición:</strong> Oponerte al tratamiento de tus datos basado en intereses legítimos, incluyendo la elaboración de perfiles.</li>
           <li><strong>Derecho a no ser objeto de decisiones automatizadas:</strong> Incluida la elaboración de perfiles, que produzcan efectos jurídicos significativos.</li>
         </ul>
-        <p className="mt-4">Para ejercer cualquiera de estos derechos, envía una solicitud por escrito a <a href="mailto:privacidad@aecmi.com" className="text-[#0066CC] hover:underline">privacidad@aecmi.com</a>, incluyendo una copia de tu documento de identidad. Responderemos en un plazo máximo de 30 días.</p>
+        <p className="mt-4">Para ejercer cualquiera de estos derechos, envía una solicitud por escrito a <a href="mailto:privacidad@aecomi.com" className="text-[#0066CC] hover:underline">privacidad@aecomi.com</a>, incluyendo una copia de tu documento de identidad. Responderemos en un plazo máximo de 30 días.</p>
         <p>También tienes derecho a presentar una reclamación ante la Agencia Española de Protección de Datos (AEPD) si consideras que el tratamiento de tus datos vulnera la normativa aplicable.</p>
       </>
     ),
@@ -175,8 +175,8 @@ const sections = [
       <>
         <p>Para cualquier consulta, solicitud o reclamación relacionada con la protección de datos personales, puedes contactar con nosotros a través de:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecmi.com" className="text-[#0066CC] hover:underline">privacidad@aecmi.com</a></li>
-          <li><strong>Dirección postal:</strong> AECMI — Delegado de Protección de Datos, Madrid, España</li>
+          <li><strong>Correo electrónico:</strong> <a href="mailto:privacidad@aecomi.com" className="text-[#0066CC] hover:underline">privacidad@aecomi.com</a></li>
+          <li><strong>Dirección postal:</strong> AECOMI — Delegado de Protección de Datos, Madrid, España</li>
           <li><strong>Formulario de contacto:</strong> Disponible en nuestra página de <a href="/contact" className="text-[#0066CC] hover:underline">contacto</a></li>
         </ul>
         <p className="mt-4">Nos comprometemos a responder a todas las solicitudes en un plazo máximo de 30 días naturales.</p>
@@ -188,7 +188,7 @@ const sections = [
     title: '10. Cambios en la Política de Privacidad',
     content: (
       <>
-        <p>AECMI se reserva el derecho de modificar esta Política de Privacidad en cualquier momento para adaptarla a novedades legislativas, cambios en nuestros servicios o mejoras en nuestras prácticas de protección de datos.</p>
+        <p>AECOMI se reserva el derecho de modificar esta Política de Privacidad en cualquier momento para adaptarla a novedades legislativas, cambios en nuestros servicios o mejoras en nuestras prácticas de protección de datos.</p>
         <p>Cuando realicemos cambios significativos, te lo notificaremos a través de:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li>Un aviso destacado en nuestra página web</li>
