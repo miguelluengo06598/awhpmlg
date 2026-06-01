@@ -48,7 +48,12 @@
       "Bash(Out-Null)",
       "Bash(Write-Host \"dir created\")",
       "Bash(Remove-Item middleware.ts)",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(rm components/sections/AECOMILanding.tsx components/sections/AECOMILandingEn.tsx components/sections/AECOMISection.tsx components/sections/CertTicker.tsx components/sections/GivingBack.tsx components/sections/HeroSection.tsx components/sections/Membership.tsx)",
+      "Bash(rm components/dashboard/AdminSidebar.tsx components/dashboard/ClientSidebar.tsx components/dashboard/ConfirmModal.tsx components/dashboard/DataTable.tsx components/dashboard/DetailModal.tsx)",
+      "Bash(rm hooks/use-mobile.ts lib/utils.ts)",
+      "Bash(rm scripts/delete-test-users.js scripts/seed-users.js)",
+      "Bash(rm AUDIT_PRODUCTION_READINESS.md AUDIT_REPORT.md AUDIT_REPORT_HANGUPS.md CREDENCIALES_PRUEBA.md)"
     ]
   }
 }

@@ -37,6 +37,18 @@ yarn-error.log*
 
 # credentials
 CREDENCIALES_PRUEBA.txt
+CREDENCIALES_PRUEBA.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# temp
+*.tmp
+*.bak
+*.log
 
 # vercel
 .vercel
