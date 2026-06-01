@@ -199,13 +199,31 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
 
   // ─── SIGNATURES ───────────────────────────────────────────────────────────
   const sigY = ph - 32;
-
-  doc.setDrawColor(190, 190, 190);
-  doc.setLineWidth(0.4);
-
   const sig1X = margin + 28;
   const sig2X = pw - margin - 90;
 
+  let firmaDirector: string | null = null;
+  let firmaPresidente: string | null = null;
+
+  try {
+    const res1 = await fetch('/images/firma-director.png');
+    if (res1.ok) firmaDirector = await blobToBase64(await res1.blob());
+  } catch { /* fall back to line only */ }
+
+  try {
+    const res2 = await fetch('/images/firma-presidente.png');
+    if (res2.ok) firmaPresidente = await blobToBase64(await res2.blob());
+  } catch { /* fall back to line only */ }
+
+  if (firmaDirector) {
+    try { doc.addImage(firmaDirector, 'PNG', sig1X, sigY - 16, 32, 14); } catch { /* ignore */ }
+  }
+  if (firmaPresidente) {
+    try { doc.addImage(firmaPresidente, 'PNG', sig2X, sigY - 16, 32, 14); } catch { /* ignore */ }
+  }
+
+  doc.setDrawColor(190, 190, 190);
+  doc.setLineWidth(0.4);
   doc.line(sig1X, sigY, sig1X + 58, sigY);
   doc.line(sig2X, sigY, sig2X + 58, sigY);
 
@@ -236,6 +254,15 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
   );
 
   return doc.output('blob');
+}
+
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 }
 
 export function downloadCertificatePDF(data: CertificatePDFData, filename?: string): void {
