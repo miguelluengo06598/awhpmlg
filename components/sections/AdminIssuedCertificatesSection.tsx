@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { Search, X } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
+import { filterCertificates } from '@/lib/searchCertificates'
 
 interface IssuedCertificate {
   id: string
@@ -32,6 +34,7 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
   const [certificates, setCertificates] = useState<IssuedCertificate[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<FilterType>('all')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -56,11 +59,14 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
     fetchCertificates()
   }, [refreshKey])
 
-  const filtered = certificates.filter((c) => {
-    if (filter === 'assigned') return !!c.user_id
-    if (filter === 'pending') return !c.user_id
-    return true
-  })
+  const filtered = useMemo(() => {
+    const byStatus = certificates.filter((c) => {
+      if (filter === 'assigned') return !!c.user_id
+      if (filter === 'pending') return !c.user_id
+      return true
+    })
+    return filterCertificates(byStatus, search)
+  }, [certificates, filter, search])
 
   const assignedCount = certificates.filter((c) => !!c.user_id).length
   const pendingCount = certificates.filter((c) => !c.user_id).length
@@ -103,13 +109,46 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
           <StatCard label="Sin Usuario" value={pendingCount} color={colors.primary.bcm} />
         </div>
 
-        {/* Filtros */}
-        <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap' }}>
+        {/* Filtros + búsqueda */}
+        <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap', alignItems: 'center' }}>
           {(['all', 'assigned', 'pending'] as const).map((f) => (
             <FilterButton key={f} active={filter === f} onClick={() => setFilter(f)}>
               {f === 'all' ? 'Todos' : f === 'assigned' ? 'Asignados' : 'Pendientes'}
             </FilterButton>
           ))}
+
+          <div style={{ position: 'relative', flex: '1 1 220px', maxWidth: 340 }}>
+            <Search style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: colors.neutral[400], pointerEvents: 'none' }} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Código o nombre…"
+              style={{
+                width: '100%',
+                paddingLeft: 30,
+                paddingRight: search ? 28 : 10,
+                paddingTop: 8,
+                paddingBottom: 8,
+                fontSize: '0.875rem',
+                fontFamily: typography.family.body,
+                border: `1px solid ${colors.neutral[300]}`,
+                borderRadius: 8,
+                outline: 'none',
+                backgroundColor: colors.neutral.white,
+                color: colors.neutral[700],
+                boxSizing: 'border-box',
+              }}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: colors.neutral[400], display: 'flex' }}
+              >
+                <X style={{ width: 12, height: 12 }} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -128,9 +167,17 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
             border: `1px dashed ${colors.neutral[300]}`,
           }}
         >
-          <p style={{ fontFamily: typography.family.body, color: colors.neutral[500], margin: 0 }}>
-            No hay certificados para mostrar
+          <p style={{ fontFamily: typography.family.body, color: colors.neutral[500], margin: `0 0 ${spacing.md}` }}>
+            {search ? `Sin resultados para "${search}"` : 'No hay certificados para mostrar'}
           </p>
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              style={{ fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.primary.idm, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+            >
+              Limpiar búsqueda
+            </button>
+          )}
         </div>
       ) : (
         <div

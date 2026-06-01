@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { Search, X } from 'lucide-react'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { supabase } from '@/lib/supabaseClient'
+import { filterCertificates } from '@/lib/searchCertificates'
 import { CertificateRenewalSection } from './CertificateRenewalSection'
 
 interface Certificate {
@@ -35,8 +37,11 @@ const certColors: Record<string, string> = {
 export function ClientCertificatesSection({ userId }: { userId: string }) {
   const [certs, setCerts] = useState<Certificate[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
   const searchParams = useSearchParams()
   const renewalStatus = searchParams.get('renewal')
+
+  const filteredCerts = useMemo(() => filterCertificates(certs, search), [certs, search])
 
   useEffect(() => {
     let cancelled = false
@@ -74,9 +79,45 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
         <h1 style={{ fontFamily: typography.family.title, fontSize: '2.5rem', fontWeight: 700, color: colors.neutral[800], marginBottom: spacing.md, letterSpacing: '-0.5px' }}>
           Mis Certificaciones
         </h1>
-        <p style={{ fontFamily: typography.family.body, fontSize: '1.1rem', color: colors.neutral[600], maxWidth: '600px', lineHeight: '1.6', margin: 0 }}>
+        <p style={{ fontFamily: typography.family.body, fontSize: '1.1rem', color: colors.neutral[600], maxWidth: '600px', lineHeight: '1.6', marginBottom: spacing.xl }}>
           Aquí puedes ver todas tus certificaciones activas, su estado de validez y opciones para renovarlas.
         </p>
+
+        {/* Search */}
+        {certs.length > 0 && (
+          <div style={{ position: 'relative', maxWidth: '420px' }}>
+            <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: colors.neutral[400], pointerEvents: 'none' }} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar por código (IDM-2026-1230) o nombre…"
+              style={{
+                width: '100%',
+                paddingLeft: 36,
+                paddingRight: search ? 36 : 12,
+                paddingTop: 10,
+                paddingBottom: 10,
+                fontSize: '0.9rem',
+                fontFamily: typography.family.body,
+                border: `1px solid ${colors.neutral[300]}`,
+                borderRadius: 10,
+                outline: 'none',
+                backgroundColor: colors.neutral.white,
+                color: colors.neutral[800],
+                boxSizing: 'border-box',
+              }}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: colors.neutral[400], display: 'flex' }}
+              >
+                <X style={{ width: 14, height: 14 }} />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Renewal status banners */}
@@ -158,9 +199,21 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
             Solicitar certificación
           </Link>
         </div>
+      ) : filteredCerts.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: `${spacing['2xl']} ${spacing.lg}`, backgroundColor: colors.neutral.white, borderRadius: '16px', border: `1px solid ${colors.neutral[200]}` }}>
+          <p style={{ fontFamily: typography.family.body, color: colors.neutral[500], marginBottom: spacing.md }}>
+            Sin resultados para <strong>&ldquo;{search}&rdquo;</strong>
+          </p>
+          <button
+            onClick={() => setSearch('')}
+            style={{ fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.primary.idm, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+          >
+            Limpiar búsqueda
+          </button>
+        </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: spacing.xl }}>
-          {certs.map((cert) => (
+          {filteredCerts.map((cert) => (
             <CertificateCard key={cert.id} cert={cert} />
           ))}
         </div>
