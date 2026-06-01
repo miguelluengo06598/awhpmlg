@@ -46,21 +46,6 @@ interface UserCertification {
   isPublic: boolean;
 }
 
-// Mock user certification - in production this would come from Supabase
-const mockUserCert: UserCertification | null = {
-  id: 'cert-001',
-  certificationType: 'IDM',
-  professionalName: 'Juan García López',
-  qrCode: 'IDM-2024-ABC123XYZ789',
-  certificateNumber: 'AECOMI-IDM-2024-0042',
-  obtainedDate: '2024-03-15',
-  expiryDate: '2027-03-15',
-  status: 'active',
-  isPublic: false,
-};
-
-// const mockUserCert: UserCertification | null = null; // Uncomment to test empty state
-
 interface HistoryItem {
   id: string;
   action: 'download' | 'share' | 'privacy';
@@ -68,14 +53,9 @@ interface HistoryItem {
   details?: string;
 }
 
-const mockHistory: HistoryItem[] = [
-  { id: '1', action: 'download', date: '2024-03-20', details: 'PDF descargado' },
-  { id: '2', action: 'share', date: '2024-04-05', details: 'Enlace compartido por email' },
-];
-
 export default function ClientCertificatePage() {
   const { t, getLink } = useTranslation('es');
-  const [cert, setCert] = useState<UserCertification | null>(mockUserCert);
+  const [cert, setCert] = useState<UserCertification | null>(null);
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -427,28 +407,8 @@ export default function ClientCertificatePage() {
             </button>
 
             {showHistory && (
-              <div className="px-6 pb-4 space-y-3">
-                {mockHistory.length > 0 ? (
-                  mockHistory.map((item) => (
-                    <div key={item.id} className="flex items-start gap-3 py-2">
-                      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                        {item.action === 'download' && <Download className="w-4 h-4 text-pmi-blue" />}
-                        {item.action === 'share' && <Share2 className="w-4 h-4 text-purple-600" />}
-                        {item.action === 'privacy' && <Shield className="w-4 h-4 text-amber-600" />}
-                      </div>
-                      <div>
-                        <div className="text-sm text-pmi-dark font-medium">
-                          {item.action === 'download' && tDash('history_downloaded')}
-                          {item.action === 'share' && tDash('history_shared')}
-                          {item.action === 'privacy' && tDash('history_privacy_changed')}
-                        </div>
-                        <div className="text-xs text-gray-400">{item.date}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-400 py-2">Sin actividad reciente</p>
-                )}
+              <div className="px-6 pb-4">
+                <p className="text-sm text-gray-400 py-2">Sin actividad reciente</p>
               </div>
             )}
           </motion.div>

@@ -20,12 +20,6 @@ import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
 import AuthLayout from './AuthLayout'
 
-// Fallback test users for offline/development mode
-const TEST_USERS: Record<string, { password: string; role: 'admin' | 'client'; name: string }> = {
-  'admin@aecomi.com': { password: 'Admin123', role: 'admin', name: 'Administrador' },
-  'user@aecomi.com': { password: 'User123', role: 'client', name: 'Usuario Demo' },
-}
-
 const ERROR_MESSAGES: Record<string, string> = {
   'Invalid login credentials': 'Email o contraseña incorrectos',
   'Email not confirmed': 'Email no confirmado. Revisa tu bandeja de entrada',
@@ -72,9 +66,6 @@ export default function SignInForm() {
 
     const trimmedEmail = email.trim().toLowerCase()
     const trimmedPassword = password.trim()
-
-    // Validación temprana: Supabase configurado
-    const hasSupabaseConfig = !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
     try {
       // === MÉTODO 1: Login con Supabase Auth ===
@@ -124,27 +115,6 @@ export default function SignInForm() {
         return
       }
 
-      // === MÉTODO 2: Fallback a TEST_USERS (desarrollo offline) ===
-      const testUser = TEST_USERS[trimmedEmail]
-      if (testUser && testUser.password === trimmedPassword) {
-        const sessionData = {
-          email: trimmedEmail,
-          role: testUser.role,
-          name: testUser.name,
-          loggedInAt: new Date().toISOString(),
-          supabaseUserId: null,
-        }
-        if (rememberMe) localStorage.setItem('aecomi_session', JSON.stringify(sessionData))
-        else sessionStorage.setItem('aecomi_session', JSON.stringify(sessionData))
-
-        setSubmitStatus('success')
-        setStatusMessage(`${isEn ? 'Welcome' : 'Bienvenido'}, ${testUser.name}! ${isEn ? 'Redirecting...' : 'Redirigiendo...'}`)
-        setTimeout(() => {
-          router.push(testUser.role === 'admin' ? '/dashboard/admin' : '/dashboard/client')
-        }, 800)
-        return
-      }
-
       // === ERROR ===
       if (authError) {
         console.error('❌ Error de login Supabase:', {
@@ -169,7 +139,7 @@ export default function SignInForm() {
         return
       }
 
-      console.error('❌ Credenciales inválidas (ni Supabase ni TEST_USERS)')
+      console.error('❌ Credenciales inválidas')
       setSubmitStatus('error')
       setStatusMessage(isEn ? 'Invalid credentials. Please check your email and password.' : 'Credenciales inválidas. Verifica tu email y contraseña.')
     } catch (err: any) {
@@ -301,18 +271,6 @@ export default function SignInForm() {
             )}
           </AnimatePresence>
         </form>
-
-        {/* Test users hint (solo desarrollo) */}
-        <details className="mt-5 group">
-          <summary className="text-[11px] text-gray-300 cursor-pointer hover:text-gray-400 transition-colors select-none list-none flex items-center gap-1.5">
-            <span className="w-3.5 h-3.5 rounded-full border border-gray-200 flex items-center justify-center text-[9px] font-bold text-gray-400">?</span>
-            {isEn ? 'Test accounts' : 'Cuentas de prueba'}
-          </summary>
-          <div className="mt-2 p-3 rounded-lg bg-gray-50 border border-gray-100 font-mono text-[11px] text-gray-400 space-y-0.5">
-            <p>admin@aecomi.com / Admin123</p>
-            <p>user@aecomi.com / User123</p>
-          </div>
-        </details>
 
         <div className="mt-8 pt-6 border-t border-gray-100 text-center">
           <p className="text-sm text-gray-500">

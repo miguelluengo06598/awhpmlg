@@ -457,7 +457,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                       type="text" value={form.fullName}
                       onChange={(e) => updateForm('fullName', e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-pmi-blue/20 focus:border-pmi-blue"
-                      placeholder="Juan García"
+                      placeholder="Tu nombre completo"
                     />
                   </div>
                 </div>
@@ -499,7 +499,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                       type="text" value={form.company}
                       onChange={(e) => updateForm('company', e.target.value)}
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-pmi-blue/20 focus:border-pmi-blue"
-                      placeholder="BuildTech Solutions"
+                      placeholder="Tu empresa"
                     />
                   </div>
                 </div>

@@ -102,20 +102,7 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-const mockProfessionals: Professional[] = [
-  { id: 1, name: 'Juan García López', email: 'juan@example.com', certifications: ['Information Delivery Manager'], country: 'España', company: 'BuildTech Solutions', status: 'Activa', obtainedDate: '2023-05-15', expiryDate: '2026-05-15', certificateNumber: 'IDM-2023-001**', isPublic: true, qrCode: 'IDM-2024-ABC123XYZ789' },
-  { id: 2, name: 'María López Pérez', email: 'maria@example.com', certifications: ['BIM Design Manager', 'Information Delivery Manager'], country: 'España', company: 'DesignBIM', status: 'Activa', obtainedDate: '2022-08-20', expiryDate: '2025-08-20', certificateNumber: 'BDM-2022-042**', isPublic: true, qrCode: 'BDM-2024-DEF456ABC012' },
-  { id: 3, name: 'Robert Smith', email: 'robert@example.com', certifications: ['BIM Construction Manager'], country: 'UK', company: 'Construct UK Ltd', status: 'Activa', obtainedDate: '2023-01-10', expiryDate: '2026-01-10', certificateNumber: 'BCM-2023-015**', isPublic: false, qrCode: 'BCM-2024-GHI789DEF345' },
-  { id: 4, name: 'Ana Martínez Ruiz', email: 'ana@example.com', certifications: ['Information Delivery Manager'], country: 'México', company: 'BIM México', status: 'Por Renovar', obtainedDate: '2021-03-12', expiryDate: '2024-03-12', certificateNumber: 'IDM-2021-089**', isPublic: true, qrCode: 'IDM-2024-JKL012GHI678' },
-  { id: 5, name: 'David Chen', email: 'david@example.com', certifications: ['BIM Design Manager'], country: 'USA', company: 'NYC Design Group', status: 'Activa', obtainedDate: '2023-09-05', expiryDate: '2026-09-05', certificateNumber: 'BDM-2023-067**', isPublic: true, qrCode: 'BDM-2024-MNO345JKL901' },
-  { id: 6, name: 'Laura Fernández', email: 'laura@example.com', certifications: ['BIM Construction Manager', 'BIM Design Manager'], country: 'España', company: 'ObraBIM', status: 'Activa', obtainedDate: '2022-11-30', expiryDate: '2025-11-30', certificateNumber: 'BCM-2022-033**', isPublic: true, qrCode: 'BCM-2024-PQR678MNO234' },
-  { id: 7, name: 'Michael Johnson', email: 'michael@example.com', certifications: ['Information Delivery Manager'], country: 'USA', company: 'DigitalBuild Corp', status: 'Vencida', obtainedDate: '2020-06-18', expiryDate: '2023-06-18', certificateNumber: 'IDM-2020-112**', isPublic: true, qrCode: 'IDM-2024-STU901PQR567' },
-  { id: 8, name: 'Sofía Gómez', email: 'sofia@example.com', certifications: ['BIM Design Manager'], country: 'Colombia', company: 'ArquiBIM', status: 'Activa', obtainedDate: '2023-04-22', expiryDate: '2026-04-22', certificateNumber: 'BDM-2023-055**', isPublic: true, qrCode: 'BDM-2024-VWX234STU890' },
-  { id: 9, name: 'James Wilson', email: 'james@example.com', certifications: ['BIM Construction Manager'], country: 'UK', company: 'BuildRight', status: 'Por Renovar', obtainedDate: '2021-07-08', expiryDate: '2024-07-08', certificateNumber: 'BCM-2021-078**', isPublic: false, qrCode: 'BCM-2024-YZA567VWX123' },
-  { id: 10, name: 'Carlos Ruiz', email: 'carlos@example.com', certifications: ['Information Delivery Manager', 'BIM Design Manager'], country: 'España', company: 'Ingeconsult SA', status: 'Activa', obtainedDate: '2023-02-14', expiryDate: '2026-02-14', certificateNumber: 'IDM-2023-023**', isPublic: true, qrCode: 'IDM-2024-BCD890YZA456' },
-  { id: 11, name: 'Emma Thompson', email: 'emma@example.com', certifications: ['BIM Construction Manager'], country: 'UK', company: 'GlobalBuild', status: 'Activa', obtainedDate: '2022-12-01', expiryDate: '2025-12-01', certificateNumber: 'BCM-2022-041**', isPublic: true, qrCode: 'BCM-2024-EFG123BCD789' },
-  { id: 12, name: 'Pedro Sánchez', email: 'pedro@example.com', certifications: ['BIM Design Manager'], country: 'Chile', company: 'BIM Sur', status: 'Activa', obtainedDate: '2023-06-10', expiryDate: '2026-06-10', certificateNumber: 'BDM-2023-071**', isPublic: true, qrCode: 'BDM-2024-HIJ456EFG012' },
-];
+
 
 function StatusBadge({ status, locale }: { status: Professional['status']; locale: 'es' | 'en' }) {
   const styles: Record<string, string> = {
@@ -194,7 +181,7 @@ export default function RegistryPage({ locale }: Props) {
   ];
 
   // Only show publicly listed professionals
-  const publicProfessionals = useMemo(() => mockProfessionals.filter((p) => p.isPublic), []);
+  const publicProfessionals: Professional[] = [];
 
   const filtered = useMemo(() => {
     return publicProfessionals.filter((p) => {
