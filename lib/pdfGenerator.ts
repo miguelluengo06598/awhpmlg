@@ -17,6 +17,12 @@ const CERT_COLORS: Record<CertificationType, [number, number, number]> = {
   BCM: [217, 119, 6],
 };
 
+const CERT_NAMES_ES: Record<CertificationType, string> = {
+  IDM: 'Gestor de Entrega de Información',
+  BDM: 'Gestor de Diseño BIM',
+  BCM: 'Gestor de Construcción BIM',
+};
+
 function formatDate(dateStr: string): string {
   if (!dateStr) return '—';
   const d = new Date(dateStr);
@@ -26,177 +32,206 @@ function formatDate(dateStr: string): string {
 export async function generateCertificatePDF(data: CertificatePDFData): Promise<Blob> {
   const { professionalName, certificationType, qrCode, certificateNumber, obtainedDate, expiryDate, verificationUrl } = data;
 
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
-  const pw = doc.internal.pageSize.getWidth();   // 210 mm
-  const ph = doc.internal.pageSize.getHeight();  // 297 mm
+  const pw = doc.internal.pageSize.getWidth();   // 297mm
+  const ph = doc.internal.pageSize.getHeight();  // 210mm
+  const margin = 18;
 
   const [r, g, b] = CERT_COLORS[certificationType] ?? CERT_COLORS.IDM;
 
-  // ─── BACKGROUND ───────────────────────────────────────────────────────────
+  // ─── WHITE BACKGROUND ─────────────────────────────────────────────────────
   doc.setFillColor(255, 255, 255);
   doc.rect(0, 0, pw, ph, 'F');
 
-  // ─── OUTER FRAME ──────────────────────────────────────────────────────────
-  const m = 12;
-  doc.setDrawColor(r, g, b);
-  doc.setLineWidth(0.6);
-  doc.rect(m, m, pw - m * 2, ph - m * 2);
-
-  // Thick accent line at top (inside frame)
-  doc.setLineWidth(2.5);
-  doc.line(m, m + 9, pw - m, m + 9);
-
-  // Thin accent line at bottom (inside frame)
-  doc.setLineWidth(0.6);
-  doc.line(m, ph - m - 9, pw - m, ph - m - 9);
-
-  // ─── HEADER: AECOMI ────────────────────────────────────────────────────────
-  let y = 26;
-
+  // ─── WATERMARK (very subtle — near-white on white) ────────────────────────
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
+  doc.setFontSize(100);
+  doc.setTextColor(248, 248, 248);
+  doc.text('AECOMI', pw / 2, ph / 2 + 28, { align: 'center' });
+
+  // ─── TOP COLOR BAR ────────────────────────────────────────────────────────
+  doc.setFillColor(r, g, b);
+  doc.rect(0, 0, pw, 10, 'F');
+
+  // ─── HEADER ───────────────────────────────────────────────────────────────
+  let y = margin + 4;
+
+  // AECOMI logo text (left)
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
   doc.setTextColor(r, g, b);
-  doc.text('AECOMI', pw / 2, y, { align: 'center' });
+  doc.text('AECOMI', margin, y);
 
+  // Subtitles
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(150, 150, 150);
-  doc.text('ASOCIACIÓN ESPAÑOLA DE CERTIFICACIÓN BIM', pw / 2, y + 6, { align: 'center' });
+  doc.setFontSize(7);
+  doc.setTextColor(130, 130, 130);
+  doc.text('ASOCIACIÓN ESPAÑOLA DE CERTIFICACIÓN BIM', margin, y + 5.5);
+  doc.text('International BIM Certification Organization', margin, y + 9.5);
 
-  // Certification type badge — top right
-  const badgeW = 22;
-  const badgeH = 9;
-  const badgeX = pw - m - badgeW - 2;
-  const badgeY = m + 11;
+  // Cert-type badge (right)
+  const badgeW = 28;
+  const badgeH = 10;
+  const badgeX = pw - margin - badgeW;
+  const badgeY = y - 5;
   doc.setFillColor(r, g, b);
   doc.roundedRect(badgeX, badgeY, badgeW, badgeH, 2, 2, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10);
+  doc.setFontSize(12);
   doc.setTextColor(255, 255, 255);
-  doc.text(certificationType, badgeX + badgeW / 2, badgeY + 6.2, { align: 'center' });
+  doc.text(certificationType, badgeX + badgeW / 2, badgeY + 7, { align: 'center' });
 
-  // ─── INTRO PHRASE ─────────────────────────────────────────────────────────
-  y = 56;
+  y += 17;
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10.5);
-  doc.setTextColor(100, 100, 100);
-  doc.text('AECOMI se complace en otorgar el siguiente', pw / 2, y, { align: 'center' });
-
-  y += 8;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(15);
-  doc.setTextColor(r, g, b);
-  doc.text('CERTIFICADO', pw / 2, y, { align: 'center' });
-
-  // ─── DECORATIVE DIVIDER ───────────────────────────────────────────────────
-  y += 10;
+  // ─── DECORATIVE RULE ──────────────────────────────────────────────────────
   doc.setDrawColor(r, g, b);
-  doc.setLineWidth(0.4);
-  doc.line(m + 25, y, pw - m - 25, y);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, pw - margin, y);
 
-  // ─── CERTIFICATE TYPE NAME ────────────────────────────────────────────────
-  y += 14;
-  const certName = getCertificationName(certificationType, 'es').toUpperCase();
+  y += 10;
+
+  // ─── MAIN TITLE ───────────────────────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
+  doc.setFontSize(26);
   doc.setTextColor(r, g, b);
-  const certNameLines: string[] = doc.splitTextToSize(certName, pw - m * 2 - 16);
-  doc.text(certNameLines, pw / 2, y, { align: 'center' });
-  y += certNameLines.length * 8 + 8;
+  doc.text('CERTIFICADO PROFESIONAL', pw / 2, y, { align: 'center' });
+
+  y += 7;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(140, 140, 140);
+  doc.text('Professional Certificate', pw / 2, y, { align: 'center' });
+
+  y += 10;
+
+  // ─── CERT TYPE NAME (bilingual) ───────────────────────────────────────────
+  const nameEn = getCertificationName(certificationType, 'en');
+  const nameEs = CERT_NAMES_ES[certificationType];
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11.5);
+  doc.setTextColor(60, 60, 60);
+  doc.text(`${nameEs}  ·  ${nameEn}`, pw / 2, y, { align: 'center' });
+
+  y += 10;
+
+  // ─── "Awarded to" ─────────────────────────────────────────────────────────
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(140, 140, 140);
+  doc.text('Otorgado a  /  Awarded to', pw / 2, y, { align: 'center' });
+
+  y += 9;
 
   // ─── PROFESSIONAL NAME ────────────────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(28);
   doc.setTextColor(20, 20, 20);
-  const nameLines: string[] = doc.splitTextToSize(professionalName.toUpperCase(), pw - m * 2 - 10);
+  const nameLines: string[] = doc.splitTextToSize(professionalName.toUpperCase(), pw - margin * 2 - 20);
   doc.text(nameLines, pw / 2, y, { align: 'center' });
-  y += nameLines.length * 11 + 14;
+  y += nameLines.length * 11 + 7;
+
+  // ─── ACHIEVEMENT TEXT (bilingual) ─────────────────────────────────────────
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(95, 95, 95);
+  doc.text(
+    'Por haber demostrado las competencias profesionales requeridas y avaladas por AECOMI',
+    pw / 2, y, { align: 'center' }
+  );
+  y += 5;
+  doc.text(
+    'For having demonstrated the required professional competencies endorsed by AECOMI',
+    pw / 2, y, { align: 'center' }
+  );
+
+  y += 11;
 
   // ─── INFO DIVIDER ─────────────────────────────────────────────────────────
   doc.setDrawColor(r, g, b);
   doc.setLineWidth(0.4);
-  doc.line(m + 25, y, pw - m - 25, y);
-  y += 14;
+  doc.line(margin + 25, y, pw - margin - 25, y);
+
+  y += 10;
 
   // ─── INFO GRID (2 columns) ────────────────────────────────────────────────
-  const col1 = m + 20;
-  const col2 = pw / 2 + 10;
+  const col1 = margin + 28;
+  const col2 = pw / 2 + 18;
 
-  const drawField = (label: string, value: string, x: number, fy: number) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7);
-    doc.setTextColor(150, 150, 150);
-    doc.text(label, x, fy);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(r, g, b);
-    doc.text(value, x, fy + 7);
-  };
-
-  drawField('CÓDIGO DE CERTIFICACIÓN', certificateNumber, col1, y);
-  drawField('PERÍODO DE VALIDEZ', '2 AÑOS', col2, y);
-
-  y += 20;
-
+  // Labels row 1
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
-  doc.setTextColor(150, 150, 150);
-  doc.text('FECHA DE EMISIÓN', col1, y);
+  doc.setTextColor(155, 155, 155);
+  doc.text('FECHA DE EMISIÓN  /  ISSUE DATE', col1, y);
+  doc.text('VÁLIDO HASTA  /  VALID UNTIL', col2, y);
+
+  y += 5.5;
+
+  // Values row 1
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(r, g, b);
+  doc.text(formatDate(obtainedDate), col1, y);
+  doc.text(formatDate(expiryDate), col2, y);
+
+  y += 9;
+
+  // Labels row 2
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  doc.setTextColor(155, 155, 155);
+  doc.text('Nº CERTIFICADO  /  CERTIFICATE NO.', col1, y);
+  doc.text('CÓDIGO DE VERIFICACIÓN  /  VERIFICATION CODE', col2, y);
+
+  y += 5.5;
+
+  // Values row 2
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(40, 40, 40);
-  doc.text(formatDate(obtainedDate), col1, y + 6);
+  doc.text(certificateNumber, col1, y);
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(7);
-  doc.setTextColor(150, 150, 150);
-  doc.text('VÁLIDO HASTA', col2, y);
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('courier', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(40, 40, 40);
-  doc.text(formatDate(expiryDate), col2, y + 6);
+  doc.setTextColor(r, g, b);
+  doc.text(qrCode, col2, y);
 
   // ─── SIGNATURES ───────────────────────────────────────────────────────────
-  const sigY = ph - 62;
+  const sigY = ph - 32;
 
-  doc.setDrawColor(180, 180, 180);
+  doc.setDrawColor(190, 190, 190);
   doc.setLineWidth(0.4);
-  doc.line(col1, sigY, col1 + 50, sigY);
-  doc.line(col2, sigY, col2 + 50, sigY);
+
+  const sig1X = margin + 28;
+  const sig2X = pw - margin - 90;
+
+  doc.line(sig1X, sigY, sig1X + 58, sigY);
+  doc.line(sig2X, sigY, sig2X + 58, sigY);
 
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(7.5);
-  doc.setTextColor(80, 80, 80);
-  doc.text('DIRECTOR EJECUTIVO', col1, sigY + 5);
-  doc.text('PRESIDENTE DEL CONSEJO', col2, sigY + 5);
+  doc.setFontSize(8);
+  doc.setTextColor(55, 55, 55);
+  doc.text('DIRECTOR EJECUTIVO', sig1X, sigY + 5);
+  doc.text('PRESIDENTE DEL CONSEJO', sig2X, sigY + 5);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(6.5);
-  doc.setTextColor(150, 150, 150);
-  doc.text('AECOMI', col1, sigY + 10);
-  doc.text('AECOMI', col2, sigY + 10);
-
-  // ─── VERIFICATION CODE ────────────────────────────────────────────────────
-  const codeY = ph - 38;
-  doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
-  doc.setTextColor(150, 150, 150);
-  doc.text('CÓDIGO DE VERIFICACIÓN', pw / 2, codeY, { align: 'center' });
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(r, g, b);
-  doc.text(qrCode, pw / 2, codeY + 6, { align: 'center' });
+  doc.setTextColor(155, 155, 155);
+  doc.text('Executive Director  ·  AECOMI', sig1X, sigY + 9.5);
+  doc.text('Board President  ·  AECOMI', sig2X, sigY + 9.5);
 
-  // ─── FOOTER ───────────────────────────────────────────────────────────────
+  // ─── FOOTER BAR ───────────────────────────────────────────────────────────
+  doc.setFillColor(r, g, b);
+  doc.rect(0, ph - 10, pw, 10, 'F');
+
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
-  doc.setTextColor(160, 160, 160);
+  doc.setTextColor(255, 255, 255);
   doc.text(
-    `Verifica este certificado en: ${verificationUrl}`,
+    `Verifica este certificado en:  ${verificationUrl}    |    www.aecomi.com    |    info@aecomi.com    |    Madrid, España`,
     pw / 2,
-    ph - 16,
+    ph - 4,
     { align: 'center' }
   );
 
