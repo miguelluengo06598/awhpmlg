@@ -64,6 +64,7 @@ export default function AdminUsersPage() {
         .select('id, first_name, last_name, email, phone, company, country, role, is_active, created_at')
         .is('deleted_at', null)
         .order('created_at', { ascending: false })
+        .limit(500)
 
       if (dbError) throw new Error(dbError.message)
       setAllUsers((data as UserRow[]) || [])

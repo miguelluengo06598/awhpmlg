@@ -86,6 +86,7 @@ export default function AdminApplicationsPage() {
           certifications_catalog ( display_name )
         `)
         .order('submitted_at', { ascending: false })
+        .limit(500)
 
       if (dbError) throw new Error(dbError.message)
 

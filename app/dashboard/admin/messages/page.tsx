@@ -54,6 +54,7 @@ export default function AdminMessagesPage() {
         .from('contact_messages')
         .select('id, name, email, subject, message, is_read, replied_at, created_at')
         .order('created_at', { ascending: false })
+        .limit(500)
 
       if (dbError) throw new Error(dbError.message)
       setAllMessages((data as Message[]) || [])

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { colors, spacing, typography } from '@/lib/design-system'
+import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
 
 interface IssuedCertificate {
   id: string
@@ -39,9 +40,9 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
         const { data: { session } } = await supabase.auth.getSession()
         if (!session) return
 
-        const res = await fetch('/api/admin/certificates', {
+        const res = await fetchWithTimeout('/api/admin/certificates', {
           headers: { Authorization: `Bearer ${session.access_token}` },
-        })
+        }, 10_000)
         if (!res.ok) return
         const json = await res.json()
         setCertificates(json.certificates ?? [])

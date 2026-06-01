@@ -39,6 +39,7 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
   const renewalStatus = searchParams.get('renewal')
 
   useEffect(() => {
+    let cancelled = false
     supabase
       .from('certificates')
       .select('id, certification_type, certification_code, full_name, issue_date, expiry_date, status, exam_score, renewal_price, can_renew')
@@ -46,9 +47,12 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
       .in('status', ['active', 'expired'])
       .order('issue_date', { ascending: false })
       .then(({ data }) => {
-        setCerts((data as Certificate[]) ?? [])
-        setLoading(false)
+        if (!cancelled) {
+          setCerts((data as Certificate[]) ?? [])
+          setLoading(false)
+        }
       })
+    return () => { cancelled = true }
   }, [userId])
 
   if (loading) {

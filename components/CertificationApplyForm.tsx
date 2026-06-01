@@ -250,33 +250,26 @@ export default function CertificationApplyForm({ certificationType, certificatio
       const newAppId = appData.id
       setApplicationId(newAppId)
 
-      // 4. Re-subir documentos a la carpeta correcta de la aplicación
-      const finalDocs: UploadedDoc[] = []
-      for (const doc of docs) {
-        try {
-          const { data: blob } = await supabase.storage
-            .from('application-documents')
-            .download(doc.path)
-
-          if (!blob) continue
-
-          const file = new File([blob], doc.fileName, { type: blob.type || 'application/pdf' })
-
-          const { path: newPath, url: newUrl } = await uploadApplicationDocument(
-            newAppId,
-            file,
-            doc.type as any
-          )
-
-          finalDocs.push({ type: doc.type, path: newPath, url: newUrl, fileName: doc.fileName, fileSize: doc.fileSize })
-
-          // Eliminar documento temporal
-          await supabase.storage.from('application-documents').remove([doc.path])
-        } catch (err) {
-          console.error('Error migrando documento:', err)
-          finalDocs.push(doc)
-        }
+      // 4. Re-subir documentos en paralelo a la carpeta correcta de la aplicación
+      const migrateDoc = async (doc: UploadedDoc): Promise<UploadedDoc> => {
+        const { data: blob } = await supabase.storage
+          .from('application-documents')
+          .download(doc.path)
+        if (!blob) return doc
+        const file = new File([blob], doc.fileName, { type: blob.type || 'application/pdf' })
+        const { path: newPath, url: newUrl } = await uploadApplicationDocument(
+          newAppId,
+          file,
+          doc.type as any
+        )
+        await supabase.storage.from('application-documents').remove([doc.path])
+        return { type: doc.type, path: newPath, url: newUrl, fileName: doc.fileName, fileSize: doc.fileSize }
       }
+
+      const results = await Promise.allSettled(docs.map(migrateDoc))
+      const finalDocs = results.map((r, i) =>
+        r.status === 'fulfilled' ? r.value : docs[i]
+      )
 
       // 5. Guardar registros en tabla documents
       if (finalDocs.length > 0) {

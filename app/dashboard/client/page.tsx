@@ -52,7 +52,7 @@ export default function ClientDashboardPage() {
     setDataError('')
 
     try {
-      const [totalRes, certRes, appsRes] = await Promise.all([
+      const [totalRes, certRes, appsRes, allAppIdsRes] = await Promise.all([
         supabase.from('certifications_applications').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
         supabase.from('certifications_applications').select('*', { count: 'exact', head: true }).eq('user_id', user.id).eq('status', 'certified'),
         supabase.from('certifications_applications')
@@ -60,13 +60,14 @@ export default function ClientDashboardPage() {
           .eq('user_id', user.id)
           .order('submitted_at', { ascending: false })
           .limit(5),
+        supabase.from('certifications_applications').select('id').eq('user_id', user.id),
       ])
 
-      // Count documents via app IDs to avoid RLS issues
+      // Count documents across all user applications to avoid RLS issues
       let docCount = 0
-      const appIds = (appsRes.data || []).map((a: any) => a.id)
-      if (appIds.length > 0) {
-        const { count } = await supabase.from('documents').select('*', { count: 'exact', head: true }).in('application_id', appIds).is('deleted_at', null)
+      const allAppIds = (allAppIdsRes.data || []).map((a: any) => a.id)
+      if (allAppIds.length > 0) {
+        const { count } = await supabase.from('documents').select('*', { count: 'exact', head: true }).in('application_id', allAppIds).is('deleted_at', null)
         docCount = count ?? 0
       }
 

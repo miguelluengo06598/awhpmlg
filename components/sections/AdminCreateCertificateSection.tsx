@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { supabase } from '@/lib/supabaseClient'
+import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
 import Link from 'next/link'
 
 interface CreatedCert {
@@ -68,7 +69,7 @@ export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () =>
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { setError('Sesión expirada. Recarga la página.'); return }
 
-      const res = await fetch('/api/admin/certificates', {
+      const res = await fetchWithTimeout('/api/admin/certificates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

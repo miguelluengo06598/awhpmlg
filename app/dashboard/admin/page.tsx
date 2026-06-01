@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
         supabase.from('certifications_applications').select('*', { count: 'exact', head: true }).in('status', ['pending', 'in_review']),
         supabase.from('certifications_applications').select('*', { count: 'exact', head: true }).eq('status', 'certified'),
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('is_active', true),
-        supabase.from('payments').select('amount').eq('status', 'completed'),
+        supabase.from('payments').select('amount').eq('status', 'completed').limit(10000),
         supabase.from('certifications_applications')
           .select(`id, status, submitted_at, users!user_id ( first_name, last_name, email ), certifications_catalog ( display_name )`)
           .in('status', ['pending', 'in_review'])

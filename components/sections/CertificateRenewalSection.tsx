@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { colors, spacing, typography } from '@/lib/design-system'
 import { supabase } from '@/lib/supabaseClient'
+import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
 
 interface RenewableCert {
   id: string
@@ -43,14 +44,14 @@ export function CertificateRenewalSection({ certificate }: { certificate: Renewa
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { setError('Sesión expirada. Recarga la página.'); setLoading(false); return }
 
-      const res = await fetch('/api/certificates/renew', {
+      const res = await fetchWithTimeout('/api/certificates/renew', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ certificateId: certificate.id }),
-      })
+      }, 15_000)
 
       const data = await res.json()
       if (!res.ok) { setError(data.error ?? 'Error iniciando renovación.'); setLoading(false); return }

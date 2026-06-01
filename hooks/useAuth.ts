@@ -70,18 +70,24 @@ export function useAuth(): AuthState {
           return
         }
 
-        const { data: userData } = await supabase
-          .from('users')
-          .select('id, email, role')
-          .eq('id', session.user.id)
-          .single()
+        try {
+          const { data: userData } = await supabase
+            .from('users')
+            .select('id, email, role')
+            .eq('id', session.user.id)
+            .single()
 
-        setUser({
-          id: session.user.id,
-          email: session.user.email,
-          role: userData?.role,
-        })
-        setLoading(false)
+          setUser({
+            id: session.user.id,
+            email: session.user.email,
+            role: userData?.role,
+          })
+        } catch (err) {
+          console.error('onAuthStateChange: error fetching user role', err)
+          setUser(null)
+        } finally {
+          setLoading(false)
+        }
       }
     )
 

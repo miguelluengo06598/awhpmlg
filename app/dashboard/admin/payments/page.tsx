@@ -70,6 +70,7 @@ export default function AdminPaymentsPage() {
           )
         `)
         .order('created_at', { ascending: false })
+        .limit(500)
 
       if (dbError) throw new Error(dbError.message)
       setAllPayments((data as unknown as Payment[]) || [])

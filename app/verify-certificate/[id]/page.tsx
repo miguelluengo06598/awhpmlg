@@ -48,18 +48,26 @@ export default function VerifyCertificatePage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchCertificate = async () => {
-      try {
-        const res = await fetch(`/api/verify-certificate/${params.id}`)
-        const data: CertificateResponse = await res.json()
-        setResult(data)
-      } catch {
-        setResult({ valid: false, error: 'Error verificando el certificado.' })
-      } finally {
+    if (!params.id) return
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10_000)
+
+    fetch(`/api/verify-certificate/${params.id}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data: CertificateResponse) => setResult(data))
+      .catch((err) => {
+        if (err.name === 'AbortError') {
+          setResult({ valid: false, error: 'La verificación tardó demasiado. Inténtalo de nuevo.' })
+        } else {
+          setResult({ valid: false, error: 'Error verificando el certificado.' })
+        }
+      })
+      .finally(() => {
+        clearTimeout(timeoutId)
         setLoading(false)
-      }
-    }
-    if (params.id) fetchCertificate()
+      })
+
+    return () => { clearTimeout(timeoutId); controller.abort() }
   }, [params.id])
 
   const containerStyle = {
