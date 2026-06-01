@@ -29,7 +29,6 @@ import {
   getCertificationName,
   getStatusInfo,
   getCertificateStatus,
-  validateQRCode,
 } from '@/lib/qrGenerator';
 import { downloadCertificatePDF } from '@/lib/pdfGenerator';
 import { useTranslation } from '@/lib/useTranslation';
@@ -62,70 +61,6 @@ const fadeIn = {
   visible: { opacity: 1 },
 };
 
-// Mock certificate lookup - replace with real API call
-function lookupCertificate(qrCode: string): CertificateData | null {
-  const validCodes: Record<string, CertificateData> = {
-    'IDM-2024-ABC123XYZ789': {
-      qrCode: 'IDM-2024-ABC123XYZ789',
-      certificationType: 'IDM',
-      professionalName: 'Juan García López',
-      obtainedDate: '2024-03-15',
-      expiryDate: '2027-03-15',
-      status: 'active',
-      certificateNumber: 'AECMI-IDM-2024-0042',
-      isPublic: true,
-      country: 'España',
-      company: 'BuildTech Solutions',
-    },
-    'BDM-2024-DEF456ABC012': {
-      qrCode: 'BDM-2024-DEF456ABC012',
-      certificationType: 'BDM',
-      professionalName: 'María López Pérez',
-      obtainedDate: '2024-01-20',
-      expiryDate: '2027-01-20',
-      status: 'active',
-      certificateNumber: 'AECMI-BDM-2024-0018',
-      isPublic: true,
-      country: 'España',
-      company: 'DesignBIM',
-    },
-    'BCM-2024-GHI789DEF345': {
-      qrCode: 'BCM-2024-GHI789DEF345',
-      certificationType: 'BCM',
-      professionalName: 'Robert Smith',
-      obtainedDate: '2023-11-10',
-      expiryDate: '2026-11-10',
-      status: 'due',
-      certificateNumber: 'AECMI-BCM-2023-0015',
-      isPublic: false,
-      country: 'Reino Unido',
-      company: 'Construct UK Ltd',
-    },
-  };
-
-  // Also accept any valid format QR for demo purposes
-  if (validateQRCode(qrCode)) {
-    const type = qrCode.startsWith('IDM') ? 'IDM' : qrCode.startsWith('BDM') ? 'BDM' : 'BCM';
-    const cert = validCodes[qrCode];
-    if (cert) return cert;
-    
-    // Generate a demo certificate for any valid format
-    return {
-      qrCode,
-      certificationType: type as CertificationType,
-      professionalName: 'Profesional Certificado',
-      obtainedDate: '2024-01-01',
-      expiryDate: '2027-01-01',
-      status: 'active',
-      certificateNumber: `AECMI-${type}-2024-0000`,
-      isPublic: true,
-      country: 'España',
-      company: 'AECMI Partner',
-    };
-  }
-
-  return validCodes[qrCode] || null;
-}
 
 export default function CertificateVerifyPage({ qrCode, locale }: Props) {
   const router = useRouter();
@@ -137,16 +72,33 @@ export default function CertificateVerifyPage({ qrCode, locale }: Props) {
   const tVerify = (key: string) => (t as any).certificateVerify?.[key] ?? key;
 
   useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      const data = lookupCertificate(qrCode);
-      if (data) {
-        data.status = getCertificateStatus(data.expiryDate);
-      }
-      setCertificate(data);
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
+    const normalized = qrCode.trim().toUpperCase();
+    const controller = new AbortController();
+
+    fetch(`/api/certificate/${encodeURIComponent(normalized)}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.valid && json.certificate) {
+          const c = json.certificate;
+          setCertificate({
+            qrCode: normalized,
+            certificationType: c.certificationType as CertificationType,
+            professionalName: c.fullName,
+            obtainedDate: c.issueDate,
+            expiryDate: c.expiryDate ?? '',
+            status: getCertificateStatus(c.expiryDate ?? new Date().toISOString()),
+            certificateNumber: c.certificationCode,
+            isPublic: true,
+            company: c.organization ?? undefined,
+          });
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') setLoading(false);
+      });
+
+    return () => controller.abort();
   }, [qrCode]);
 
   const handleShare = useCallback(() => {

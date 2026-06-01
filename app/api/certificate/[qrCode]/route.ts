@@ -20,9 +20,10 @@ export async function GET(
 
   try {
     const { qrCode } = await params
+    const normalized = qrCode.trim().toUpperCase()
 
-    if (!qrCode || !validateQRCode(qrCode)) {
-      return NextResponse.json({ error: 'Código QR inválido.' }, { status: 400 })
+    if (!normalized || !validateQRCode(normalized)) {
+      return NextResponse.json({ error: 'Código de certificado inválido. Ejemplo: IDM-2026-1445' }, { status: 400 })
     }
 
     const { data: cert, error } = await supabase
@@ -30,7 +31,7 @@ export async function GET(
       .select(
         'id, certification_type, certification_code, full_name, organization, issue_date, expiry_date, exam_score, status'
       )
-      .eq('qr_code', qrCode)
+      .eq('certification_code', normalized)
       .single()
 
     if (error || !cert) {
