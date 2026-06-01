@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -62,7 +66,7 @@ module.exports = {
           darkblue: "#1A0F3C",
           gold: "#D4A843",
         },
-        // AECMI Certification accent colors
+        // AECOMI Certification accent colors
         cert: {
           idm: "#0066CC",
           "idm-light": "#E6F0FF",
