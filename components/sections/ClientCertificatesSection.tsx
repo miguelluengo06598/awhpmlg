@@ -91,7 +91,7 @@ export function ClientCertificatesSection({ userId }: { userId: string }) {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por código (IDM-2026-1230) o nombre…"
+              placeholder="Buscar por código (IDM-2026-1445) o nombre…"
               style={{
                 width: '100%',
                 paddingLeft: 36,
