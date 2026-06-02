@@ -18,11 +18,6 @@ const CERT_COLORS: Record<CertificationType, [number, number, number]> = {
   BCM: [217, 119, 6],
 };
 
-const CERT_NAMES_ES: Record<CertificationType, string> = {
-  IDM: 'Gestor de Entrega de Información',
-  BDM: 'Gestor de Diseño BIM',
-  BCM: 'Gestor de Construcción BIM',
-};
 
 function formatDate(dateStr: string): string {
   if (!dateStr) return '—';
@@ -106,24 +101,23 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
 
   y += 10;
 
-  // ─── CERT TYPE NAME (bilingual) ───────────────────────────────────────────
+  // ─── CERT TYPE NAME (English only) ───────────────────────────────────────
   const nameEn = getCertificationName(certificationType, 'en');
-  const nameEs = CERT_NAMES_ES[certificationType];
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11.5);
   doc.setTextColor(60, 60, 60);
-  doc.text(`${nameEs}  ·  ${nameEn}`, pw / 2, y, { align: 'center' });
+  doc.text(nameEn, pw / 2, y, { align: 'center' });
 
   y += 10;
 
   // ─── "Awarded to" ─────────────────────────────────────────────────────────
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(140, 140, 140);
-  doc.text('Otorgado a  /  Awarded to', pw / 2, y, { align: 'center' });
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(0, 0, 0);
+  doc.text('Awarded to', pw / 2, y, { align: 'center' });
 
-  y += 9;
+  y += 12;
 
   // ─── PROFESSIONAL NAME ────────────────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
@@ -133,19 +127,17 @@ export async function generateCertificatePDF(data: CertificatePDFData): Promise<
   doc.text(nameLines, pw / 2, y, { align: 'center' });
   y += nameLines.length * 11 + 7;
 
-  // ─── ACHIEVEMENT TEXT (bilingual) ─────────────────────────────────────────
+  // ─── ACHIEVEMENT TEXT (English only, ISO 17024) ───────────────────────────
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(95, 95, 95);
   doc.text(
-    'Por haber demostrado las competencias profesionales requeridas y avaladas por AECOMI',
-    pw / 2, y, { align: 'center' }
+    'For having demonstrated professional competencies endorsed by AECOMI under the requirements of ISO 17024 in the specialty of',
+    pw / 2, y, { align: 'center', maxWidth: pw - margin * 2 }
   );
   y += 5;
-  doc.text(
-    'For having demonstrated the required professional competencies endorsed by AECOMI',
-    pw / 2, y, { align: 'center' }
-  );
+  doc.setFont('helvetica', 'bold');
+  doc.text(nameEn, pw / 2, y, { align: 'center' });
 
   y += 11;
 
