@@ -113,17 +113,6 @@ module.exports = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        // ── Efectos Magic UI (panel admin dark-glass) ──
-        "border-beam": {
-          "100%": { "offset-distance": "100%" },
-        },
-        "shimmer-slide": {
-          to: { transform: "translate(calc(100cqw - 100%), 0)" },
-        },
-        "aurora-shift": {
-          "0%, 100%": { "background-position": "0% 50%" },
-          "50%": { "background-position": "100% 50%" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -131,8 +120,6 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "ticker-scroll": "ticker-scroll 30s linear infinite",
         "float": "float 3s ease-in-out infinite",
-        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
-        "aurora-shift": "aurora-shift 8s ease infinite",
       },
     },
   },
