@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Search, X, ArrowUpDown } from 'lucide-react'
+import { Search, X, ArrowUpDown, CheckCircle2, Clock } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
-import { colors, spacing, typography } from '@/lib/design-system'
 import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
 import { filterCertificates } from '@/lib/searchCertificates'
+import { useDashboardLocale } from '@/lib/useDashboardLocale'
+import { translations } from '@/lib/translations'
 
 interface IssuedCertificate {
   id: string
@@ -25,13 +26,25 @@ interface IssuedCertificate {
 type FilterType = 'all' | 'assigned' | 'pending'
 type SortType = 'recent' | 'code' | 'name'
 
-const TYPE_COLORS: Record<string, string> = {
-  IDM: colors.primary.idm,
-  BDM: colors.primary.bdm,
-  BCM: colors.primary.bcm,
+interface TypeStyle {
+  text: string
+  badge: string
+  action: string
 }
 
+const TYPE_STYLES: Record<string, TypeStyle> = {
+  IDM: { text: 'text-cyan-700', badge: 'bg-cyan-50 text-cyan-700', action: 'border-cyan-200 bg-cyan-50 text-cyan-700 hover:bg-cyan-100' },
+  BDM: { text: 'text-indigo-700', badge: 'bg-indigo-50 text-indigo-700', action: 'border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100' },
+  BCM: { text: 'text-violet-700', badge: 'bg-violet-50 text-violet-700', action: 'border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100' },
+}
+const FALLBACK_STYLE: TypeStyle = { text: 'text-slate-600', badge: 'bg-slate-100 text-slate-600', action: 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100' }
+
+const DATE_LOCALES: Record<string, string> = { es: 'es-ES', en: 'en-GB', pt: 'pt-PT' }
+
 export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: number }) {
+  const { locale } = useDashboardLocale()
+  const t = translations[locale].admin.issuedCerts
+
   const [certificates, setCertificates] = useState<IssuedCertificate[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<FilterType>('all')
@@ -79,150 +92,89 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
   const pendingCount = certificates.filter((c) => !c.user_id).length
 
   const fmt = (iso: string) =>
-    new Date(iso).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    new Date(iso).toLocaleDateString(DATE_LOCALES[locale] ?? 'es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })
+
+  const filterLabels: Record<FilterType, string> = { all: t.filterAll, assigned: t.filterAssigned, pending: t.filterPending }
 
   return (
-    <section style={{
-      padding: spacing.xl,
-      backgroundColor: colors.neutral[50],
-      borderRadius: '16px',
-      marginTop: spacing['2xl'],
-      border: `1px solid ${colors.neutral[200]}`,
-    }}>
+    <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       {/* Header */}
-      <h2 style={{
-        fontFamily: typography.family.title,
-        fontSize: '1.4rem',
-        fontWeight: 700,
-        color: colors.neutral[800],
-        marginBottom: spacing.xl,
-      }}>
-        Certificados Emitidos
-      </h2>
+      <h2 className="mb-6 text-lg font-bold tracking-tight text-slate-900">{t.title}</h2>
 
       {/* Stats */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-        gap: spacing.lg,
-        marginBottom: spacing.xl,
-      }}>
-        <StatCard label="Total Emitidos"       value={certificates.length} color={colors.primary.idm} />
-        <StatCard label="Asignados a Usuario"  value={assignedCount}       color={colors.primary.bdm} />
-        <StatCard label="Sin Usuario"          value={pendingCount}         color={colors.primary.bcm} />
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <StatCard label={t.statTotal} value={certificates.length} valueClass="text-cyan-600" />
+        <StatCard label={t.statAssigned} value={assignedCount} valueClass="text-emerald-600" />
+        <StatCard label={t.statPending} value={pendingCount} valueClass="text-amber-600" />
       </div>
 
       {/* Controls */}
-      <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap', alignItems: 'center', marginBottom: spacing.xl }}>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
         {/* Status filters */}
         {(['all', 'assigned', 'pending'] as const).map((f) => (
           <FilterButton key={f} active={filter === f} onClick={() => setFilter(f)}>
-            {f === 'all' ? 'Todos' : f === 'assigned' ? 'Asignados' : 'Pendientes'}
+            {filterLabels[f]}
           </FilterButton>
         ))}
 
         {/* Search */}
-        <div style={{ position: 'relative', flex: '1 1 220px', maxWidth: 340 }}>
-          <Search style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: colors.neutral[400], pointerEvents: 'none' }} />
+        <div className="relative max-w-[340px] flex-[1_1_220px]">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Código, nombre o email…"
-            style={{
-              width: '100%',
-              paddingLeft: 30,
-              paddingRight: search ? 28 : 10,
-              paddingTop: 8,
-              paddingBottom: 8,
-              fontSize: '0.875rem',
-              fontFamily: typography.family.body,
-              border: `1px solid ${colors.neutral[300]}`,
-              borderRadius: 8,
-              outline: 'none',
-              backgroundColor: colors.neutral.white,
-              color: colors.neutral[700],
-              boxSizing: 'border-box',
-            }}
+            placeholder={t.searchPlaceholder}
+            className={`w-full rounded-lg border border-slate-200 bg-white py-2 pl-8 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 ${search ? 'pr-8' : 'pr-2.5'}`}
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: colors.neutral[400], display: 'flex' }}
+              className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center p-0.5 text-slate-400 hover:text-slate-600"
+              aria-label={t.clearSearch}
             >
-              <X style={{ width: 12, height: 12 }} />
+              <X className="h-3 w-3" />
             </button>
           )}
         </div>
 
         {/* Sort */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <ArrowUpDown style={{ width: 14, height: 14, color: colors.neutral[400] }} />
+        <div className="flex items-center gap-1.5">
+          <ArrowUpDown className="h-3.5 w-3.5 text-slate-400" />
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortType)}
-            style={{
-              padding: '8px 10px',
-              fontSize: '0.875rem',
-              fontFamily: typography.family.body,
-              border: `1px solid ${colors.neutral[300]}`,
-              borderRadius: 8,
-              outline: 'none',
-              backgroundColor: colors.neutral.white,
-              color: colors.neutral[700],
-              cursor: 'pointer',
-            }}
+            className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-sm text-slate-700 outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
           >
-            <option value="recent">Más recientes</option>
-            <option value="code">Código A–Z</option>
-            <option value="name">Nombre A–Z</option>
+            <option value="recent">{t.sortRecent}</option>
+            <option value="code">{t.sortCode}</option>
+            <option value="name">{t.sortName}</option>
           </select>
         </div>
       </div>
 
       {/* Table */}
       {loading ? (
-        <p style={{ fontFamily: typography.family.body, color: colors.neutral[500] }}>
-          Cargando certificados...
-        </p>
+        <p className="text-sm text-slate-500">{t.loading}</p>
       ) : displayCerts.length === 0 ? (
-        <div style={{
-          padding: spacing.xl,
-          textAlign: 'center',
-          backgroundColor: colors.neutral.white,
-          borderRadius: '12px',
-          border: `1px dashed ${colors.neutral[300]}`,
-        }}>
-          <p style={{ fontFamily: typography.family.body, color: colors.neutral[500], margin: `0 0 ${spacing.md}` }}>
-            {search ? `Sin resultados para "${search}"` : 'No hay certificados para mostrar'}
+        <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+          <p className="mb-3 text-sm text-slate-500">
+            {search ? `${t.noResultsSearch} "${search}"` : t.noResults}
           </p>
           {search && (
-            <button
-              onClick={() => setSearch('')}
-              style={{ fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.primary.idm, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}
-            >
-              Limpiar búsqueda
+            <button onClick={() => setSearch('')} className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              {t.clearSearch}
             </button>
           )}
         </div>
       ) : (
-        <div style={{ backgroundColor: colors.neutral.white, borderRadius: '12px', border: `1px solid ${colors.neutral[200]}`, overflow: 'hidden' }}>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="overflow-hidden rounded-xl border border-slate-200">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
               <thead>
-                <tr style={{ backgroundColor: colors.neutral[100], borderBottom: `2px solid ${colors.neutral[200]}` }}>
-                  {['Código', 'Tipo', 'Nombre', 'Email', 'Emitido', 'Vencimiento', 'Estado', ''].map((h, i) => (
-                    <th key={i} style={{
-                      padding: `${spacing.md} ${spacing.lg}`,
-                      textAlign: 'left',
-                      fontFamily: typography.family.title,
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      color: colors.neutral[600],
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                      whiteSpace: 'nowrap',
-                    }}>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  {[t.colCode, t.colType, t.colName, t.colEmail, t.colIssued, t.colExpiry, t.colStatus, ''].map((h, i) => (
+                    <th key={i} className="whitespace-nowrap px-4 py-3 text-left text-[13px] font-semibold text-slate-500">
                       {h}
                     </th>
                   ))}
@@ -230,97 +182,56 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
               </thead>
               <tbody>
                 {displayCerts.map((cert, idx) => {
-                  const typeColor = TYPE_COLORS[cert.certification_type] ?? colors.neutral[400]
+                  const style = TYPE_STYLES[cert.certification_type] ?? FALLBACK_STYLE
                   const isAssigned = !!cert.user_id
                   return (
                     <tr
                       key={cert.id}
-                      style={{
-                        borderBottom: `1px solid ${colors.neutral[100]}`,
-                        backgroundColor: idx % 2 === 0 ? colors.neutral.white : colors.neutral[50],
-                      }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.backgroundColor = colors.primary.idm + '08' }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.backgroundColor = idx % 2 === 0 ? colors.neutral.white : colors.neutral[50] }}
+                      className={`border-b border-slate-100 transition-colors hover:bg-slate-50 ${idx % 2 === 1 ? 'bg-slate-50/50' : ''}`}
                     >
                       {/* Code */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}`, whiteSpace: 'nowrap' }}>
-                        <code style={{ fontFamily: 'monospace', fontSize: '0.875rem', fontWeight: 700, color: typeColor, letterSpacing: '0.5px' }}>
-                          {cert.certification_code}
-                        </code>
+                      <td className="whitespace-nowrap px-4 py-2.5">
+                        <code className={`font-mono text-sm font-bold tracking-wide ${style.text}`}>{cert.certification_code}</code>
                       </td>
 
                       {/* Type */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}` }}>
-                        <span style={{
-                          display: 'inline-block',
-                          padding: '2px 8px',
-                          borderRadius: 4,
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          backgroundColor: typeColor + '18',
-                          color: typeColor,
-                        }}>
+                      <td className="px-4 py-2.5">
+                        <span className={`inline-block rounded px-2 py-0.5 text-xs font-bold ${style.badge}`}>
                           {cert.certification_type}
                         </span>
                       </td>
 
                       {/* Name */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}`, fontFamily: typography.family.body, fontSize: '0.9rem', fontWeight: 600, color: colors.neutral[800], whiteSpace: 'nowrap' }}>
-                        {cert.full_name}
-                      </td>
+                      <td className="whitespace-nowrap px-4 py-2.5 text-sm font-semibold text-slate-800">{cert.full_name}</td>
 
                       {/* Email */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}` }}>
-                        <a href={`mailto:${cert.email}`} style={{ fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.primary.idm, textDecoration: 'none' }}>
-                          {cert.email}
-                        </a>
+                      <td className="px-4 py-2.5">
+                        <a href={`mailto:${cert.email}`} className="text-sm text-indigo-600 hover:text-indigo-700">{cert.email}</a>
                       </td>
 
                       {/* Issue date */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}`, fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.neutral[600], whiteSpace: 'nowrap' }}>
-                        {fmt(cert.issue_date)}
-                      </td>
+                      <td className="whitespace-nowrap px-4 py-2.5 text-sm text-slate-500">{fmt(cert.issue_date)}</td>
 
                       {/* Expiry */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}`, fontFamily: typography.family.body, fontSize: '0.875rem', color: colors.neutral[600], whiteSpace: 'nowrap' }}>
-                        {cert.expiry_date ? fmt(cert.expiry_date) : '—'}
-                      </td>
+                      <td className="whitespace-nowrap px-4 py-2.5 text-sm text-slate-500">{cert.expiry_date ? fmt(cert.expiry_date) : '—'}</td>
 
                       {/* Status */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}` }}>
-                        <span style={{
-                          display: 'inline-block',
-                          padding: '3px 9px',
-                          borderRadius: 4,
-                          fontSize: '0.78rem',
-                          fontWeight: 700,
-                          backgroundColor: isAssigned ? colors.semantic.success + '18' : colors.semantic.warning + '18',
-                          color: isAssigned ? colors.semantic.success : colors.semantic.warning,
-                        }}>
-                          {isAssigned ? '✅ Asignado' : '⏳ Pendiente'}
+                      <td className="px-4 py-2.5">
+                        <span className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-bold ${isAssigned ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+                          {isAssigned ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+                          {isAssigned ? t.statusAssigned : t.statusPending}
                         </span>
                       </td>
 
                       {/* Action */}
-                      <td style={{ padding: `${spacing.sm} ${spacing.lg}`, textAlign: 'right' }}>
+                      <td className="px-4 py-2.5 text-right">
                         <a
                           href={cert.qr_code}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            display: 'inline-block',
-                            padding: '5px 12px',
-                            borderRadius: 6,
-                            fontSize: '0.8rem',
-                            fontWeight: 600,
-                            backgroundColor: typeColor + '14',
-                            color: typeColor,
-                            textDecoration: 'none',
-                            border: `1px solid ${typeColor}30`,
-                            whiteSpace: 'nowrap',
-                          }}
+                          className={`inline-block whitespace-nowrap rounded-md border px-3 py-1 text-xs font-semibold transition-colors ${style.action}`}
                         >
-                          Ver QR
+                          {t.viewQr}
                         </a>
                       </td>
                     </tr>
@@ -331,15 +242,8 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
           </div>
 
           {/* Footer row count */}
-          <div style={{
-            padding: `${spacing.sm} ${spacing.lg}`,
-            borderTop: `1px solid ${colors.neutral[100]}`,
-            backgroundColor: colors.neutral[50],
-            fontFamily: typography.family.body,
-            fontSize: '0.8rem',
-            color: colors.neutral[500],
-          }}>
-            {displayCerts.length} de {certificates.length} certificado{certificates.length !== 1 ? 's' : ''}
+          <div className="border-t border-slate-100 bg-slate-50 px-4 py-2.5 text-xs text-slate-500">
+            {displayCerts.length} {t.footerConnector} {certificates.length} {certificates.length !== 1 ? t.certPlural : t.certSingular}
           </div>
         </div>
       )}
@@ -347,21 +251,11 @@ export function AdminIssuedCertificatesSection({ refreshKey }: { refreshKey?: nu
   )
 }
 
-function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
+function StatCard({ label, value, valueClass }: { label: string; value: number; valueClass: string }) {
   return (
-    <div style={{
-      padding: spacing.lg,
-      backgroundColor: colors.neutral.white,
-      borderRadius: '12px',
-      border: `1px solid ${colors.neutral[200]}`,
-      textAlign: 'center',
-    }}>
-      <p style={{ fontFamily: typography.family.body, fontSize: '0.8rem', fontWeight: 600, color: colors.neutral[600], textTransform: 'uppercase', margin: `0 0 ${spacing.sm}`, letterSpacing: '0.04em' }}>
-        {label}
-      </p>
-      <p style={{ fontFamily: typography.family.title, fontSize: '2rem', fontWeight: 700, color, margin: 0 }}>
-        {value}
-      </p>
+    <div className="rounded-xl border border-slate-200 bg-white p-4 text-center">
+      <p className="m-0 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
+      <p className={`m-0 text-3xl font-bold ${valueClass}`}>{value}</p>
     </div>
   )
 }
@@ -370,18 +264,11 @@ function FilterButton({ active, onClick, children }: { active: boolean; onClick:
   return (
     <button
       onClick={onClick}
-      style={{
-        padding: `${spacing.sm} ${spacing.md}`,
-        backgroundColor: active ? colors.primary.idm : colors.neutral.white,
-        color: active ? 'white' : colors.neutral[700],
-        border: `1px solid ${active ? colors.primary.idm : colors.neutral[300]}`,
-        borderRadius: '8px',
-        fontFamily: typography.family.body,
-        fontWeight: 600,
-        fontSize: '0.875rem',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-      }}
+      className={`rounded-lg border px-3 py-1.5 text-sm font-semibold transition-colors ${
+        active
+          ? 'border-indigo-600 bg-indigo-600 text-white'
+          : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:text-indigo-600'
+      }`}
     >
       {children}
     </button>

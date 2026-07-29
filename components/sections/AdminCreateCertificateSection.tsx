@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { GraduationCap, CheckCircle2, Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui'
-import { colors, spacing, typography } from '@/lib/design-system'
 import { supabase } from '@/lib/supabaseClient'
 import { fetchWithTimeout } from '@/lib/fetchWithTimeout'
-import Link from 'next/link'
+import { useDashboardLocale } from '@/lib/useDashboardLocale'
+import { translations } from '@/lib/translations'
 
 interface CreatedCert {
   id: string
@@ -20,29 +22,14 @@ const CERT_OPTIONS = [
   { value: 'BCM', label: 'BCM — BIM Construction Manager' },
 ]
 
-const fieldStyle = {
-  width: '100%',
-  padding: `${spacing.md} ${spacing.lg}`,
-  border: `1px solid ${colors.neutral[300]}`,
-  borderRadius: 8,
-  fontFamily: typography.family.body,
-  fontSize: '0.95rem',
-  color: colors.neutral[700],
-  backgroundColor: colors.neutral.white,
-  outline: 'none',
-  boxSizing: 'border-box' as const,
-}
-
-const labelStyle = {
-  display: 'block',
-  fontFamily: typography.family.body,
-  fontSize: '0.875rem',
-  fontWeight: 600 as const,
-  color: colors.neutral[700],
-  marginBottom: spacing.sm,
-}
+const inputClass =
+  'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100'
+const labelClass = 'mb-1.5 block text-sm font-semibold text-slate-700'
 
 export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () => void }) {
+  const { locale } = useDashboardLocale()
+  const t = translations[locale].admin.createCert
+
   const [form, setForm] = useState({
     certification_type: 'IDM',
     email: '',
@@ -67,7 +54,7 @@ export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () =>
 
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      if (!session) { setError('Sesión expirada. Recarga la página.'); return }
+      if (!session) { setError(t.errSession); return }
 
       const res = await fetchWithTimeout('/api/admin/certificates', {
         method: 'POST',
@@ -83,13 +70,13 @@ export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () =>
       })
 
       const data = await res.json()
-      if (!res.ok) { setError(data.error ?? 'Error creando el certificado.'); return }
+      if (!res.ok) { setError(data.error ?? t.errCreate); return }
 
       setCreated(data.certificate)
       setForm({ certification_type: 'IDM', email: '', full_name: '', organization: '', exam_score: '', expiry_date: '' })
       onCreated?.()
     } catch {
-      setError('Error de red. Inténtalo de nuevo.')
+      setError(t.errNetwork)
     } finally {
       setLoading(false)
     }
@@ -103,106 +90,109 @@ export function AdminCreateCertificateSection({ onCreated }: { onCreated?: () =>
   }
 
   return (
-    <div style={{ marginTop: spacing['2xl'] }}>
-      <h2 style={{ fontFamily: typography.family.title, fontSize: '1.4rem', fontWeight: 700, color: colors.neutral[800], marginBottom: spacing.xl }}>
-        Emitir Certificado Manual
-      </h2>
+    <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 className="mb-6 text-lg font-bold tracking-tight text-slate-900">{t.title}</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: spacing.xl, alignItems: 'start' }}>
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: spacing.lg }}>
-
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label style={labelStyle}>Tipo de certificación <span style={{ color: colors.semantic.danger }}>*</span></label>
-            <select name="certification_type" value={form.certification_type} onChange={update} style={fieldStyle}>
+            <label className={labelClass}>
+              {t.typeLabel} <span className="text-red-500">*</span>
+            </label>
+            <select name="certification_type" value={form.certification_type} onChange={update} className={`${inputClass} cursor-pointer`}>
               {CERT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
           </div>
 
           <div>
-            <label style={labelStyle}>Email del profesional <span style={{ color: colors.semantic.danger }}>*</span></label>
-            <input type="email" name="email" value={form.email} onChange={update} required placeholder="nombre@empresa.com" style={fieldStyle} />
+            <label className={labelClass}>
+              {t.emailLabel} <span className="text-red-500">*</span>
+            </label>
+            <input type="email" name="email" value={form.email} onChange={update} required placeholder={t.emailPlaceholder} className={inputClass} />
           </div>
 
           <div>
-            <label style={labelStyle}>Nombre completo <span style={{ color: colors.semantic.danger }}>*</span></label>
-            <input type="text" name="full_name" value={form.full_name} onChange={update} required placeholder="Nombre Apellido" style={fieldStyle} />
+            <label className={labelClass}>
+              {t.nameLabel} <span className="text-red-500">*</span>
+            </label>
+            <input type="text" name="full_name" value={form.full_name} onChange={update} required placeholder={t.namePlaceholder} className={inputClass} />
           </div>
 
           <div>
-            <label style={labelStyle}>Organización <span style={{ color: colors.neutral[400], fontWeight: 400 }}>(opcional)</span></label>
-            <input type="text" name="organization" value={form.organization} onChange={update} placeholder="Empresa o institución" style={fieldStyle} />
+            <label className={labelClass}>
+              {t.orgLabel} <span className="font-normal text-slate-400">{t.optional}</span>
+            </label>
+            <input type="text" name="organization" value={form.organization} onChange={update} placeholder={t.orgPlaceholder} className={inputClass} />
           </div>
 
           <div>
-            <label style={labelStyle}>Puntuación del examen <span style={{ color: colors.neutral[400], fontWeight: 400 }}>(0–100)</span></label>
-            <input type="number" name="exam_score" value={form.exam_score} onChange={update} min={0} max={100} placeholder="85" style={fieldStyle} />
+            <label className={labelClass}>
+              {t.scoreLabel} <span className="font-normal text-slate-400">{t.scoreHint}</span>
+            </label>
+            <input type="number" name="exam_score" value={form.exam_score} onChange={update} min={0} max={100} placeholder={t.scorePlaceholder} className={inputClass} />
           </div>
 
           <div>
-            <label style={labelStyle}>Fecha de vencimiento <span style={{ color: colors.neutral[400], fontWeight: 400 }}>(opcional)</span></label>
-            <input type="date" name="expiry_date" value={form.expiry_date} onChange={update} style={fieldStyle} />
+            <label className={labelClass}>
+              {t.expiryLabel} <span className="font-normal text-slate-400">{t.optional}</span>
+            </label>
+            <input type="date" name="expiry_date" value={form.expiry_date} onChange={update} className={inputClass} />
           </div>
 
           {error && (
-            <div style={{ padding: spacing.md, backgroundColor: colors.semantic.danger + '14', border: `1px solid ${colors.semantic.danger}44`, borderRadius: 8, color: colors.semantic.danger, fontSize: '0.9rem', fontWeight: 500 }}>
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700">
               {error}
             </div>
           )}
 
           <Button type="submit" variant="primary" size="md" fullWidth loading={loading}>
-            Emitir Certificado
+            {t.submit}
           </Button>
         </form>
 
         {/* Result panel */}
         <div>
           {created ? (
-            <div style={{ backgroundColor: '#f0fdf4', border: `2px solid ${colors.semantic.success}44`, borderRadius: 16, padding: spacing.xl }}>
-              <p style={{ fontFamily: typography.family.title, fontSize: '1rem', fontWeight: 700, color: colors.semantic.success, marginBottom: spacing.lg }}>
-                ✅ Certificado emitido
+            <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-6">
+              <p className="mb-4 flex items-center gap-2 text-base font-bold text-emerald-700">
+                <CheckCircle2 className="h-5 w-5" /> {t.successTitle}
               </p>
 
-              <div style={{ marginBottom: spacing.md }}>
-                <p style={{ ...labelStyle, color: colors.neutral[500] }}>Código</p>
-                <code style={{ fontFamily: 'monospace', fontSize: '1rem', fontWeight: 700, color: colors.neutral[800] }}>
-                  {created.certification_code}
-                </code>
+              <div className="mb-3">
+                <p className="mb-1 text-sm font-semibold text-slate-500">{t.codeLabel}</p>
+                <code className="font-mono text-base font-bold text-slate-800">{created.certification_code}</code>
               </div>
 
-              <div style={{ marginBottom: spacing.lg }}>
-                <p style={{ ...labelStyle, color: colors.neutral[500] }}>Link de verificación</p>
+              <div className="mb-4">
+                <p className="mb-1 text-sm font-semibold text-slate-500">{t.verifyLinkLabel}</p>
                 <Link
                   href={created.qr_code}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ fontFamily: typography.family.body, fontSize: '0.85rem', color: colors.primary.idm, wordBreak: 'break-all', fontWeight: 600 }}
+                  className="break-all text-sm font-semibold text-indigo-600 hover:text-indigo-700"
                 >
                   {created.qr_code}
                 </Link>
               </div>
 
               {created.qr_data && (
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: spacing.lg }}>
+                <div className="mb-4 flex justify-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={created.qr_data} alt="QR del certificado" style={{ width: 140, height: 140, borderRadius: 8, border: `1px solid ${colors.neutral[200]}` }} />
+                  <img src={created.qr_data} alt={t.qrAlt} className="h-36 w-36 rounded-lg border border-slate-200" />
                 </div>
               )}
 
-              <Button variant="success" size="md" fullWidth onClick={copyLink}>
-                {copied ? '✓ Copiado' : '📋 Copiar link'}
+              <Button variant="success" size="md" fullWidth onClick={copyLink} icon={copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}>
+                {copied ? t.copied : t.copyLink}
               </Button>
 
-              <p style={{ fontFamily: typography.family.body, fontSize: '0.78rem', color: colors.neutral[500], marginTop: spacing.md, textAlign: 'center' }}>
-                Comparte este link o QR con el profesional para que acceda a su certificación.
-              </p>
+              <p className="mt-3 text-center text-xs text-slate-500">{t.shareHint}</p>
             </div>
           ) : (
-            <div style={{ backgroundColor: colors.neutral[50], border: `1px dashed ${colors.neutral[300]}`, borderRadius: 16, padding: spacing.xl, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 280, gap: spacing.md }}>
-              <span style={{ fontSize: '2.5rem', opacity: 0.3 }}>🎓</span>
-              <p style={{ fontFamily: typography.family.body, fontSize: '0.9rem', color: colors.neutral[400], textAlign: 'center', margin: 0 }}>
-                El QR y el link de verificación aparecerán aquí tras emitir el certificado.
-              </p>
+            <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6">
+              <GraduationCap className="h-10 w-10 text-slate-300" />
+              <p className="m-0 text-center text-sm text-slate-400">{t.placeholderHint}</p>
             </div>
           )}
         </div>
