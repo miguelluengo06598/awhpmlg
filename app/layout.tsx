@@ -3,6 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/sections/Header";
 import Footer from "@/components/sections/Footer";
+import { LocaleSync } from "@/components/LocaleSync";
 import ServiceWorkerCleanup from "@/components/ServiceWorkerCleanup";
 import { PageTransition } from "@/components/PageTransition";
 import { AuthProvider } from "@/lib/authContext";
@@ -39,6 +40,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-pmi-cream antialiased">
         <AuthProvider>
+          <LocaleSync />
           <PageTransition />
           <ServiceWorkerCleanup />
           <Header />

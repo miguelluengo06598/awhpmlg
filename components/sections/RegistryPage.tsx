@@ -46,7 +46,7 @@ import { useTranslation } from '@/lib/useTranslation';
 import { validateQRCode } from '@/lib/qrGenerator';
 
 interface Props {
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
 }
 
 interface Professional {
@@ -104,7 +104,7 @@ const staggerContainer = {
 
 
 
-function StatusBadge({ status, locale }: { status: Professional['status']; locale: 'es' | 'en' }) {
+function StatusBadge({ status, locale }: { status: Professional['status']; locale: 'es' | 'en' | 'pt' }) {
   const styles: Record<string, string> = {
     Activa: 'bg-emerald-100 text-emerald-700 border-emerald-200',
     Active: 'bg-emerald-100 text-emerald-700 border-emerald-200',
@@ -114,12 +114,12 @@ function StatusBadge({ status, locale }: { status: Professional['status']; local
     Expired: 'bg-red-100 text-red-700 border-red-200',
   };
   const labels: Record<string, string> = {
-    Activa: locale === 'es' ? 'Activa' : 'Active',
-    Active: locale === 'es' ? 'Activa' : 'Active',
-    'Por Renovar': locale === 'es' ? 'Por Renovar' : 'Due for Renewal',
-    'Due for Renewal': locale === 'es' ? 'Por Renovar' : 'Due for Renewal',
-    Vencida: locale === 'es' ? 'Vencida' : 'Expired',
-    Expired: locale === 'es' ? 'Vencida' : 'Expired',
+    Activa: locale === 'es' ? 'Activa' : locale === 'pt' ? 'Ativa' : 'Active',
+    Active: locale === 'es' ? 'Activa' : locale === 'pt' ? 'Ativa' : 'Active',
+    'Por Renovar': locale === 'es' ? 'Por Renovar' : locale === 'pt' ? 'A Renovar' : 'Due for Renewal',
+    'Due for Renewal': locale === 'es' ? 'Por Renovar' : locale === 'pt' ? 'A Renovar' : 'Due for Renewal',
+    Vencida: locale === 'es' ? 'Vencida' : locale === 'pt' ? 'Expirada' : 'Expired',
+    Expired: locale === 'es' ? 'Vencida' : locale === 'pt' ? 'Expirada' : 'Expired',
   };
   return (
     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${styles[status] || styles.Activa}`}>

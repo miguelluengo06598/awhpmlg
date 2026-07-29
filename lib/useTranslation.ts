@@ -2,22 +2,23 @@
 
 import { usePathname } from 'next/navigation'
 import { translations } from './translations'
+import { type Locale, localeFromPath, localizePath, stripLocalePrefix } from './locale'
 
-export function useTranslation(locale?: 'es' | 'en') {
-  const pathname = usePathname()
-  const currentLang = locale ?? (pathname?.startsWith('/en') ? 'en' : 'es')
+export function useTranslation(locale?: Locale) {
+  const pathname = usePathname() ?? '/'
+  // Idioma validado (whitelist): del prefijo del path o del override recibido.
+  const currentLang: Locale = locale ?? localeFromPath(pathname)
+  // Indexación por clave ya validada → sin interpolación de valores crudos.
   const t = translations[currentLang]
 
   function getLink(path: string) {
-    if (path.startsWith('/en')) return path
-    return currentLang === 'en' ? `/en${path}` : path
+    return localizePath(path, currentLang)
   }
 
   function isActive(path: string) {
-    if (path === '/') {
-      return pathname === '/' || pathname === '/en'
-    }
-    return pathname?.startsWith(currentLang === 'en' ? `/en${path}` : path)
+    const here = stripLocalePrefix(pathname)
+    if (path === '/') return here === '/'
+    return here.startsWith(path)
   }
 
   return { currentLang, t, getLink, isActive }

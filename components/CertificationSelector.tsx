@@ -59,7 +59,7 @@ const CERTIFICATIONS: CertificationOption[] = [
 
 interface CertificationSelectorProps {
   onSelect: (type: string, displayName: string) => void
-  locale?: 'es' | 'en'
+  locale?: 'es' | 'en' | 'pt'
 }
 
 export default function CertificationSelector({ onSelect, locale = 'es' }: CertificationSelectorProps) {

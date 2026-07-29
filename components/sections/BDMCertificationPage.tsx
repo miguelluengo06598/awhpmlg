@@ -35,7 +35,7 @@ import { useTranslation } from '@/lib/useTranslation';
 import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
 
 interface Props {
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
 }
 
 const fadeInUp = {
@@ -84,8 +84,8 @@ export default function BDMCertificationPage({ locale }: Props) {
   ];
 
   const transversalGroups = [
-    { label: locale === 'es' ? 'Gestión y Liderazgo' : 'Management and Leadership', items: [t.bdm.trans_1, t.bdm.trans_2, t.bdm.trans_3] },
-    { label: locale === 'es' ? 'Organización y Ética' : 'Organization and Ethics', items: [t.bdm.trans_4, t.bdm.trans_5, t.bdm.trans_6] },
+    { label: locale === 'es' ? 'Gestión y Liderazgo' : locale === 'pt' ? 'Gestão e Liderança' : 'Management and Leadership', items: [t.bdm.trans_1, t.bdm.trans_2, t.bdm.trans_3] },
+    { label: locale === 'es' ? 'Organización y Ética' : locale === 'pt' ? 'Organização e Ética' : 'Organization and Ethics', items: [t.bdm.trans_4, t.bdm.trans_5, t.bdm.trans_6] },
   ];
 
   const processSteps = [
@@ -650,7 +650,7 @@ export default function BDMCertificationPage({ locale }: Props) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-gradient-to-r from-[#0a2e26] to-[#00AA88] text-white">
-                    <th className="px-6 py-4 font-semibold rounded-tl-2xl">{locale === 'es' ? 'Aspecto' : 'Aspect'}</th>
+                    <th className="px-6 py-4 font-semibold rounded-tl-2xl">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspeto' : 'Aspect'}</th>
                     <th className="px-6 py-4 font-semibold">{t.bdm.compare_idm}</th>
                     <th className="px-6 py-4 font-semibold">{t.bdm.compare_bdm}</th>
                     <th className="px-6 py-4 font-semibold rounded-tr-2xl">{t.bdm.compare_bcm}</th>
@@ -658,8 +658,8 @@ export default function BDMCertificationPage({ locale }: Props) {
                 </thead>
                 <tbody>
                   {[
-                    { label: t.bdm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : 'Information Management', locale === 'es' ? 'Diseño BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : 'BIM Construction'] },
-                    { label: t.bdm.compare_level, values: [locale === 'es' ? 'Avanzado' : 'Advanced', locale === 'es' ? 'Intermedio' : 'Intermediate', locale === 'es' ? 'Avanzado' : 'Advanced'] },
+                    { label: t.bdm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
+                    { label: t.bdm.compare_level, values: [locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
                     { label: t.bdm.compare_exp, values: ['3+ años', '3+ años', '5+ años'] },
                     { label: t.bdm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
@@ -698,9 +698,9 @@ export default function BDMCertificationPage({ locale }: Props) {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Laura Fernández', role: locale === 'es' ? 'Coordinadora BIM' : 'BIM Coordinator', company: 'Arquitech Studio', quote: locale === 'es' ? 'La certificación BDM me dio las herramientas para liderar la coordinación de diseño en proyectos internacionales con total confianza.' : 'The BDM certification gave me the tools to lead design coordination in international projects with complete confidence.' },
-              { name: 'Miguel Ángel Ruiz', role: locale === 'es' ? 'Jefe de Proyecto de Diseño' : 'Design Project Manager', company: 'Ingeco BIM', quote: locale === 'es' ? 'Como jefe de proyecto, contar con la certificación BDM de AECOMI me permite garantizar calidad en cada entrega de modelos.' : 'As a project manager, having the AECOMI BDM certification allows me to guarantee quality in every model delivery.' },
-              { name: 'Sarah Johnson', role: locale === 'es' ? 'BIM Manager' : 'BIM Manager', company: 'DesignBuild NYC', quote: locale === 'es' ? 'El enfoque práctico de esta certificación la convierte en un estándar indispensable para cualquier coordinador de diseño BIM.' : 'The practical focus of this certification makes it an essential standard for any BIM design coordinator.' },
+              { name: 'Laura Fernández', role: locale === 'es' ? 'Coordinadora BIM' : locale === 'pt' ? 'Coordenadora BIM' : 'BIM Coordinator', company: 'Arquitech Studio', quote: locale === 'es' ? 'La certificación BDM me dio las herramientas para liderar la coordinación de diseño en proyectos internacionales con total confianza.' : locale === 'pt' ? 'A certificação BDM deu-me as ferramentas para liderar a coordenação de projeto em projetos internacionais com total confiança.' : 'The BDM certification gave me the tools to lead design coordination in international projects with complete confidence.' },
+              { name: 'Miguel Ángel Ruiz', role: locale === 'es' ? 'Jefe de Proyecto de Diseño' : locale === 'pt' ? 'Chefe de Projeto de Conceção' : 'Design Project Manager', company: 'Ingeco BIM', quote: locale === 'es' ? 'Como jefe de proyecto, contar con la certificación BDM de AECOMI me permite garantizar calidad en cada entrega de modelos.' : locale === 'pt' ? 'Como chefe de projeto, ter a certificação BDM da AECOMI permite-me garantir qualidade em cada entrega de modelos.' : 'As a project manager, having the AECOMI BDM certification allows me to guarantee quality in every model delivery.' },
+              { name: 'Sarah Johnson', role: locale === 'es' ? 'BIM Manager' : locale === 'pt' ? 'BIM Manager' : 'BIM Manager', company: 'DesignBuild NYC', quote: locale === 'es' ? 'El enfoque práctico de esta certificación la convierte en un estándar indispensable para cualquier coordinador de diseño BIM.' : locale === 'pt' ? 'A abordagem prática desta certificação torna-a num padrão indispensável para qualquer coordenador de projeto BIM.' : 'The practical focus of this certification makes it an essential standard for any BIM design coordinator.' },
             ].map((timo, idx) => (
               <motion.div
                 key={idx}

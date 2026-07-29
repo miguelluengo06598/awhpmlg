@@ -48,7 +48,7 @@ interface CertificateData {
 
 interface Props {
   qrCode: string;
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
 }
 
 const fadeInUp = {

@@ -79,7 +79,7 @@ export function getCertificationColors(type: CertificationType) {
 /**
  * Get full certification name from type
  */
-export function getCertificationName(type: CertificationType, locale: 'es' | 'en' = 'es'): string {
+export function getCertificationName(type: CertificationType, locale: 'es' | 'en' | 'pt' = 'es'): string {
   const names = {
     es: {
       IDM: 'Information Delivery Manager',
@@ -87,6 +87,11 @@ export function getCertificationName(type: CertificationType, locale: 'es' | 'en
       BCM: 'BIM Construction Manager',
     },
     en: {
+      IDM: 'Information Delivery Manager',
+      BDM: 'BIM Design Manager',
+      BCM: 'BIM Construction Manager',
+    },
+    pt: {
       IDM: 'Information Delivery Manager',
       BDM: 'BIM Design Manager',
       BCM: 'BIM Construction Manager',
@@ -129,7 +134,7 @@ export function getCertificateStatus(expiryDate: string): 'active' | 'due' | 'ex
 /**
  * Get status label and color
  */
-export function getStatusInfo(status: 'active' | 'due' | 'expired', locale: 'es' | 'en' = 'es') {
+export function getStatusInfo(status: 'active' | 'due' | 'expired', locale: 'es' | 'en' | 'pt' = 'es') {
   const labels = {
     es: {
       active: { label: 'Activa', color: 'bg-green-50 text-green-700 border-green-200', dot: 'bg-green-500' },
@@ -140,6 +145,11 @@ export function getStatusInfo(status: 'active' | 'due' | 'expired', locale: 'es'
       active: { label: 'Active', color: 'bg-green-50 text-green-700 border-green-200', dot: 'bg-green-500' },
       due: { label: 'Due for Renewal', color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500' },
       expired: { label: 'Expired', color: 'bg-red-50 text-red-700 border-red-200', dot: 'bg-red-500' },
+    },
+    pt: {
+      active: { label: 'Ativa', color: 'bg-green-50 text-green-700 border-green-200', dot: 'bg-green-500' },
+      due: { label: 'A Renovar', color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500' },
+      expired: { label: 'Expirada', color: 'bg-red-50 text-red-700 border-red-200', dot: 'bg-red-500' },
     },
   };
   return labels[locale][status];

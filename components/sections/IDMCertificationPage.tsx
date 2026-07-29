@@ -47,7 +47,7 @@ import { useTranslation } from '@/lib/useTranslation';
 import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
 
 interface Props {
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
 }
 
 const fadeInUp = {
@@ -104,11 +104,11 @@ export default function IDMCertificationPage({ locale }: Props) {
   ];
 
   const processSteps = [
-    { step: '01', title: t.idm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : 'Registration and documentation preparation' },
-    { step: '02', title: t.idm.process_step_2, desc: locale === 'es' ? 'Evaluación de competencias técnicas' : 'Technical competency assessment' },
-    { step: '03', title: t.idm.process_step_3, desc: locale === 'es' ? 'Evaluación de competencias transversales' : 'Transversal competency assessment' },
-    { step: '04', title: t.idm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : 'Interview with the board' },
-    { step: '05', title: t.idm.process_step_5, desc: locale === 'es' ? 'Emisión de certificado digital' : 'Digital certificate issuance' },
+    { step: '01', title: t.idm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : locale === 'pt' ? 'Registo e preparação de documentação' : 'Registration and documentation preparation' },
+    { step: '02', title: t.idm.process_step_2, desc: locale === 'es' ? 'Evaluación de competencias técnicas' : locale === 'pt' ? 'Avaliação de competências técnicas' : 'Technical competency assessment' },
+    { step: '03', title: t.idm.process_step_3, desc: locale === 'es' ? 'Evaluación de competencias transversales' : locale === 'pt' ? 'Avaliação de competências transversais' : 'Transversal competency assessment' },
+    { step: '04', title: t.idm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : locale === 'pt' ? 'Entrevista com o júri' : 'Interview with the board' },
+    { step: '05', title: t.idm.process_step_5, desc: locale === 'es' ? 'Emisión de certificado digital' : locale === 'pt' ? 'Emissão de certificado digital' : 'Digital certificate issuance' },
   ];
 
   const benefits = [
@@ -649,7 +649,7 @@ export default function IDMCertificationPage({ locale }: Props) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-[#0066CC] text-white">
-                    <th className="px-6 py-4 font-bold">{locale === 'es' ? 'Aspecto' : 'Aspect'}</th>
+                    <th className="px-6 py-4 font-bold">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspeto' : 'Aspect'}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_idm}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_bdm}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_bcm}</th>
@@ -657,8 +657,8 @@ export default function IDMCertificationPage({ locale }: Props) {
                 </thead>
                 <tbody>
                   {[
-                    { label: t.idm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : 'Information Management', locale === 'es' ? 'Diseño BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : 'BIM Construction'] },
-                    { label: t.idm.compare_level, values: [locale === 'es' ? 'Intermedio' : 'Intermediate', locale === 'es' ? 'Intermedio' : 'Intermediate', locale === 'es' ? 'Avanzado' : 'Advanced'] },
+                    { label: t.idm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
+                    { label: t.idm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
                     { label: t.idm.compare_exp, values: ['3+ años', '3+ años', '5+ años'] },
                     { label: t.idm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
@@ -706,9 +706,9 @@ export default function IDMCertificationPage({ locale }: Props) {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Carlos Martínez', role: locale === 'es' ? 'Jefe de Proyectos BIM' : 'BIM Project Manager', company: 'Ingeconsult SA', quote: locale === 'es' ? 'La certificación IDM me abrió puertas en proyectos internacionales. Es un reconocimiento que realmente marca la diferencia.' : 'The IDM certification opened doors for me on international projects. It is a recognition that truly makes a difference.' },
-              { name: 'Ana Gómez', role: locale === 'es' ? 'Directora de Innovación' : 'Innovation Director', company: 'Construtech', quote: locale === 'es' ? 'Como directora, valorar que mi equipo cuente con certificaciones AECOMI nos da una ventaja competitiva real en licitaciones.' : 'As a director, valuing that my team has AECOMI certifications gives us a real competitive advantage in tenders.' },
-              { name: 'James Wilson', role: locale === 'es' ? 'Consultor BIM Senior' : 'Senior BIM Consultant', company: 'DigitalBuild UK', quote: locale === 'es' ? 'El nivel de exigencia de esta certificación la convierte en un estándar de referencia en la industria global.' : 'The demanding level of this certification makes it a reference standard in the global industry.' },
+              { name: 'Carlos Martínez', role: locale === 'es' ? 'Jefe de Proyectos BIM' : locale === 'pt' ? 'Chefe de Projetos BIM' : 'BIM Project Manager', company: 'Ingeconsult SA', quote: locale === 'es' ? 'La certificación IDM me abrió puertas en proyectos internacionales. Es un reconocimiento que realmente marca la diferencia.' : locale === 'pt' ? 'A certificação IDM abriu-me portas em projetos internacionais. É um reconhecimento que realmente faz a diferença.' : 'The IDM certification opened doors for me on international projects. It is a recognition that truly makes a difference.' },
+              { name: 'Ana Gómez', role: locale === 'es' ? 'Directora de Innovación' : locale === 'pt' ? 'Diretora de Inovação' : 'Innovation Director', company: 'Construtech', quote: locale === 'es' ? 'Como directora, valorar que mi equipo cuente con certificaciones AECOMI nos da una ventaja competitiva real en licitaciones.' : locale === 'pt' ? 'Como diretora, o facto de a minha equipa ter certificações AECOMI dá-nos uma vantagem competitiva real em concursos.' : 'As a director, valuing that my team has AECOMI certifications gives us a real competitive advantage in tenders.' },
+              { name: 'James Wilson', role: locale === 'es' ? 'Consultor BIM Senior' : locale === 'pt' ? 'Consultor BIM Sénior' : 'Senior BIM Consultant', company: 'DigitalBuild UK', quote: locale === 'es' ? 'El nivel de exigencia de esta certificación la convierte en un estándar de referencia en la industria global.' : locale === 'pt' ? 'O nível de exigência desta certificação torna-a num padrão de referência na indústria global.' : 'The demanding level of this certification makes it a reference standard in the global industry.' },
             ].map((timo, idx) => (
               <motion.div
                 key={idx}
@@ -773,7 +773,7 @@ export default function IDMCertificationPage({ locale }: Props) {
               variants={fadeInUp}
               className="inline-block px-5 py-2 rounded-full bg-white/15 text-white text-sm font-medium mb-8 border border-white/20 backdrop-blur-sm"
             >
-              {locale === 'es' ? 'Certificación profesional' : 'Professional certification'}
+              {locale === 'es' ? 'Certificación profesional' : locale === 'pt' ? 'Certificação profissional' : 'Professional certification'}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               {t.idm.final_cta_title}
@@ -809,10 +809,10 @@ export default function IDMCertificationPage({ locale }: Props) {
             className="text-center mb-10"
           >
             <motion.h3 variants={fadeInUp} className="text-2xl font-bold text-[#333] mb-2">
-              {locale === 'es' ? 'Explora otras certificaciones' : 'Explore other certifications'}
+              {locale === 'es' ? 'Explora otras certificaciones' : locale === 'pt' ? 'Explore outras certificações' : 'Explore other certifications'}
             </motion.h3>
             <motion.p variants={fadeInUp} className="text-[#333]/60">
-              {locale === 'es' ? 'Descubre el programa que mejor se adapta a tu perfil profesional' : 'Discover the program that best fits your professional profile'}
+              {locale === 'es' ? 'Descubre el programa que mejor se adapta a tu perfil profesional' : locale === 'pt' ? 'Descubra o programa que melhor se adapta ao seu perfil profissional' : 'Discover the program that best fits your professional profile'}
             </motion.p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -831,7 +831,7 @@ export default function IDMCertificationPage({ locale }: Props) {
                 </div>
                 <div className="text-left">
                   <div className="font-bold text-[#333]">BIM Construction Manager</div>
-                  <div className="text-sm text-[#333]/50">{locale === 'es' ? 'Gestión de construcción BIM' : 'BIM construction management'}</div>
+                  <div className="text-sm text-[#333]/50">{locale === 'es' ? 'Gestión de construcción BIM' : locale === 'pt' ? 'Gestão de construção BIM' : 'BIM construction management'}</div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#333]/30 ml-auto" />
               </Link>
@@ -851,7 +851,7 @@ export default function IDMCertificationPage({ locale }: Props) {
                 </div>
                 <div className="text-left">
                   <div className="font-bold text-[#333]">BIM Design Manager</div>
-                  <div className="text-sm text-[#333]/50">{locale === 'es' ? 'Coordinación de diseño BIM' : 'BIM design coordination'}</div>
+                  <div className="text-sm text-[#333]/50">{locale === 'es' ? 'Coordinación de diseño BIM' : locale === 'pt' ? 'Coordenação de projeto BIM' : 'BIM design coordination'}</div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-[#333]/30 ml-auto" />
               </Link>

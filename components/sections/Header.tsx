@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, Globe, Users, Award, FileText, Landmark, MessageSquare, ClipboardList, Layers, HardHat, Search, BadgeCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/useTranslation'
+import { type Locale, LOCALES, localizePath } from '@/lib/locale'
 
 export default function Header() {
   const { currentLang, t, getLink } = useTranslation()
@@ -16,19 +17,21 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null)
 
-  const toggleLanguage = () => {
-    const newLang = currentLang === 'en' ? 'es' : 'en'
-    let newPath = pathname || '/'
-
-    if (currentLang === 'en') {
-      newPath = pathname?.replace('/en', '') || '/'
-      if (newPath === '') newPath = '/'
-    } else {
-      newPath = '/en' + pathname
-    }
-
-    router.push(newPath)
+  // Cambio manual de idioma: persiste en cookie (solo el código, SameSite=Lax,
+  // Secure en https; no httpOnly — no es sensible) y navega a la ruta localizada.
+  const changeLanguage = (target: Locale) => {
+    if (target === currentLang) return
+    const secure =
+      typeof window !== 'undefined' && window.location.protocol === 'https:' ? ' Secure;' : ''
+    document.cookie = `NEXT_LOCALE=${target}; path=/; max-age=31536000; SameSite=Lax;${secure}`
+    router.push(localizePath(pathname ?? '/', target))
   }
+
+  // Etiqueta 3-idiomas para textos del menú que no están en el objeto translations.
+  const L = (es: string, en: string, pt: string) =>
+    currentLang === 'es' ? es : currentLang === 'en' ? en : pt
+
+  const LANG_LABELS: Record<Locale, string> = { es: 'ES', en: 'EN', pt: 'PT' }
 
   const toggleSubmenu = (name: string) => {
     setExpandedSubmenu(expandedSubmenu === name ? null : name)
@@ -41,11 +44,11 @@ export default function Header() {
       href: getLink('/about'),
       mega: [
         {
-          title: isEs() ? 'Información' : 'Information',
+          title: L('Información', 'Information', 'Informação'),
           items: [
-            { name: isEs() ? 'Sobre AECOMI' : 'About AECOMI', href: getLink('/about'), icon: Users },
-            { name: isEs() ? 'Gobierno y Organización' : 'Governance & Organization', href: getLink('/about/gobierno'), icon: Landmark },
-            { name: isEs() ? 'Contactar' : 'Contact', href: getLink('/contact'), icon: MessageSquare },
+            { name: L('Sobre AECOMI', 'About AECOMI', 'Sobre a AECOMI'), href: getLink('/about'), icon: Users },
+            { name: L('Gobierno y Organización', 'Governance & Organization', 'Governo e Organização'), href: getLink('/about/gobierno'), icon: Landmark },
+            { name: L('Contactar', 'Contact', 'Contactar'), href: getLink('/contact'), icon: MessageSquare },
           ],
         },
       ],
@@ -55,7 +58,7 @@ export default function Header() {
       href: getLink('/certifications'),
       mega: [
         {
-          title: isEs() ? 'Nuestras Certificaciones' : 'Our Certifications',
+          title: L('Nuestras Certificaciones', 'Our Certifications', 'As Nossas Certificações'),
           items: [
             { name: 'Information Delivery Manager', href: getLink('/certifications/information-delivery-manager'), icon: ClipboardList },
             { name: 'BIM Design Manager', href: getLink('/certifications/bim-design-manager'), icon: Layers },
@@ -63,11 +66,11 @@ export default function Header() {
           ],
         },
         {
-          title: isEs() ? 'Información' : 'Information',
+          title: L('Información', 'Information', 'Informação'),
           items: [
-            { name: isEs() ? 'Registro de Certificados' : 'Certification Registry', href: getLink('/certifications/registro'), icon: BadgeCheck },
-            { name: isEs() ? 'Ver todas las Cert.' : 'View all Cert.', href: getLink('/certifications'), icon: Award },
-            { name: isEs() ? 'Proceso de Certificación' : 'Certification Process', href: getLink('/certifications'), icon: FileText },
+            { name: L('Registro de Certificados', 'Certification Registry', 'Registo de Certificados'), href: getLink('/certifications/registro'), icon: BadgeCheck },
+            { name: L('Ver todas las Cert.', 'View all Cert.', 'Ver todas as Cert.'), href: getLink('/certifications'), icon: Award },
+            { name: L('Proceso de Certificación', 'Certification Process', 'Processo de Certificação'), href: getLink('/certifications'), icon: FileText },
           ],
         },
       ],
@@ -75,10 +78,6 @@ export default function Header() {
     { name: t.nav.formation, href: getLink('/formacion') },
     { name: t.nav.contact, href: getLink('/contact') },
   ]
-
-  function isEs() {
-    return currentLang === 'es'
-  }
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
@@ -185,14 +184,24 @@ export default function Header() {
 
           {/* Right utilities */}
           <div className="flex items-center gap-1 sm:gap-2 ml-auto">
-            {/* Language toggle */}
-            <button
-              onClick={toggleLanguage}
-              className="hidden md:flex items-center gap-1.5 text-[13px] font-medium text-gray-600 hover:text-pmi-dark transition-colors px-3 py-2 rounded-lg hover:bg-gray-50/80"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>{currentLang === 'en' ? 'ES' : 'EN'}</span>
-            </button>
+            {/* Language selector (EN / ES / PT) */}
+            <div className="hidden md:flex items-center gap-0.5 rounded-lg border border-gray-200 p-0.5" role="group" aria-label={t.nav.language}>
+              <Globe className="w-3.5 h-3.5 text-gray-400 mx-1" aria-hidden />
+              {LOCALES.map((lng) => (
+                <button
+                  key={lng}
+                  onClick={() => changeLanguage(lng)}
+                  aria-current={currentLang === lng ? 'true' : undefined}
+                  className={`text-[12px] font-semibold px-2 py-1 rounded-md transition-colors ${
+                    currentLang === lng
+                      ? 'bg-pmi-dark text-white'
+                      : 'text-gray-600 hover:text-pmi-dark hover:bg-gray-50'
+                  }`}
+                >
+                  {LANG_LABELS[lng]}
+                </button>
+              ))}
+            </div>
 
             <div className="hidden sm:block w-px h-5 bg-gray-200 mx-1" />
 
@@ -322,18 +331,26 @@ export default function Header() {
                 </motion.div>
               ))}
 
-              {/* Bottom utilities */}
+              {/* Bottom utilities: language selector (EN / ES / PT) */}
               <div className="px-5 py-4 border-t border-gray-100 flex items-center gap-3">
-                <button
-                  onClick={() => {
-                    toggleLanguage()
-                    setMobileMenuOpen(false)
-                  }}
-                  className="flex items-center gap-1.5 text-[13px] text-gray-600 hover:text-pmi-dark transition-colors"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="font-medium">{currentLang === 'en' ? 'Español' : 'English'}</span>
-                </button>
+                <Globe className="w-4 h-4 text-gray-400" aria-hidden />
+                <div className="flex items-center gap-1" role="group" aria-label={t.nav.language}>
+                  {LOCALES.map((lng) => (
+                    <button
+                      key={lng}
+                      onClick={() => {
+                        changeLanguage(lng)
+                        setMobileMenuOpen(false)
+                      }}
+                      aria-current={currentLang === lng ? 'true' : undefined}
+                      className={`text-[13px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
+                        currentLang === lng ? 'bg-pmi-dark text-white' : 'text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
+                      {LANG_LABELS[lng]}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="flex flex-col gap-2 px-5 pb-5">

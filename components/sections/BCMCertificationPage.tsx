@@ -39,7 +39,7 @@ import { useTranslation } from '@/lib/useTranslation';
 import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
 
 interface Props {
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
 }
 
 const fadeInUp = {
@@ -105,11 +105,11 @@ export default function BCMCertificationPage({ locale }: Props) {
   ];
 
   const processSteps = [
-    { step: '01', title: t.bcm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : 'Registration and documentation preparation' },
-    { step: '02', title: t.bcm.process_step_2, desc: locale === 'es' ? 'Evaluación de competencias técnicas' : 'Technical competency assessment' },
-    { step: '03', title: t.bcm.process_step_3, desc: locale === 'es' ? 'Evaluación de competencias transversales' : 'Transversal competency assessment' },
-    { step: '04', title: t.bcm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : 'Interview with the board' },
-    { step: '05', title: t.bcm.process_step_5, desc: locale === 'es' ? 'Emisión de certificado digital' : 'Digital certificate issuance' },
+    { step: '01', title: t.bcm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : locale === 'pt' ? 'Registo e preparação de documentação' : 'Registration and documentation preparation' },
+    { step: '02', title: t.bcm.process_step_2, desc: locale === 'es' ? 'Evaluación de competencias técnicas' : locale === 'pt' ? 'Avaliação de competências técnicas' : 'Technical competency assessment' },
+    { step: '03', title: t.bcm.process_step_3, desc: locale === 'es' ? 'Evaluación de competencias transversales' : locale === 'pt' ? 'Avaliação de competências transversais' : 'Transversal competency assessment' },
+    { step: '04', title: t.bcm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : locale === 'pt' ? 'Entrevista com o júri' : 'Interview with the board' },
+    { step: '05', title: t.bcm.process_step_5, desc: locale === 'es' ? 'Emisión de certificado digital' : locale === 'pt' ? 'Emissão de certificado digital' : 'Digital certificate issuance' },
   ];
 
   const benefits = [
@@ -640,7 +640,7 @@ export default function BCMCertificationPage({ locale }: Props) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-gradient-to-r from-[#c44a1a] to-[#FF6B35] text-white">
-                    <th className="px-6 py-4 font-semibold">{locale === 'es' ? 'Aspecto' : 'Aspect'}</th>
+                    <th className="px-6 py-4 font-semibold">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspeto' : 'Aspect'}</th>
                     <th className="px-6 py-4 font-semibold">{t.bcm.compare_idm}</th>
                     <th className="px-6 py-4 font-semibold">{t.bcm.compare_bdm}</th>
                     <th className="px-6 py-4 font-semibold">{t.bcm.compare_bcm}</th>
@@ -648,8 +648,8 @@ export default function BCMCertificationPage({ locale }: Props) {
                 </thead>
                 <tbody>
                   {[
-                    { label: t.bcm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : 'Information Management', locale === 'es' ? 'Diseño BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : 'BIM Construction'] },
-                    { label: t.bcm.compare_level, values: [locale === 'es' ? 'Intermedio' : 'Intermediate', locale === 'es' ? 'Intermedio' : 'Intermediate', locale === 'es' ? 'Avanzado' : 'Advanced'] },
+                    { label: t.bcm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
+                    { label: t.bcm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
                     { label: t.bcm.compare_exp, values: ['3+ años', '3+ años', '5+ años'] },
                     { label: t.bcm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
@@ -694,9 +694,9 @@ export default function BCMCertificationPage({ locale }: Props) {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Roberto Sánchez', role: locale === 'es' ? 'Jefe de Obra BIM' : 'BIM Site Manager', company: 'Construcciones del Norte', quote: locale === 'es' ? 'La certificación BCM me permitió liderar la coordinación BIM en obra con total autoridad. Los clientes confían más en un perfil certificado.' : 'The BCM certification allowed me to lead BIM coordination on site with full authority. Clients trust a certified profile more.' },
-              { name: 'María José López', role: locale === 'es' ? 'Directora de Construcción' : 'Construction Director', company: 'Edifica Proyectos', quote: locale === 'es' ? 'Como directora, valorar que mi equipo tenga certificaciones BCM nos da una ventaja real en licitaciones de obra pública.' : 'As a director, having BCM certified team members gives us a real advantage in public construction tenders.' },
-              { name: 'David Chen', role: locale === 'es' ? 'Coordinador BIM de Obra' : 'Site BIM Coordinator', company: 'GlobalBuild Asia', quote: locale === 'es' ? 'El nivel práctico de esta certificación la convierte en imprescindible para cualquier profesional que gestione BIM en obra.' : 'The practical level of this certification makes it essential for any professional managing BIM on site.' },
+              { name: 'Roberto Sánchez', role: locale === 'es' ? 'Jefe de Obra BIM' : locale === 'pt' ? 'Chefe de Obra BIM' : 'BIM Site Manager', company: 'Construcciones del Norte', quote: locale === 'es' ? 'La certificación BCM me permitió liderar la coordinación BIM en obra con total autoridad. Los clientes confían más en un perfil certificado.' : locale === 'pt' ? 'A certificação BCM permitiu-me liderar a coordenação BIM em obra com total autoridade. Os clientes confiam mais num perfil certificado.' : 'The BCM certification allowed me to lead BIM coordination on site with full authority. Clients trust a certified profile more.' },
+              { name: 'María José López', role: locale === 'es' ? 'Directora de Construcción' : locale === 'pt' ? 'Diretora de Construção' : 'Construction Director', company: 'Edifica Proyectos', quote: locale === 'es' ? 'Como directora, valorar que mi equipo tenga certificaciones BCM nos da una ventaja real en licitaciones de obra pública.' : locale === 'pt' ? 'Como diretora, o facto de a minha equipa ter certificações BCM dá-nos uma vantagem real em concursos de obra pública.' : 'As a director, having BCM certified team members gives us a real advantage in public construction tenders.' },
+              { name: 'David Chen', role: locale === 'es' ? 'Coordinador BIM de Obra' : locale === 'pt' ? 'Coordenador BIM de Obra' : 'Site BIM Coordinator', company: 'GlobalBuild Asia', quote: locale === 'es' ? 'El nivel práctico de esta certificación la convierte en imprescindible para cualquier profesional que gestione BIM en obra.' : locale === 'pt' ? 'O nível prático desta certificação torna-a indispensável para qualquer profissional que faça a gestão de BIM em obra.' : 'The practical level of this certification makes it essential for any professional managing BIM on site.' },
             ].map((timo, idx) => (
               <motion.div
                 key={idx}
@@ -750,7 +750,7 @@ export default function BCMCertificationPage({ locale }: Props) {
               variants={fadeInUp}
               className="inline-block px-5 py-2 rounded-full bg-white/10 text-[#FF6B35] text-sm font-medium mb-8 border border-white/10 backdrop-blur-md"
             >
-              {locale === 'es' ? 'Certificación profesional' : 'Professional certification'}
+              {locale === 'es' ? 'Certificación profesional' : locale === 'pt' ? 'Certificação profissional' : 'Professional certification'}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-white mb-6">
               {t.bcm.final_cta_title}
@@ -786,10 +786,10 @@ export default function BCMCertificationPage({ locale }: Props) {
             className="text-center mb-10"
           >
             <motion.h3 variants={fadeInUp} className="text-2xl font-bold text-[#0B0F1C] mb-2">
-              {locale === 'es' ? 'Explora otras certificaciones' : 'Explore other certifications'}
+              {locale === 'es' ? 'Explora otras certificaciones' : locale === 'pt' ? 'Explore outras certificações' : 'Explore other certifications'}
             </motion.h3>
             <motion.p variants={fadeInUp} className="text-slate-600">
-              {locale === 'es' ? 'Descubre el programa que mejor se adapta a tu perfil profesional' : 'Discover the program that best fits your professional profile'}
+              {locale === 'es' ? 'Descubre el programa que mejor se adapta a tu perfil profesional' : locale === 'pt' ? 'Descubra o programa que melhor se adapta ao seu perfil profissional' : 'Discover the program that best fits your professional profile'}
             </motion.p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -808,7 +808,7 @@ export default function BCMCertificationPage({ locale }: Props) {
                 </div>
                 <div className="text-left">
                   <div className="font-bold text-[#0B0F1C]">Information Delivery Manager</div>
-                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Gestión estratégica de información' : 'Strategic information management'}</div>
+                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Gestión estratégica de información' : locale === 'pt' ? 'Gestão estratégica de informação' : 'Strategic information management'}</div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-slate-400 ml-auto" />
               </Link>
@@ -828,7 +828,7 @@ export default function BCMCertificationPage({ locale }: Props) {
                 </div>
                 <div className="text-left">
                   <div className="font-bold text-[#0B0F1C]">BIM Design Manager</div>
-                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Coordinación de diseño BIM' : 'BIM design coordination'}</div>
+                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Coordinación de diseño BIM' : locale === 'pt' ? 'Coordenação de projeto BIM' : 'BIM design coordination'}</div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-slate-400 ml-auto" />
               </Link>

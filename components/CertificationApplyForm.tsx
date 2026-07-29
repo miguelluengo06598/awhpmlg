@@ -34,7 +34,7 @@ import { useTranslation } from '@/lib/useTranslation'
 interface Props {
   certificationType?: string
   certificationName?: string
-  locale?: 'es' | 'en'
+  locale?: 'es' | 'en' | 'pt'
   onBack?: () => void
 }
 

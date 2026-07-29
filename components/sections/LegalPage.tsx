@@ -13,7 +13,7 @@ interface Section {
 }
 
 interface Props {
-  locale: 'es' | 'en';
+  locale: 'es' | 'en' | 'pt';
   title: string;
   subtitle: string;
   lastUpdated: string;

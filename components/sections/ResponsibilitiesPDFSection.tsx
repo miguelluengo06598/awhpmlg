@@ -10,7 +10,7 @@ interface Props {
   certificationCode: string
   accentColorRgb: [number, number, number]
   responsibilities: { title: string; desc: string }[]
-  locale: 'es' | 'en'
+  locale: 'es' | 'en' | 'pt'
   badgeLabel?: string
   sectionTitle?: string
   bgClass?: string
@@ -48,7 +48,8 @@ export default function ResponsibilitiesPDFSection({
       certificationCode,
       accentColorRgb,
       responsibilities,
-      locale,
+      // El PDF solo tiene plantillas es/en; para pt se usa en como respaldo.
+      locale: locale === 'pt' ? 'en' : locale,
     }
     try {
       generateResponsibilitiesPDF(data)
