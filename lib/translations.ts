@@ -934,6 +934,22 @@ export const translations = {
       expiry_warning: 'Tu certificación vence pronto. Considera iniciar el proceso de renovación.',
       expired_alert: 'Tu certificación ha vencido. Contacta con nosotros para renovarla.',
     },
+    admin: {
+      panelBadge: 'Admin Panel',
+      breadcrumbHome: 'Dashboard',
+      greeting: 'Hola,',
+      logout: 'Cerrar sesión',
+      logoutShort: 'Salir',
+      language: 'Idioma',
+      nav: {
+        dashboard: 'Dashboard',
+        applications: 'Solicitudes',
+        users: 'Usuarios',
+        payments: 'Pagos',
+        messages: 'Contactos',
+        exams: 'Exámenes',
+      },
+    },
   },
 
   en: {
@@ -1871,6 +1887,22 @@ export const translations = {
       expiry_warning: 'Your certification expires soon. Consider starting the renewal process.',
       expired_alert: 'Your certification has expired. Contact us to renew it.',
     },
+    admin: {
+      panelBadge: 'Admin Panel',
+      breadcrumbHome: 'Dashboard',
+      greeting: 'Hi,',
+      logout: 'Log out',
+      logoutShort: 'Log out',
+      language: 'Language',
+      nav: {
+        dashboard: 'Dashboard',
+        applications: 'Applications',
+        users: 'Users',
+        payments: 'Payments',
+        messages: 'Messages',
+        exams: 'Exams',
+      },
+    },
   },
   pt: {
     nav: {
@@ -2806,6 +2838,22 @@ export const translations = {
       status_expired: 'Expirada',
       expiry_warning: 'A sua certificação expira em breve. Considere iniciar o processo de renovação.',
       expired_alert: 'A sua certificação expirou. Contacte-nos para a renovar.',
+    },
+    admin: {
+      panelBadge: 'Painel Admin',
+      breadcrumbHome: 'Painel',
+      greeting: 'Olá,',
+      logout: 'Terminar sessão',
+      logoutShort: 'Sair',
+      language: 'Idioma',
+      nav: {
+        dashboard: 'Painel',
+        applications: 'Candidaturas',
+        users: 'Utilizadores',
+        payments: 'Pagamentos',
+        messages: 'Mensagens',
+        exams: 'Exames',
+      },
     },
   },
 } as const

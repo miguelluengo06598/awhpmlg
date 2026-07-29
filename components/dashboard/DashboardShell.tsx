@@ -16,6 +16,9 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
 import { clearAuthHint } from '@/lib/authHint'
 import { useAuth } from '@/hooks/useAuth'
+import { useDashboardLocale } from '@/lib/useDashboardLocale'
+import { translations } from '@/lib/translations'
+import { LOCALES } from '@/lib/locale'
 
 interface NavItem {
   name: string
@@ -36,6 +39,9 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
   const pathname = usePathname()
   const { user, loading } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
+  // Idioma del panel (cookie NEXT_LOCALE); las cadenas traducidas solo se usan en admin.
+  const { locale, setLocale } = useDashboardLocale()
+  const ta = translations[locale].admin
 
   useEffect(() => {
     if (loading) return
@@ -122,7 +128,7 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
             </svg>
             <div>
               <span className={`font-bold text-sm block leading-tight ${isAdminTheme ? 'text-slate-900' : 'text-pmi-dark'}`}>AECOMI</span>
-              <span className={`text-[10px] uppercase tracking-wider ${isAdminTheme ? 'text-indigo-600' : 'text-gray-400'}`}>{role === 'admin' ? 'Admin Panel' : 'Client'}</span>
+              <span className={`text-[10px] uppercase tracking-wider ${isAdminTheme ? 'text-indigo-600' : 'text-gray-400'}`}>{isAdminTheme ? ta.panelBadge : 'Client'}</span>
             </div>
           </Link>
         </div>
@@ -151,15 +157,30 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
           })}
         </nav>
 
-        <div className={`p-3 border-t ${isAdminTheme ? 'border-slate-200' : 'border-gray-100'}`}>
+        <div className={`p-3 border-t space-y-2 ${isAdminTheme ? 'border-slate-200' : 'border-gray-100'}`}>
+          {/* Selector de idioma (solo panel admin) */}
+          {isAdminTheme && (
+            <div className="flex items-center gap-1 rounded-lg border border-slate-200 p-1" role="group" aria-label={ta.language}>
+              {LOCALES.map((lng) => (
+                <button
+                  key={lng}
+                  onClick={() => setLocale(lng)}
+                  aria-current={locale === lng ? 'true' : undefined}
+                  className={`flex-1 rounded-md py-1 text-[11px] font-semibold transition-colors ${
+                    locale === lng ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                  }`}
+                >
+                  {lng.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          )}
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-              isAdminTheme ? 'text-red-600 hover:bg-red-50' : 'text-red-600 hover:bg-red-50'
-            }`}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors text-red-600 hover:bg-red-50"
           >
             <LogOut className="w-5 h-5" />
-            <span>Cerrar sesión</span>
+            <span>{isAdminTheme ? ta.logout : 'Cerrar sesión'}</span>
           </button>
         </div>
       </motion.aside>
@@ -171,10 +192,10 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
             <div className={`flex items-center gap-2 text-sm ${isAdminTheme ? 'text-slate-500' : 'text-gray-500'}`}>
               <Home className="w-4 h-4" />
               <ChevronRight className="w-4 h-4" />
-              <span className={`font-medium capitalize ${isAdminTheme ? 'text-slate-900' : 'text-pmi-dark'}`}>{role === 'admin' ? 'Dashboard' : 'Inicio'}</span>
+              <span className={`font-medium capitalize ${isAdminTheme ? 'text-slate-900' : 'text-pmi-dark'}`}>{isAdminTheme ? ta.breadcrumbHome : 'Inicio'}</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className={`hidden sm:inline text-sm ${isAdminTheme ? 'text-slate-500' : 'text-gray-500'}`}>Hola, {displayName}</span>
+              <span className={`hidden sm:inline text-sm ${isAdminTheme ? 'text-slate-500' : 'text-gray-500'}`}>{isAdminTheme ? ta.greeting : 'Hola,'} {displayName}</span>
               <button className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors border ${isAdminTheme ? 'border-slate-200 hover:bg-slate-100 text-slate-500' : 'border-gray-100 hover:bg-gray-50 text-gray-600'}`}>
                 <Bell className="w-5 h-5" />
               </button>
