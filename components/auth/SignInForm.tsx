@@ -21,24 +21,29 @@ import { supabase } from '@/lib/supabaseClient'
 import { setAuthHint } from '@/lib/authHint'
 import AuthLayout from './AuthLayout'
 
-const ERROR_MESSAGES: Record<string, string> = {
-  'Invalid login credentials': 'Email o contraseña incorrectos',
-  'Email not confirmed': 'Email no confirmado. Revisa tu bandeja de entrada',
-  'User not found': 'El usuario no existe',
-  'Invalid email': 'Email inválido',
-  'Invalid password': 'Contraseña incorrecta',
-  'Weak password': 'Contraseña muy débil',
-  'User already exists': 'El usuario ya existe',
-  'Rate limit exceeded': 'Demasiados intentos. Espera unos minutos',
-  'Database error': 'Error de base de datos. Inténtalo más tarde',
+type AF = Record<string, string>
+
+const mapAuthError = (msg: string, af: AF): string => {
+  const map: Record<string, string> = {
+    'Invalid login credentials': af.errInvalidCredentials,
+    'Email not confirmed': af.errEmailNotConfirmed,
+    'User not found': af.errUserNotFound,
+    'Invalid email': af.errInvalidEmail,
+    'Invalid password': af.errInvalidPassword,
+    'Weak password': af.errWeakPassword,
+    'User already exists': af.errUserExists,
+    'Rate limit exceeded': af.errRateLimit,
+    'Database error': af.errDbError,
+  }
+  return map[msg] || msg
 }
 
 export default function SignInForm() {
-  const { t, getLink, currentLang } = useTranslation()
+  const { t, getLink } = useTranslation()
   const a = t.auth
+  const af = t.authForm
   const router = useRouter()
   const searchParams = useSearchParams()
-  const isEn = currentLang === 'en'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -51,9 +56,9 @@ export default function SignInForm() {
 
   const validate = (): boolean => {
     const newErrors: { email?: string; password?: string } = {}
-    if (!email.trim()) newErrors.email = isEn ? 'Email is required' : 'El email es obligatorio'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = isEn ? 'Enter a valid email' : 'Introduce un email válido'
-    if (!password) newErrors.password = isEn ? 'Password is required' : 'La contraseña es obligatoria'
+    if (!email.trim()) newErrors.email = af.vEmailRequired
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = af.vEmailInvalid
+    if (!password) newErrors.password = af.vPasswordRequired
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -88,11 +93,7 @@ export default function SignInForm() {
           console.error('❌ Usuario no encontrado en public.users')
           console.error('   ➡️  Ejecuta supabase_auth_setup.sql en Supabase SQL Editor')
           setSubmitStatus('error')
-          setStatusMessage(
-            isEn
-              ? 'Account not configured. Contact the administrator or run the DB setup SQL.'
-              : 'Cuenta no configurada. Contacta al administrador o ejecuta el SQL de configuración (supabase_auth_setup.sql).'
-          )
+          setStatusMessage(af.accountNotConfigured)
           setIsSubmitting(false)
           return
         }
@@ -111,7 +112,7 @@ export default function SignInForm() {
         const destination = (next?.startsWith('/dashboard') ? next : null) ?? defaultDashboard
 
         setSubmitStatus('success')
-        setStatusMessage(`${isEn ? 'Welcome' : 'Bienvenido'}, ${name}! ${isEn ? 'Redirecting...' : 'Redirigiendo...'}`)
+        setStatusMessage(`${af.welcome}, ${name}! ${af.redirecting}`)
         setTimeout(() => { router.push(destination) }, 800)
         return
       }
@@ -122,17 +123,13 @@ export default function SignInForm() {
           message: authError.message,
           status: authError.status,
         })
-        let friendly = ERROR_MESSAGES[authError.message] || authError.message
+        let friendly = mapAuthError(authError.message, af)
         // Errores de red/CORS específicos
         if (authError.message === 'Failed to fetch' || authError.message.includes('fetch')) {
-          friendly = isEn
-            ? 'Cannot connect to server. Check your connection or Supabase configuration.'
-            : 'No se puede conectar con el servidor. Verifica tu conexión o la configuración de Supabase.'
+          friendly = af.errCannotConnect
         }
         if (authError.message === 'NetworkError when attempting to fetch resource.' || authError.message.includes('NetworkError')) {
-          friendly = isEn
-            ? 'Network error. Check your internet connection.'
-            : 'Error de red. Verifica tu conexión a internet.'
+          friendly = af.errNetwork
         }
         setSubmitStatus('error')
         setStatusMessage(friendly)
@@ -142,11 +139,11 @@ export default function SignInForm() {
 
       console.error('❌ Credenciales inválidas')
       setSubmitStatus('error')
-      setStatusMessage(isEn ? 'Invalid credentials. Please check your email and password.' : 'Credenciales inválidas. Verifica tu email y contraseña.')
+      setStatusMessage(af.invalidCredentialsStatus)
     } catch (err: any) {
       console.error('❌ Error inesperado en login:', err)
       setSubmitStatus('error')
-      setStatusMessage(err?.message || (isEn ? 'An unexpected error occurred.' : 'Ha ocurrido un error inesperado.'))
+      setStatusMessage(err?.message || af.errGeneric)
     } finally {
       setIsSubmitting(false)
     }
@@ -156,22 +153,16 @@ export default function SignInForm() {
   const inputNormal = 'border-gray-200 focus:ring-blue-100 focus:border-[#0066CC]'
   const inputError = 'border-red-300 focus:ring-red-100 focus:border-red-400 bg-red-50/30'
 
-  const benefits = isEn
-    ? [
-        { icon: FileText, title: 'My Applications', description: 'Track the status of your certification requests in real time.' },
-        { icon: Award, title: 'My Certifications', description: 'Download credentials and manage your renewals.' },
-        { icon: ShieldCheck, title: 'Documents', description: 'Upload and organize your CV, certificates, and portfolio.' },
-      ]
-    : [
-        { icon: FileText, title: 'Mis Solicitudes', description: 'Consulta el estado de tus solicitudes de certificación en tiempo real.' },
-        { icon: Award, title: 'Mis Certificaciones', description: 'Descarga credenciales y gestiona tus renovaciones.' },
-        { icon: ShieldCheck, title: 'Documentos', description: 'Sube y organiza tu CV, certificados y portfolio.' },
-      ]
+  const benefits = [
+    { icon: FileText, title: af.siBenefit1Title, description: af.siBenefit1Desc },
+    { icon: Award, title: af.siBenefit2Title, description: af.siBenefit2Desc },
+    { icon: ShieldCheck, title: af.siBenefit3Title, description: af.siBenefit3Desc },
+  ]
 
   return (
     <AuthLayout
-      leftTitle={isEn ? 'Welcome Back' : 'Bienvenido de Vuelta'}
-      leftDescription={isEn ? 'Access your account and manage your BIM certifications from one place.' : 'Accede a tu cuenta y gestiona tus certificaciones BIM desde un solo lugar.'}
+      leftTitle={af.signInLeftTitle}
+      leftDescription={af.signInLeftDescription}
       benefits={benefits}
       authType="signin"
     >
@@ -179,7 +170,7 @@ export default function SignInForm() {
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signIn_title}</h2>
           <p className="text-sm text-gray-400 mt-1.5">
-            {isEn ? 'Enter your credentials to continue.' : 'Introduce tus credenciales para continuar.'}
+            {af.signInSubtitle}
           </p>
         </div>
 
@@ -217,7 +208,7 @@ export default function SignInForm() {
               <input
                 type={showPassword ? 'text' : 'password'} id="password" name="password" value={password}
                 onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors((p) => ({ ...p, password: undefined })) }}
-                placeholder={isEn ? 'Your password' : 'Tu contraseña'}
+                placeholder={af.passwordPlaceholder}
                 className={`${inputBase} pr-11 ${errors.password ? inputError : inputNormal}`}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" tabIndex={-1}>
@@ -242,10 +233,10 @@ export default function SignInForm() {
                   <CheckCircle2 className={`w-3 h-3 text-white ${rememberMe ? 'opacity-100' : 'opacity-0'}`} />
                 </div>
               </div>
-              <span className="text-sm text-gray-700">{isEn ? 'Remember me' : 'Recuérdame'}</span>
+              <span className="text-sm text-gray-700">{af.rememberMe}</span>
             </label>
             <Link href={getLink('/auth/reset-password')} className="text-sm text-gray-500 hover:text-[#0066CC] transition-colors">
-              {isEn ? 'Forgot your password?' : '¿Olvidaste tu contraseña?'}
+              {af.forgotPassword}
             </Link>
           </div>
 
@@ -256,7 +247,7 @@ export default function SignInForm() {
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#0066CC] text-white font-semibold rounded-xl hover:bg-[#0052a3] focus:outline-none focus:ring-2 focus:ring-[#0066CC]/40 transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-md text-[0.95rem]"
           >
             {isSubmitting ? (
-              <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {isEn ? 'Verifying...' : 'Verificando...'}</>
+              <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {af.verifying}</>
             ) : (
               <>{a.signIn_submit} <ArrowRight className="w-4 h-4" /></>
             )}

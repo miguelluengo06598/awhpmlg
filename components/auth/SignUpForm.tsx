@@ -41,18 +41,24 @@ interface FormErrors {
   acceptTerms?: string
 }
 
-const ERROR_MESSAGES: Record<string, string> = {
-  'User already registered': 'Este email ya está registrado',
-  'Weak password': 'La contraseña es demasiado débil',
-  'Invalid email': 'Email inválido',
-  'Rate limit exceeded': 'Demasiados intentos. Espera unos minutos',
-  'Signup disabled': 'El registro está deshabilitado',
-  'Email address not authorized': 'Este email no está autorizado',
+// Cadenas de traducción del formulario (t.authForm); solo cambian los textos.
+type AF = Record<string, string>
+
+const mapAuthError = (msg: string, af: AF): string => {
+  const map: Record<string, string> = {
+    'User already registered': af.errUserExists,
+    'Weak password': af.errWeakPassword,
+    'Invalid email': af.errInvalidEmail,
+    'Rate limit exceeded': af.errRateLimit,
+    'Signup disabled': af.errSignupDisabled,
+    'Email address not authorized': af.errEmailNotAuthorized,
+  }
+  return map[msg] || msg
 }
 
 const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
-const getPasswordStrength = (password: string): { score: number; label: string; color: string } => {
+const getPasswordStrength = (password: string, af: AF): { score: number; label: string; color: string } => {
   let score = 0
   if (password.length >= 8) score++
   if (/[A-Z]/.test(password)) score++
@@ -61,46 +67,46 @@ const getPasswordStrength = (password: string): { score: number; label: string; 
   if (/[^A-Za-z0-9]/.test(password)) score++
 
   const map = [
-    { label: 'Muy débil', color: 'bg-red-500' },
-    { label: 'Débil', color: 'bg-orange-500' },
-    { label: 'Media', color: 'bg-yellow-500' },
-    { label: 'Fuerte', color: 'bg-emerald-500' },
-    { label: 'Muy fuerte', color: 'bg-green-600' },
+    { label: af.strengthVeryWeak, color: 'bg-red-500' },
+    { label: af.strengthWeak, color: 'bg-orange-500' },
+    { label: af.strengthMedium, color: 'bg-yellow-500' },
+    { label: af.strengthStrong, color: 'bg-emerald-500' },
+    { label: af.strengthVeryStrong, color: 'bg-green-600' },
   ]
   return { score, label: map[score].label, color: map[score].color }
 }
 
-const validateField = (name: keyof FormData, value: string | boolean, formData: FormData): string | undefined => {
+const validateField = (name: keyof FormData, value: string | boolean, formData: FormData, af: AF): string | undefined => {
   switch (name) {
     case 'fullName':
-      if (!value) return 'El nombre completo es obligatorio'
-      if (typeof value === 'string' && value.trim().length < 3) return 'Mínimo 3 caracteres'
+      if (!value) return af.vNameRequired
+      if (typeof value === 'string' && value.trim().length < 3) return af.vNameMin
       return undefined
     case 'email':
-      if (!value) return 'El email es obligatorio'
-      if (typeof value === 'string' && !validateEmail(value)) return 'Introduce un email válido'
+      if (!value) return af.vEmailRequired
+      if (typeof value === 'string' && !validateEmail(value)) return af.vEmailInvalid
       return undefined
     case 'phone':
       if (typeof value === 'string' && value.trim().length > 0 && !/^[\d\s\+\-\(\)]{7,}$/.test(value)) {
-        return 'Introduce un teléfono válido'
+        return af.vPhoneInvalid
       }
       return undefined
     case 'password':
-      if (!value) return 'La contraseña es obligatoria'
+      if (!value) return af.vPasswordRequired
       if (typeof value === 'string') {
-        if (value.length < 10) return 'Mínimo 10 caracteres'
-        if (!/[A-Z]/.test(value)) return 'Incluye al menos una mayúscula'
-        if (!/[a-z]/.test(value)) return 'Incluye al menos una minúscula'
-        if (!/\d/.test(value)) return 'Incluye al menos un número'
-        if (!/[^A-Za-z0-9]/.test(value)) return 'Incluye al menos un símbolo'
+        if (value.length < 10) return af.vPasswordMin
+        if (!/[A-Z]/.test(value)) return af.vPasswordUpper
+        if (!/[a-z]/.test(value)) return af.vPasswordLower
+        if (!/\d/.test(value)) return af.vPasswordDigit
+        if (!/[^A-Za-z0-9]/.test(value)) return af.vPasswordSymbol
       }
       return undefined
     case 'confirmPassword':
-      if (!value) return 'Confirma tu contraseña'
-      if (typeof value === 'string' && value !== formData.password) return 'Las contraseñas no coinciden'
+      if (!value) return af.vConfirmRequired
+      if (typeof value === 'string' && value !== formData.password) return af.vConfirmMismatch
       return undefined
     case 'acceptTerms':
-      if (!value) return 'Debes aceptar los términos y condiciones'
+      if (!value) return af.vTermsRequired
       return undefined
     default:
       return undefined
@@ -108,9 +114,9 @@ const validateField = (name: keyof FormData, value: string | boolean, formData: 
 }
 
 export default function SignUpForm() {
-  const { t, getLink, currentLang } = useTranslation()
+  const { t, getLink } = useTranslation()
   const a = t.auth
-  const isEn = currentLang === 'en'
+  const af = t.authForm
 
   const [formData, setFormData] = useState<FormData>({
     fullName: '', email: '', phone: '', password: '', confirmPassword: '', acceptTerms: false,
@@ -125,15 +131,15 @@ export default function SignUpForm() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [statusMessage, setStatusMessage] = useState('')
 
-  const strength = getPasswordStrength(formData.password)
+  const strength = getPasswordStrength(formData.password, af)
 
   const updateField = useCallback((name: keyof FormData, value: string | boolean) => {
     setFormData((prev) => {
       const next = { ...prev, [name]: value }
-      const error = validateField(name, value, next)
+      const error = validateField(name, value, next, af)
       setErrors((prevErrors) => ({ ...prevErrors, [name]: error }))
       if (name === 'password' && next.confirmPassword) {
-        const confirmError = validateField('confirmPassword', next.confirmPassword, next)
+        const confirmError = validateField('confirmPassword', next.confirmPassword, next, af)
         setErrors((prevErrors) => ({ ...prevErrors, confirmPassword: confirmError }))
       }
       return next
@@ -142,7 +148,7 @@ export default function SignUpForm() {
 
   const handleBlur = (name: keyof FormData) => {
     setTouched((prev) => ({ ...prev, [name]: true }))
-    const error = validateField(name, formData[name], formData)
+    const error = validateField(name, formData[name], formData, af)
     setErrors((prev) => ({ ...prev, [name]: error }))
   }
 
@@ -150,7 +156,7 @@ export default function SignUpForm() {
     const newErrors: FormErrors = {}
     let isValid = true
     ;(Object.keys(formData) as Array<keyof FormData>).forEach((key) => {
-      const error = validateField(key, formData[key], formData)
+      const error = validateField(key, formData[key], formData, af)
       if (error) { newErrors[key] = error; isValid = false }
     })
     setErrors(newErrors)
@@ -164,7 +170,7 @@ export default function SignUpForm() {
     setStatusMessage('')
     if (!validateAll()) {
       setSubmitStatus('error')
-      setStatusMessage(isEn ? 'Please correct the form errors.' : 'Por favor, corrige los errores del formulario.')
+      setStatusMessage(af.correctErrors)
       return
     }
     setIsSubmitting(true)
@@ -190,7 +196,7 @@ export default function SignUpForm() {
 
       if (authError) {
         console.error('Error de registro:', authError.message)
-        const friendly = ERROR_MESSAGES[authError.message] || authError.message
+        const friendly = mapAuthError(authError.message, af)
         setSubmitStatus('error')
         setStatusMessage(friendly)
         setIsSubmitting(false)
@@ -202,7 +208,7 @@ export default function SignUpForm() {
         if (authData.user.identities && authData.user.identities.length === 0) {
           // Usuario ya existe
           setSubmitStatus('error')
-          setStatusMessage(isEn ? 'This email is already registered.' : 'Este email ya está registrado.')
+          setStatusMessage(af.emailAlreadyRegistered)
           setIsSubmitting(false)
           return
         }
@@ -223,21 +229,17 @@ export default function SignUpForm() {
         }
 
         setSubmitStatus('success')
-        setStatusMessage(
-          isEn
-            ? 'Account created successfully! Check your email to confirm the registration.'
-            : '¡Cuenta creada con éxito! Revisa tu email para confirmar el registro.'
-        )
+        setStatusMessage(af.accountCreated)
         setFormData({ fullName: '', email: '', phone: '', password: '', confirmPassword: '', acceptTerms: false })
         setTouched({ fullName: false, email: false, phone: false, password: false, confirmPassword: false, acceptTerms: false })
       } else {
         setSubmitStatus('error')
-        setStatusMessage(isEn ? 'Registration failed. Please try again.' : 'El registro falló. Inténtalo de nuevo.')
+        setStatusMessage(af.registrationFailed)
       }
     } catch (error: any) {
       console.error('❌ Error inesperado en registro:', error)
       setSubmitStatus('error')
-      setStatusMessage(error?.message || (isEn ? 'An unexpected error occurred.' : 'Ha ocurrido un error inesperado.'))
+      setStatusMessage(error?.message || af.errGeneric)
     } finally {
       setIsSubmitting(false)
     }
@@ -247,24 +249,17 @@ export default function SignUpForm() {
   const inputNormal = 'border-gray-200 focus:ring-blue-100 focus:border-[#0066CC]'
   const inputError = 'border-red-300 focus:ring-red-100 focus:border-red-400 bg-red-50/30'
 
-  const benefits = isEn
-    ? [
-        { icon: Award, title: 'Global Recognition', description: 'International BIM certifications recognized worldwide in the AEC sector.' },
-        { icon: Briefcase, title: 'Career Growth', description: 'Access to better job opportunities and greater competitiveness.' },
-        { icon: Users, title: 'International Community', description: 'Connect with professionals and institutions from over 30 countries.' },
-        { icon: Globe, title: 'Job Opportunities', description: 'Your certified profile will be visible to leading companies.' },
-      ]
-    : [
-        { icon: Award, title: 'Reconocimiento Global', description: 'Certificaciones BIM internacionales reconocidas en todo el mundo.' },
-        { icon: Briefcase, title: 'Desarrollo Profesional', description: 'Acceso a mejores oportunidades laborales y mayor competitividad.' },
-        { icon: Users, title: 'Comunidad Internacional', description: 'Conecta con profesionales e instituciones de más de 30 países.' },
-        { icon: Globe, title: 'Oportunidades Laborales', description: 'Tu perfil certificado será visible para empresas líderes.' },
-      ]
+  const benefits = [
+    { icon: Award, title: af.suBenefit1Title, description: af.suBenefit1Desc },
+    { icon: Briefcase, title: af.suBenefit2Title, description: af.suBenefit2Desc },
+    { icon: Users, title: af.suBenefit3Title, description: af.suBenefit3Desc },
+    { icon: Globe, title: af.suBenefit4Title, description: af.suBenefit4Desc },
+  ]
 
   return (
     <AuthLayout
-      leftTitle={isEn ? 'Join AECOMI' : 'Únete a AECOMI'}
-      leftDescription={isEn ? 'Access internationally recognized certifications and join a global network of BIM professionals.' : 'Accede a certificaciones reconocidas internacionalmente y únete a una red global de profesionales BIM.'}
+      leftTitle={af.signUpLeftTitle}
+      leftDescription={af.signUpLeftDescription}
       benefits={benefits}
       authType="signup"
     >
@@ -272,7 +267,7 @@ export default function SignUpForm() {
         <div className="mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signUp_title}</h2>
           <p className="text-sm text-gray-400 mt-1.5">
-            {isEn ? 'Complete the form to get started.' : 'Completa el formulario para empezar.'}
+            {af.signUpSubtitle}
           </p>
         </div>
 
@@ -328,7 +323,7 @@ export default function SignUpForm() {
           {/* Teléfono */}
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
-              {isEn ? 'Phone' : 'Teléfono'} <span className="text-gray-400 font-normal">({isEn ? 'optional' : 'opcional'})</span>
+              {af.phone} <span className="text-gray-400 font-normal">({af.optional})</span>
             </label>
             <div className="relative">
               <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -360,7 +355,7 @@ export default function SignUpForm() {
                 type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password}
                 onChange={(e) => updateField('password', e.target.value)}
                 onBlur={() => handleBlur('password')}
-                placeholder={isEn ? 'Create a secure password' : 'Crea una contraseña segura'}
+                placeholder={af.createPassword}
                 className={`${inputBase} pr-11 ${touched.password && errors.password ? inputError : inputNormal}`}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" tabIndex={-1}>
@@ -372,7 +367,7 @@ export default function SignUpForm() {
             {formData.password.length > 0 && (
               <div className="mt-3">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs text-gray-500">{isEn ? 'Password strength' : 'Fortaleza de la contraseña'}</span>
+                  <span className="text-xs text-gray-500">{af.strengthLabel}</span>
                   <span className="text-xs font-medium text-gray-700">{strength.label}</span>
                 </div>
                 <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
@@ -398,7 +393,7 @@ export default function SignUpForm() {
           {/* Confirmar contraseña */}
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">
-              {isEn ? 'Confirm password' : 'Confirmar contraseña'} <span className="text-red-500">*</span>
+              {af.confirmPasswordLabel} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -406,7 +401,7 @@ export default function SignUpForm() {
                 type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" value={formData.confirmPassword}
                 onChange={(e) => updateField('confirmPassword', e.target.value)}
                 onBlur={() => handleBlur('confirmPassword')}
-                placeholder={isEn ? 'Repeat your password' : 'Repite tu contraseña'}
+                placeholder={af.repeatPassword}
                 className={`${inputBase} pr-11 ${touched.confirmPassword && errors.confirmPassword ? inputError : inputNormal}`}
               />
               <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" tabIndex={-1}>
@@ -439,10 +434,10 @@ export default function SignUpForm() {
                 </div>
               </div>
               <span className="text-sm text-gray-700 leading-snug">
-                {isEn ? 'I accept the ' : 'Acepto los '}
-                <Link href={getLink('/legal/terminos')} className="text-[#0066CC] font-medium hover:underline">{isEn ? 'terms and conditions' : 'términos y condiciones'}</Link>
-                {' '}{isEn ? 'and the ' : 'y la '}
-                <Link href={getLink('/legal/privacidad')} className="text-[#0066CC] font-medium hover:underline">{isEn ? 'privacy policy' : 'política de privacidad'}</Link>
+                {af.acceptThe}
+                <Link href={getLink('/legal/terminos')} className="text-[#0066CC] font-medium hover:underline">{af.termsLink}</Link>
+                {' '}{af.andThe}
+                <Link href={getLink('/legal/privacidad')} className="text-[#0066CC] font-medium hover:underline">{af.privacyLink}</Link>
                 {' '}<span className="text-red-500">*</span>
               </span>
             </label>
@@ -461,7 +456,7 @@ export default function SignUpForm() {
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#0066CC] text-white font-semibold rounded-xl hover:bg-[#0052a3] transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
           >
             {isSubmitting ? (
-              <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {isEn ? 'Creating account...' : 'Creando cuenta...'}</>
+              <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {af.creatingAccount}</>
             ) : (
               <>{a.signUp_submit} <ArrowRight className="w-4 h-4" /></>
             )}
