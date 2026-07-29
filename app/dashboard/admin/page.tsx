@@ -4,11 +4,13 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Loader2, AlertCircle, RefreshCw } from 'lucide-react'
+import { ArrowRight, Loader2, AlertCircle, RefreshCw, Clock, Award, Users, Wallet } from 'lucide-react'
 import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/hooks/useAuth'
-import { AnimatedCard, Card, Badge, Button } from '@/components/ui'
-import { colors, spacing, typography } from '@/lib/design-system'
+import { Badge, Button } from '@/components/ui'
+import { MetricCard } from '@/components/admin/ui/MetricCard'
+import { useDashboardLocale } from '@/lib/useDashboardLocale'
+import { translations } from '@/lib/translations'
 import { AdminCreateCertificateSection } from '@/components/sections/AdminCreateCertificateSection'
 import { AdminIssuedCertificatesSection } from '@/components/sections/AdminIssuedCertificatesSection'
 
@@ -30,6 +32,8 @@ interface RecentApp {
 export default function AdminDashboardPage() {
   const router = useRouter()
   const { user, loading: authLoading } = useAuth()
+  const { locale } = useDashboardLocale()
+  const d = translations[locale].admin.dashboard
 
   const [certRefreshKey, setCertRefreshKey] = useState(0)
 
@@ -80,17 +84,17 @@ export default function AdminDashboardPage() {
       })
       setRecentApps((recentRes.data as unknown as RecentApp[]) || [])
     } catch (err: any) {
-      setStatsError(err.message || 'Error desconocido')
+      setStatsError(err.message || d.unknownError)
     } finally {
       setStatsLoading(false)
     }
-  }, [user])
+  }, [user, d.unknownError])
 
   useEffect(() => {
     if (!authLoading && user?.role === 'admin') loadStats()
   }, [authLoading, user, loadStats])
 
-  if (authLoading) return <div className="min-h-[40vh] flex items-center justify-center"><Loader2 className="w-8 h-8 text-pmi-blue animate-spin" /></div>
+  if (authLoading) return <div className="min-h-[40vh] flex items-center justify-center"><Loader2 className="w-8 h-8 text-cyan-500 animate-spin" /></div>
   if (!user || user.role !== 'admin') return null
 
   const formatCurrency = (n: number) =>
@@ -101,105 +105,86 @@ export default function AdminDashboardPage() {
     `${app.users?.first_name ?? ''} ${app.users?.last_name ?? ''}`.trim() || app.users?.email || '—'
 
   const statCards = [
-    { label: 'Solicitudes pendientes',  value: stats.pendingApplications,              variant: 'info'    as const },
-    { label: 'Certificaciones emitidas', value: stats.certifiedApplications,            variant: 'success' as const },
-    { label: 'Usuarios activos',         value: stats.activeUsers,                      variant: 'default' as const },
-    { label: 'Ingresos totales',         value: formatCurrency(stats.totalRevenue),     variant: 'warning' as const },
+    { label: d.statPending,   value: stats.pendingApplications,          icon: Clock,  accent: 'cyan'   as const },
+    { label: d.statCertified, value: stats.certifiedApplications,        icon: Award,  accent: 'indigo' as const },
+    { label: d.statUsers,     value: stats.activeUsers,                  icon: Users,  accent: 'violet' as const },
+    { label: d.statRevenue,   value: formatCurrency(stats.totalRevenue), icon: Wallet, accent: 'amber'  as const },
   ]
 
   return (
-    <div style={{ padding: spacing.lg }}>
-
+    <div>
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: spacing.xl }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.md }}>
-          <div>
-            <h1 style={{ fontFamily: typography.family.title, fontSize: '2rem', fontWeight: 700, color: colors.neutral[800], margin: 0 }}>
-              Panel de Administración
-            </h1>
-            <p style={{ color: colors.neutral[500], marginTop: spacing.xs, fontSize: '0.9rem' }}>
-              Conectado como <strong>{user.email}</strong>
-            </p>
-          </div>
-          <Button variant="outline" size="sm" onClick={loadStats} disabled={statsLoading}
-            icon={<RefreshCw style={{ width: 14, height: 14, ...(statsLoading ? { animation: 'spin 1s linear infinite' } : {}) }} />}
-          >
-            Actualizar
-          </Button>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">{d.title}</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {d.connectedAs} <strong className="text-slate-700">{user.email}</strong>
+          </p>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={loadStats}
+          disabled={statsLoading}
+          icon={<RefreshCw style={{ width: 14, height: 14, ...(statsLoading ? { animation: 'spin 1s linear infinite' } : {}) }} />}
+        >
+          {d.refresh}
+        </Button>
       </motion.div>
 
       {/* Error banner */}
       {statsError && (
-        <div style={{ display: 'flex', gap: spacing.sm, padding: spacing.md, backgroundColor: colors.semantic.danger + '1A', border: `1px solid ${colors.semantic.danger}33`, borderRadius: 8, marginBottom: spacing.lg }}>
-          <AlertCircle style={{ width: 20, height: 20, color: colors.semantic.danger, flexShrink: 0 }} />
-          <span style={{ color: colors.semantic.danger, fontSize: '0.9rem' }}>{statsError}</span>
+        <div className="mb-6 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-4">
+          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+          <span className="text-sm text-red-700">{statsError}</span>
         </div>
       )}
 
       {/* Stat cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: spacing.lg, marginBottom: spacing.xl }}>
-        {statCards.map((card, i) => (
-          <AnimatedCard key={card.label} variant={card.variant} padding="lg" delay={i * 80}>
-            <p style={{ color: colors.neutral[500], fontSize: '0.85rem', margin: `0 0 ${spacing.sm}` }}>{card.label}</p>
-            <p style={{ fontFamily: typography.family.title, fontSize: '2rem', fontWeight: 800, margin: 0,
-              color: card.variant === 'info' ? colors.semantic.info : card.variant === 'success' ? colors.semantic.success : card.variant === 'warning' ? colors.semantic.warning : colors.neutral[800],
-            }}>
-              {statsLoading ? <span style={{ display: 'inline-block', width: 60, height: 28, background: colors.neutral[200], borderRadius: 4 }} /> : card.value}
-            </p>
-          </AnimatedCard>
+      <div className="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {statCards.map((c, i) => (
+          <MetricCard key={c.label} title={c.label} value={c.value} icon={c.icon} accent={c.accent} delay={i * 80} loading={statsLoading} />
         ))}
       </div>
 
       {/* Recent applications */}
-      <Card variant="default" padding="lg">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.lg }}>
-          <h2 style={{ fontFamily: typography.family.title, fontSize: '1.25rem', fontWeight: 700, color: colors.neutral[800], margin: 0 }}>
-            Solicitudes pendientes
-          </h2>
-          <Link href="/dashboard/admin/applications" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: colors.primary.idm, fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none' }}>
-            Ver todas <ArrowRight style={{ width: 14, height: 14 }} />
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-lg font-bold tracking-tight text-slate-900">{d.recentTitle}</h2>
+          <Link href="/dashboard/admin/applications" className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-700">
+            {d.viewAll} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
         {statsLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: `${spacing['2xl']} 0` }}>
-            <Loader2 style={{ width: 28, height: 28, color: colors.primary.idm, animation: 'spin 1s linear infinite' }} />
+          <div className="flex justify-center py-12">
+            <Loader2 className="h-7 w-7 animate-spin text-cyan-500" />
           </div>
         ) : recentApps.length === 0 ? (
-          <p style={{ color: colors.neutral[500], textAlign: 'center', padding: `${spacing.xl} 0` }}>No hay solicitudes pendientes</p>
+          <p className="py-10 text-center text-sm text-slate-500">{d.noRecent}</p>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
               <thead>
-                <tr style={{ borderBottom: `2px solid ${colors.neutral[200]}` }}>
-                  {['Solicitante', 'Certificación', 'Estado', 'Fecha', ''].map((h, i) => (
-                    <th key={i} style={{ padding: `${spacing.sm} ${spacing.md}`, textAlign: 'left', fontWeight: 700, fontSize: '0.85rem', color: colors.neutral[600] }}>{h}</th>
+                <tr className="border-b border-slate-200">
+                  {[d.colApplicant, d.colCertification, d.colStatus, d.colDate, ''].map((h, i) => (
+                    <th key={i} className="px-4 py-2.5 text-left text-[13px] font-semibold text-slate-500">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {recentApps.map((app, idx) => (
-                  <tr key={app.id} style={{ borderBottom: `1px solid ${colors.neutral[100]}`, backgroundColor: idx % 2 === 1 ? colors.neutral[50] : 'transparent' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = colors.primary.idm + '0D' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = idx % 2 === 1 ? colors.neutral[50] : 'transparent' }}
-                  >
-                    <td style={{ padding: `${spacing.sm} ${spacing.md}` }}>
-                      <div style={{ fontWeight: 600, color: colors.neutral[800], fontSize: '0.9rem' }}>{fullName(app)}</div>
-                      <div style={{ fontSize: '0.75rem', color: colors.neutral[500] }}>{app.users?.email ?? ''}</div>
+                  <tr key={app.id} className={`border-b border-slate-100 transition-colors hover:bg-slate-50 ${idx % 2 === 1 ? 'bg-slate-50/50' : ''}`}>
+                    <td className="px-4 py-3">
+                      <div className="text-sm font-semibold text-slate-800">{fullName(app)}</div>
+                      <div className="text-xs text-slate-500">{app.users?.email ?? ''}</div>
                     </td>
-                    <td style={{ padding: `${spacing.sm} ${spacing.md}`, color: colors.neutral[700], fontSize: '0.9rem' }}>
-                      {app.certifications_catalog?.display_name ?? '—'}
-                    </td>
-                    <td style={{ padding: `${spacing.sm} ${spacing.md}` }}>
-                      <Badge status={app.status} size="sm" />
-                    </td>
-                    <td style={{ padding: `${spacing.sm} ${spacing.md}`, color: colors.neutral[500], fontSize: '0.875rem' }}>
-                      {formatDate(app.submitted_at)}
-                    </td>
-                    <td style={{ padding: `${spacing.sm} ${spacing.md}`, textAlign: 'right' }}>
+                    <td className="px-4 py-3 text-sm text-slate-700">{app.certifications_catalog?.display_name ?? '—'}</td>
+                    <td className="px-4 py-3"><Badge status={app.status} size="sm" /></td>
+                    <td className="px-4 py-3 text-sm text-slate-500">{formatDate(app.submitted_at)}</td>
+                    <td className="px-4 py-3 text-right">
                       <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/admin/applications/${app.id}`)}>
-                        Ver
+                        {d.view}
                       </Button>
                     </td>
                   </tr>
@@ -208,7 +193,7 @@ export default function AdminDashboardPage() {
             </table>
           </div>
         )}
-      </Card>
+      </div>
 
       <AdminCreateCertificateSection onCreated={() => setCertRefreshKey((k) => k + 1)} />
 
