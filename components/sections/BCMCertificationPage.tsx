@@ -61,6 +61,9 @@ const PRIMARY_GRADIENT_FROM = 'from-[#fff7ed]';
 const PRIMARY_GRADIENT_TO = 'to-[#ffedd5]';
 
 export default function BCMCertificationPage({ locale }: Props) {
+  // Años de experiencia de la tabla comparativa (la unidad cambia por idioma).
+  const expYears = (n: number) =>
+    locale === 'es' ? n+'+ años' : locale === 'pt' ? n+'+ anos' : n+'+ years';
   const { t, getLink } = useTranslation(locale);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -650,7 +653,7 @@ export default function BCMCertificationPage({ locale }: Props) {
                   {[
                     { label: t.bcm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
                     { label: t.bcm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
-                    { label: t.bcm.compare_exp, values: ['3+ años', '3+ años', '5+ años'] },
+                    { label: t.bcm.compare_exp, values: [expYears(3), expYears(3), expYears(5)] },
                     { label: t.bcm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
                     <tr

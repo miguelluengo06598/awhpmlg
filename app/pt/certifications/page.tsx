@@ -242,11 +242,11 @@ const comparativa = [
   },
   {
     label: 'Experiência Necessária',
-    values: ['5+ years in BIM management', '3+ years in BIM design', '5+ years in BIM construction'],
+    values: ['5+ anos em gestão BIM', '3+ anos em projeto BIM', '5+ anos em construção BIM'],
   },
   {
     label: 'Duração do Processo',
-    values: ['~3-4 months', '~2-3 months', '~3-4 months'],
+    values: ['~3-4 meses', '~2-3 meses', '~3-4 meses'],
   },
   {
     label: 'Exame',
@@ -254,7 +254,7 @@ const comparativa = [
   },
   {
     label: 'Repetições',
-    values: ['3 in 1 year', '3 in 1 year', '3 in 1 year'],
+    values: ['3 em 1 ano', '3 em 1 ano', '3 em 1 ano'],
   },
 ]
 

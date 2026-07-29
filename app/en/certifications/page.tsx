@@ -224,7 +224,7 @@ const timelineSteps = [
   },
   {
     icon: GraduationCap,
-    title: 'Examen',
+    title: 'Exam',
     description: 'Technical exam + personal interview with a senior evaluator.',
     color: 'bg-emerald-500',
     soft: 'bg-emerald-50',
@@ -1034,7 +1034,7 @@ export default function CertificationsPage() {
               Ayuda
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              Preguntas Frecuentes
+              Frequently Asked Questions
             </h2>
           </motion.div>
 
@@ -1042,7 +1042,7 @@ export default function CertificationsPage() {
           <div className="flex justify-center gap-3 mb-10">
             {[
               { key: 'general' as const, label: 'General', icon: MessageSquare },
-              { key: 'examen' as const, label: 'Examen y Entrevista', icon: GraduationCap },
+              { key: 'examen' as const, label: 'Exam & Interview', icon: GraduationCap },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -1124,7 +1124,7 @@ export default function CertificationsPage() {
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
               >
                 <Mail className="w-5 h-5" />
-                Contacta con Nosotros
+                Contact Us
               </Link>
             </div>
 

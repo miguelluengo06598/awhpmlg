@@ -21,7 +21,7 @@ export default function ApplyCertificationPage() {
       <div className="min-h-[50vh] flex items-center justify-center">
         <div className="text-center">
           <div className="w-10 h-10 border-4 border-pmi-blue/20 border-t-pmi-blue rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-500 text-sm">Checking session...</p>
+          <p className="text-gray-500 text-sm">A verificar sessão...</p>
         </div>
       </div>
     )
@@ -51,11 +51,11 @@ export default function ApplyCertificationPage() {
         <div className="flex items-center gap-3 mb-2">
           <ClipboardList className="w-6 h-6 text-pmi-blue" />
           <h1 className="text-2xl sm:text-3xl font-bold text-pmi-dark">
-            Apply for Certification
+            Candidatar-se a uma Certificação
           </h1>
         </div>
         <p className="text-gray-500">
-          Choose a certification and complete the application process
+          Escolha uma certificação e complete o processo de candidatura
         </p>
       </motion.div>
 
@@ -75,7 +75,7 @@ export default function ApplyCertificationPage() {
             className="inline-flex items-center gap-2 mb-6 px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Certifications
+            Voltar às Certificações
           </button>
 
           <CertificationApplyForm

@@ -49,6 +49,9 @@ const staggerContainer = {
 };
 
 export default function BDMCertificationPage({ locale }: Props) {
+  // Años de experiencia de la tabla comparativa (la unidad cambia por idioma).
+  const expYears = (n: number) =>
+    locale === 'es' ? n+'+ años' : locale === 'pt' ? n+'+ anos' : n+'+ years';
   const { t, getLink } = useTranslation(locale);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -660,7 +663,7 @@ export default function BDMCertificationPage({ locale }: Props) {
                   {[
                     { label: t.bdm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
                     { label: t.bdm.compare_level, values: [locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
-                    { label: t.bdm.compare_exp, values: ['3+ años', '3+ años', '5+ años'] },
+                    { label: t.bdm.compare_exp, values: [expYears(3), expYears(3), expYears(5)] },
                     { label: t.bdm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
                     <tr key={rIdx} className={`border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors ${rIdx % 2 === 1 ? 'bg-slate-50/50' : 'bg-white'}`}>

@@ -18,7 +18,8 @@ import { clearAuthHint } from '@/lib/authHint'
 import { useAuth } from '@/hooks/useAuth'
 import { useDashboardLocale } from '@/lib/useDashboardLocale'
 import { translations } from '@/lib/translations'
-import { LOCALES } from '@/lib/locale'
+import { LOCALES, LOCALE_NAMES } from '@/lib/locale'
+import FlagIcon from '@/components/FlagIcon'
 
 interface NavItem {
   name: string
@@ -165,12 +166,16 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
                 <button
                   key={lng}
                   onClick={() => setLocale(lng)}
+                  aria-label={LOCALE_NAMES[lng]}
                   aria-current={locale === lng ? 'true' : undefined}
-                  className={`flex-1 rounded-md py-1 text-[11px] font-semibold transition-colors ${
-                    locale === lng ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                  title={LOCALE_NAMES[lng]}
+                  className={`flex-1 flex justify-center rounded-md py-1.5 transition-all ${
+                    locale === lng
+                      ? 'bg-indigo-50 ring-1 ring-indigo-300 opacity-100'
+                      : 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 hover:bg-slate-100'
                   }`}
                 >
-                  {lng.toUpperCase()}
+                  <FlagIcon locale={lng} className="w-6 h-4 rounded-[2px] ring-1 ring-black/10" />
                 </button>
               ))}
             </div>

@@ -58,11 +58,11 @@ interface UploadedDoc {
 }
 
 const REQUIRED_DOCS = [
-  { type: 'cv' as const, label: 'CV / Currículum', labelEn: 'CV / Resume', required: true },
-  { type: 'education' as const, label: 'Certificado de Estudios', labelEn: 'Education Certificate', required: true },
-  { type: 'experience' as const, label: 'Carta de Experiencia', labelEn: 'Experience Letter', required: true },
-  { type: 'portfolio' as const, label: 'Portafolio / Proyectos', labelEn: 'Portfolio / Projects', required: false },
-  { type: 'other' as const, label: 'Otros Documentos', labelEn: 'Other Documents', required: false },
+  { type: 'cv' as const, labelKey: 'doc_cv', required: true },
+  { type: 'education' as const, labelKey: 'doc_education', required: true },
+  { type: 'experience' as const, labelKey: 'doc_experience', required: true },
+  { type: 'portfolio' as const, labelKey: 'doc_portfolio', required: false },
+  { type: 'other' as const, labelKey: 'doc_other', required: false },
 ]
 
 const fadeIn = {
@@ -73,7 +73,7 @@ const fadeIn = {
 export default function CertificationApplyForm({ certificationType, certificationName, locale = 'es', onBack }: Props) {
   const router = useRouter()
   const { t, getLink } = useTranslation(locale)
-  const isEn = locale === 'en'
+  const tApply = (key: string) => (t as any).apply?.[key] ?? key
 
   // Estado local para certificación seleccionada (cuando no viene por prop)
   const [selectedCert, setSelectedCert] = useState<{ type: string; name: string } | null>(null)
@@ -163,11 +163,11 @@ export default function CertificationApplyForm({ certificationType, certificatio
   }
 
   const validateStep1 = () => {
-    if (!form.fullName.trim()) return isEn ? 'Full name is required' : 'El nombre completo es obligatorio'
-    if (!form.email.trim()) return isEn ? 'Email is required' : 'El email es obligatorio'
-    if (form.yearsOfExperience < 0) return isEn ? 'Invalid experience' : 'Experiencia inválida'
-    if (!form.professionalExperience.trim()) return isEn ? 'Professional experience is required' : 'La experiencia profesional es obligatoria'
-    if (!form.educationDetails.trim()) return isEn ? 'Education details are required' : 'Los detalles de educación son obligatorios'
+    if (!form.fullName.trim()) return tApply('err_name_required')
+    if (!form.email.trim()) return tApply('err_email_required')
+    if (form.yearsOfExperience < 0) return tApply('err_experience_invalid')
+    if (!form.professionalExperience.trim()) return tApply('err_prof_exp_required')
+    if (!form.educationDetails.trim()) return tApply('err_education_required')
     return ''
   }
 
@@ -176,9 +176,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
       .filter((d) => d.required)
       .filter((d) => !docs.find((ud) => ud.type === d.type))
     if (missing.length > 0) {
-      return isEn
-        ? `Required documents missing: ${missing.map((d) => (isEn ? d.labelEn : d.label)).join(', ')}`
-        : `Documentos requeridos faltantes: ${missing.map((d) => d.label).join(', ')}`
+      return `${tApply('err_docs_missing')}: ${missing.map((d) => tApply(d.labelKey)).join(', ')}`
     }
     return ''
   }
@@ -207,7 +205,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
       const { data: authData } = await supabase.auth.getUser()
       const user = authData?.user
       if (!user) {
-        setError(isEn ? 'You must be logged in to apply' : 'Debes estar logueado para solicitar')
+        setError(tApply('err_must_login'))
         setLoading(false)
         return
       }
@@ -220,7 +218,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
         .single()
 
       if (certError || !certData) {
-        setError(isEn ? 'Certification not found' : 'Certificación no encontrada')
+        setError(tApply('err_cert_not_found'))
         setLoading(false)
         return
       }
@@ -242,7 +240,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
 
       if (appError || !appData) {
         console.error('Error creando solicitud:', appError)
-        setError(isEn ? 'Error creating application' : 'Error al crear la solicitud')
+        setError(tApply('err_creating'))
         setLoading(false)
         return
       }
@@ -296,7 +294,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
       }, 3000)
     } catch (err: any) {
       console.error('Error en submit:', err)
-      setError(err.message || (isEn ? 'Unexpected error' : 'Error inesperado'))
+      setError(err.message || tApply('err_unexpected'))
     } finally {
       setLoading(false)
     }
@@ -325,26 +323,24 @@ export default function CertificationApplyForm({ certificationType, certificatio
             <Shield className="w-10 h-10 text-amber-500" />
           </div>
           <h2 className="text-2xl font-bold text-pmi-dark mb-3">
-            {isEn ? 'Login Required' : 'Inicio de Sesión Requerido'}
+            {tApply('login_title')}
           </h2>
           <p className="text-gray-600 mb-6">
-            {isEn
-              ? 'You must be logged in to apply for a certification. Please sign in or create an account to continue.'
-              : 'Debes estar logueado para solicitar una certificación. Inicia sesión o crea una cuenta para continuar.'}
+            {tApply('login_desc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => router.push(getLink('/auth/signin'))}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pmi-dark text-white font-semibold rounded-xl hover:bg-pmi-blue transition-colors"
             >
-              {isEn ? 'Sign In' : 'Iniciar Sesión'}
+              {tApply('login_signin')}
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => router.push(getLink('/auth/signup'))}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
             >
-              {isEn ? 'Create Account' : 'Crear Cuenta'}
+              {tApply('login_signup')}
             </button>
           </div>
         </motion.div>
@@ -365,28 +361,26 @@ export default function CertificationApplyForm({ certificationType, certificatio
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
           <h2 className="text-2xl font-bold text-pmi-dark mb-3">
-            {isEn ? 'Application Submitted Successfully!' : '¡Solicitud Enviada Exitosamente!'}
+            {tApply('success_title')}
           </h2>
           <p className="text-gray-600 mb-4">
-            {isEn ? 'Your application for' : 'Tu solicitud de'} <strong>{effectiveName}</strong> {isEn ? 'has been received.' : 'ha sido recibida.'}
+            {tApply('success_your_app_for')} <strong>{effectiveName}</strong> {tApply('success_received')}
           </p>
           <div className="bg-gray-50 rounded-xl p-4 mb-6 inline-block">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
-              {isEn ? 'Application ID' : 'Número de Solicitud'}
+              {tApply('success_app_id')}
             </p>
             <p className="text-sm font-mono font-bold text-pmi-dark">{applicationId || '---'}</p>
           </div>
           <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto">
-            {isEn
-              ? 'You will receive an email confirmation. You can track your application status in your dashboard.'
-              : 'Recibirás un email de confirmación. Puedes seguir el estado de tu solicitud en tu dashboard.'}
+            {tApply('success_desc')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => router.push(getLink('/dashboard/client/applications'))}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pmi-dark text-white font-semibold rounded-xl hover:bg-pmi-blue transition-colors"
             >
-              {isEn ? 'Go to My Applications' : 'Ir a Mis Solicitudes'}
+              {tApply('success_go_apps')}
               <ArrowRight className="w-4 h-4" />
             </button>
             {onBack && (
@@ -395,7 +389,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
-                {isEn ? 'Back to Certifications' : 'Volver a Certificaciones'}
+                {tApply('back_to_certifications')}
               </button>
             )}
           </div>
@@ -426,9 +420,9 @@ export default function CertificationApplyForm({ certificationType, certificatio
                 s <= step ? 'text-pmi-dark' : 'text-gray-400'
               }`}
             >
-              {s === 1 ? (isEn ? 'Personal Info' : 'Datos Personales')
-                : s === 2 ? (isEn ? 'Documents' : 'Documentos')
-                : (isEn ? 'Review' : 'Revisión')}
+              {s === 1 ? tApply('step_personal')
+                : s === 2 ? tApply('step_documents')
+                : tApply('step_review')}
             </span>
             {s < 3 && <div className={`w-8 h-0.5 sm:w-12 ${s < step ? 'bg-green-500' : 'bg-gray-200'}`} />}
           </div>
@@ -442,14 +436,14 @@ export default function CertificationApplyForm({ certificationType, certificatio
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
               <h2 className="text-xl font-bold text-pmi-dark mb-1 flex items-center gap-2">
                 <User className="w-5 h-5 text-pmi-blue" />
-                {isEn ? 'Personal Information' : 'Información Personal'}
+                {tApply('personal_title')}
               </h2>
-              <p className="text-sm text-gray-500 mb-6">{isEn ? 'Complete your profile information' : 'Completa la información de tu perfil'}</p>
+              <p className="text-sm text-gray-500 mb-6">{tApply('personal_desc')}</p>
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    {isEn ? 'Full Name' : 'Nombre Completo'} <span className="text-red-500">*</span>
+                    {tApply('field_fullname')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -479,7 +473,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{isEn ? 'Phone' : 'Teléfono'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{tApply('field_phone')}</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -492,7 +486,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{isEn ? 'Company' : 'Empresa'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{tApply('field_company')}</label>
                   <div className="relative">
                     <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -505,7 +499,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{isEn ? 'Country' : 'País'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{tApply('field_country')}</label>
                   <div className="relative">
                     <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -519,7 +513,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    {isEn ? 'Years of Experience' : 'Años de Experiencia'} <span className="text-red-500">*</span>
+                    {tApply('field_years')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -534,27 +528,27 @@ export default function CertificationApplyForm({ certificationType, certificatio
 
               <div className="mt-5">
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {isEn ? 'Professional Experience' : 'Experiencia Profesional'} <span className="text-red-500">*</span>
+                  {tApply('field_prof_exp')} <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   value={form.professionalExperience}
                   onChange={(e) => updateForm('professionalExperience', e.target.value)}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-pmi-blue/20 focus:border-pmi-blue resize-none"
-                  placeholder={isEn ? 'Describe your professional experience in BIM...' : 'Describe tu experiencia profesional en BIM...'}
+                  placeholder={tApply('ph_prof_exp')}
                 />
               </div>
 
               <div className="mt-5">
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {isEn ? 'Education' : 'Educación'} <span className="text-red-500">*</span>
+                  {tApply('field_education')} <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   value={form.educationDetails}
                   onChange={(e) => updateForm('educationDetails', e.target.value)}
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-pmi-blue/20 focus:border-pmi-blue resize-none"
-                  placeholder={isEn ? 'Describe your academic background and relevant courses...' : 'Describe tu formación académica y cursos relevantes...'}
+                  placeholder={tApply('ph_education')}
                 />
               </div>
             </div>
@@ -567,16 +561,16 @@ export default function CertificationApplyForm({ certificationType, certificatio
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
               <h2 className="text-xl font-bold text-pmi-dark mb-1 flex items-center gap-2">
                 <FolderOpen className="w-5 h-5 text-pmi-blue" />
-                {isEn ? 'Required Documents' : 'Documentos Requeridos'}
+                {tApply('docs_title')}
               </h2>
               <p className="text-sm text-gray-500 mb-6">
-                {isEn ? 'Upload the required documents for your application.' : 'Sube los documentos requeridos para tu solicitud.'}
+                {tApply('docs_desc')}
               </p>
 
               <div className="space-y-6">
                 {REQUIRED_DOCS.map((doc) => {
                   const uploaded = docs.find((ud) => ud.type === doc.type)
-                  const docLabel = isEn ? doc.labelEn : doc.label
+                  const docLabel = tApply(doc.labelKey)
                   return (
                     <div key={doc.type} className="border border-gray-100 rounded-xl p-5">
                       <div className="flex items-center justify-between mb-3">
@@ -586,7 +580,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                           {doc.required && <span className="text-xs text-red-500 font-medium">*</span>}
                           {uploaded && (
                             <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                              <CheckCircle2 className="w-3 h-3" /> {isEn ? 'Uploaded' : 'Subido'}
+                              <CheckCircle2 className="w-3 h-3" /> {tApply('doc_uploaded')}
                             </span>
                           )}
                         </div>
@@ -617,21 +611,21 @@ export default function CertificationApplyForm({ certificationType, certificatio
                               target="_blank"
                               rel="noopener noreferrer"
                               className="p-2 text-pmi-blue hover:bg-pmi-blue/10 rounded-lg transition-colors"
-                              title={isEn ? 'View' : 'Ver'}
+                              title={tApply('doc_view')}
                             >
                               <Eye className="w-4 h-4" />
                             </a>
                             <button
                               onClick={() => handleDocRemove(doc.type)}
                               className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                              title={isEn ? 'Replace' : 'Reemplazar'}
+                              title={tApply('doc_replace')}
                             >
                               <Upload className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDocRemove(doc.type)}
                               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                              title={isEn ? 'Remove' : 'Eliminar'}
+                              title={tApply('doc_remove')}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -652,51 +646,51 @@ export default function CertificationApplyForm({ certificationType, certificatio
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
               <h2 className="text-xl font-bold text-pmi-dark mb-1 flex items-center gap-2">
                 <ClipboardCheck className="w-5 h-5 text-pmi-blue" />
-                {isEn ? 'Review & Submit' : 'Revisar y Enviar'}
+                {tApply('review_title')}
               </h2>
               <p className="text-sm text-gray-500 mb-6">
-                {isEn ? 'Review your information before submitting.' : 'Revisa tu información antes de enviar.'}
+                {tApply('review_desc')}
               </p>
 
               {/* Personal Info Summary */}
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider">{isEn ? 'Personal Info' : 'Datos Personales'}</h3>
+                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider">{tApply('step_personal')}</h3>
                   <button onClick={() => setStep(1)} className="text-xs text-pmi-blue font-medium hover:underline">
-                    {isEn ? 'Edit' : 'Editar'}
+                    {tApply('review_edit')}
                   </button>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-gray-500">{isEn ? 'Name' : 'Nombre'}:</span> <span className="font-medium text-pmi-dark">{form.fullName}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">{tApply('field_name')}:</span> <span className="font-medium text-pmi-dark">{form.fullName}</span></div>
                   <div className="flex justify-between"><span className="text-gray-500">Email:</span> <span className="font-medium text-pmi-dark">{form.email}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">{isEn ? 'Phone' : 'Teléfono'}:</span> <span className="font-medium text-pmi-dark">{form.phone || '-'}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">{isEn ? 'Company' : 'Empresa'}:</span> <span className="font-medium text-pmi-dark">{form.company || '-'}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">{isEn ? 'Country' : 'País'}:</span> <span className="font-medium text-pmi-dark">{form.country || '-'}</span></div>
-                  <div className="flex justify-between"><span className="text-gray-500">{isEn ? 'Experience' : 'Experiencia'}:</span> <span className="font-medium text-pmi-dark">{form.yearsOfExperience} {isEn ? 'years' : 'años'}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">{tApply('field_phone')}:</span> <span className="font-medium text-pmi-dark">{form.phone || '-'}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">{tApply('field_company')}:</span> <span className="font-medium text-pmi-dark">{form.company || '-'}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">{tApply('field_country')}:</span> <span className="font-medium text-pmi-dark">{form.country || '-'}</span></div>
+                  <div className="flex justify-between"><span className="text-gray-500">{tApply('field_experience')}:</span> <span className="font-medium text-pmi-dark">{form.yearsOfExperience} {tApply('unit_years')}</span></div>
                 </div>
               </div>
 
               {/* Documents Summary */}
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider">{isEn ? 'Documents' : 'Documentos'}</h3>
+                  <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider">{tApply('step_documents')}</h3>
                   <button onClick={() => setStep(2)} className="text-xs text-pmi-blue font-medium hover:underline">
-                    {isEn ? 'Edit' : 'Editar'}
+                    {tApply('review_edit')}
                   </button>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                   {REQUIRED_DOCS.map((doc) => {
                     const uploaded = docs.find((ud) => ud.type === doc.type)
-                    const docLabel = isEn ? doc.labelEn : doc.label
+                    const docLabel = tApply(doc.labelKey)
                     return (
                       <div key={doc.type} className="flex items-center justify-between text-sm">
                         <span className="text-gray-600">{docLabel}</span>
                         {uploaded ? (
                           <span className="inline-flex items-center gap-1 text-green-600 font-medium text-xs">
-                            <CheckCircle2 className="w-3.5 h-3.5" /> {isEn ? 'Uploaded' : 'Subido'}
+                            <CheckCircle2 className="w-3.5 h-3.5" /> {tApply('doc_uploaded')}
                           </span>
                         ) : (
-                          <span className="text-gray-400 text-xs">{isEn ? 'Not uploaded' : 'No subido'}</span>
+                          <span className="text-gray-400 text-xs">{tApply('doc_not_uploaded')}</span>
                         )}
                       </div>
                     )
@@ -713,9 +707,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
                   className="mt-0.5 w-4 h-4 rounded border-gray-300 text-pmi-blue focus:ring-pmi-blue"
                 />
                 <span className="text-sm text-gray-700 leading-relaxed">
-                  {isEn
-                    ? 'I confirm that all information provided is truthful and accurate. I understand that providing false information may result in the rejection of my application.'
-                    : 'Confirmo que toda la información proporcionada es veraz y correcta. Entiendo que proporcionar información falsa puede resultar en el rechazo de mi solicitud.'}
+                  {tApply('agree_text')}
                   <span className="text-red-500"> *</span>
                 </span>
               </label>
@@ -748,7 +740,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
             className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <ArrowLeft className="w-4 h-4" />
-            {isEn ? 'Back' : 'Atrás'}
+            {tApply('nav_back')}
           </button>
         ) : onBack ? (
           <button
@@ -757,7 +749,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
             className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <ArrowLeft className="w-4 h-4" />
-            {isEn ? 'Back to Certifications' : 'Volver a Certificaciones'}
+            {tApply('back_to_certifications')}
           </button>
         ) : (
           <div />
@@ -769,7 +761,7 @@ export default function CertificationApplyForm({ certificationType, certificatio
             disabled={loading || (step === 1 ? validateStep1() !== '' : step === 2 ? validateStep2() !== '' : false)}
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-pmi-dark text-white font-medium rounded-xl hover:bg-pmi-blue transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {isEn ? 'Next' : 'Siguiente'}
+            {tApply('nav_next')}
             <ArrowRight className="w-4 h-4" />
           </button>
         ) : (
@@ -779,9 +771,9 @@ export default function CertificationApplyForm({ certificationType, certificatio
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-pmi-dark text-white font-medium rounded-xl hover:bg-pmi-blue transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> {isEn ? 'Sending...' : 'Enviando...'}</>
+              <><Loader2 className="w-4 h-4 animate-spin" /> {tApply('nav_sending')}</>
             ) : (
-              <><Send className="w-4 h-4" /> {isEn ? 'Submit Application' : 'Enviar Solicitud'}</>
+              <><Send className="w-4 h-4" /> {tApply('nav_submit')}</>
             )}
           </button>
         )}

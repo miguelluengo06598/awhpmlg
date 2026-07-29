@@ -17,6 +17,19 @@ export const DEFAULT_LOCALE: Locale = 'es'
 // Nombre de la cookie de preferencia (solo guarda el código de idioma).
 export const LOCALE_COOKIE = 'NEXT_LOCALE'
 
+// ── Presentación de idiomas (compartida por Header público y panel admin) ─────
+// Las banderas se dibujan como SVG inline en components/FlagIcon.tsx (no emoji:
+// Windows no tiene glifo de bandera). pt usa la bandera de Portugal porque las
+// traducciones son portugués europeo (equipa, registo, contacto, utilizador).
+//
+// Nombre completo del idioma, en su propio idioma. Se expone como aria-label
+// del botón para que la bandera nunca quede sin contexto textual.
+export const LOCALE_NAMES: Record<Locale, string> = {
+  es: 'Español',
+  en: 'English',
+  pt: 'Português',
+}
+
 /** Type guard: ¿es un código de idioma soportado? (whitelist cerrada) */
 export function isLocale(value: unknown): value is Locale {
   return typeof value === 'string' && (LOCALES as readonly string[]).includes(value)

@@ -149,22 +149,24 @@ export default function RegistryPage({ locale }: Props) {
   const searchRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 8;
 
-  const isEs = locale === 'es';
   const tReg = (key: string) => (t as any).registry?.[key] ?? key;
 
-  const statuses = isEs
-    ? { all: 'Todos', active: 'Activa', due: 'Por Renovar', expired: 'Vencida' }
-    : { all: 'All', active: 'Active', due: 'Due for Renewal', expired: 'Expired' };
+  const statuses = {
+    all: tReg('status_all'),
+    active: tReg('status_active'),
+    due: tReg('status_due'),
+    expired: tReg('status_expired'),
+  };
 
   const certOptions = [
-    { value: 'all', label: isEs ? 'Todas' : 'All' },
+    { value: 'all', label: tReg('filter_all') },
     { value: 'Information Delivery Manager', label: 'Information Delivery Manager' },
     { value: 'BIM Design Manager', label: 'BIM Design Manager' },
     { value: 'BIM Construction Manager', label: 'BIM Construction Manager' },
   ];
 
   const countryOptions = [
-    { value: 'all', label: isEs ? 'Todos' : 'All' },
+    { value: 'all', label: tReg('filter_all_short') },
     { value: 'España', label: 'España' },
     { value: 'UK', label: 'UK' },
     { value: 'USA', label: 'USA' },
@@ -230,16 +232,16 @@ export default function RegistryPage({ locale }: Props) {
   const handleVerifyQR = useCallback(() => {
     const code = qrInput.trim().toUpperCase();
     if (!code) {
-      setQrError(isEs ? 'Introduce un código' : 'Enter a code');
+      setQrError(tReg('qr_err_empty'));
       return;
     }
     if (!validateQRCode(code)) {
-      setQrError(isEs ? 'Formato inválido. Ejemplo: IDM-2024-ABC123XYZ789' : 'Invalid format. Example: IDM-2024-ABC123XYZ789');
+      setQrError(tReg('qr_err_format'));
       return;
     }
     setQrError('');
-    router.push(`/certificate/${code}`);
-  }, [qrInput, router, isEs]);
+    router.push(getLink(`/certificate/${code}`));
+  }, [qrInput, router, locale, getLink]);
 
   const handleStartScan = useCallback(() => {
     setIsScanning(true);
@@ -276,7 +278,7 @@ export default function RegistryPage({ locale }: Props) {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="text-center max-w-4xl mx-auto">
             <motion.span variants={fadeInUp} className="inline-block px-5 py-2 rounded-full bg-white/15 text-white text-sm font-semibold mb-8 border border-white/20 backdrop-blur-sm">
-              {isEs ? 'Transparencia Profesional' : 'Professional Transparency'}
+              {tReg('hero_eyebrow')}
             </motion.span>
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
               {tReg('hero_title')}
@@ -285,14 +287,12 @@ export default function RegistryPage({ locale }: Props) {
               {tReg('hero_subtitle')}
             </motion.p>
             <motion.p variants={fadeInUp} className="text-lg text-white/75 max-w-3xl mx-auto mb-12 leading-relaxed">
-              {isEs
-                ? 'Verifica la vigencia de certificaciones mediante código QR o busca profesionales certificados en todo el mundo.'
-                : 'Verify certification validity via QR code or search for certified professionals worldwide.'}
+              {tReg('hero_lead')}
             </motion.p>
             <motion.div variants={fadeInUp}>
               <button onClick={scrollToSearch} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-white text-[#0066CC] px-10 py-4 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
                 <Search className="w-5 h-5" />
-                {isEs ? 'Verificar o Buscar' : 'Verify or Search'}
+                {tReg('cta_verify_or_search')}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </motion.div>
@@ -305,34 +305,28 @@ export default function RegistryPage({ locale }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer} className="text-center mb-16">
             <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {isEs ? 'Información' : 'Information'}
+              {tReg('what_eyebrow')}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-[42px] font-bold text-[#333]">
-              {isEs ? '¿Qué es el Registro?' : 'What is the Registry?'}
+              {tReg('what_title')}
             </motion.h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 icon: <QrCode className="w-14 h-14" />,
-                title: isEs ? 'Verificación por QR' : 'QR Verification',
-                desc: isEs
-                  ? 'Escanea un código QR o introduce un código manual para verificar instantáneamente la autenticidad de una certificación.'
-                  : 'Scan a QR code or enter a manual code to instantly verify the authenticity of a certification.',
+                title: tReg('card_qr_title'),
+                desc: tReg('card_qr_desc'),
               },
               {
                 icon: <Search className="w-14 h-14" />,
-                title: isEs ? 'Búsqueda Pública' : 'Public Search',
-                desc: isEs
-                  ? 'Encuentra profesionales certificados que han optado por aparecer públicamente en nuestro directorio internacional.'
-                  : 'Find certified professionals who have chosen to appear publicly in our international directory.',
+                title: tReg('card_search_title'),
+                desc: tReg('card_search_desc'),
               },
               {
                 icon: <Star className="w-14 h-14" />,
-                title: isEs ? 'Reconocimiento Profesional' : 'Professional Recognition',
-                desc: isEs
-                  ? 'Refuerza el reconocimiento profesional y visibilidad de especialistas BIM certificados internacionalmente.'
-                  : 'Reinforces professional recognition and visibility of internationally certified BIM specialists.',
+                title: tReg('card_recognition_title'),
+                desc: tReg('card_recognition_desc'),
               },
             ].map((card, i) => (
               <motion.div
@@ -359,10 +353,10 @@ export default function RegistryPage({ locale }: Props) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer} className="text-center mb-12">
             <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {isEs ? 'Verificación' : 'Verification'}
+              {tReg('verify_eyebrow')}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-              {isEs ? 'Verifica o Busca Certificaciones' : 'Verify or Search Certifications'}
+              {tReg('verify_heading')}
             </motion.h2>
           </motion.div>
 
@@ -462,7 +456,7 @@ export default function RegistryPage({ locale }: Props) {
 
                     {/* Example QR codes for demo */}
                     <div className="pt-4 border-t border-[#eee]">
-                      <p className="text-xs text-[#333]/50 font-medium uppercase tracking-wider mb-3">{isEs ? 'Códigos de ejemplo' : 'Example codes'}</p>
+                      <p className="text-xs text-[#333]/50 font-medium uppercase tracking-wider mb-3">{tReg('example_codes')}</p>
                       <div className="flex flex-wrap gap-2">
                         {['IDM-2024-ABC123XYZ789', 'BDM-2024-DEF456ABC012', 'BCM-2024-GHI789DEF345'].map((code) => (
                           <button
@@ -554,7 +548,7 @@ export default function RegistryPage({ locale }: Props) {
                         className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-[#ddd] text-[#333] hover:bg-[#f9fbff] transition-colors font-medium"
                       >
                         <X className="w-4 h-4" />
-                        {isEs ? 'Limpiar' : 'Clear'}
+                        {tReg('clear')}
                       </button>
                     )}
                   </div>
@@ -606,18 +600,18 @@ export default function RegistryPage({ locale }: Props) {
                                 <div className="text-xs text-[#333]/50 space-y-1">
                                   <div className="flex items-center gap-1.5">
                                     <Calendar className="w-3 h-3" />
-                                    {isEs ? 'Obt.' : 'Obt.'} {p.obtainedDate}
+                                    {tReg('date_obtained_short')} {p.obtainedDate}
                                   </div>
                                   <div className="flex items-center gap-1.5">
                                     <RefreshCw className="w-3 h-3" />
-                                    {isEs ? 'Venc.' : 'Exp.'} {p.expiryDate}
+                                    {tReg('date_expiry_short')} {p.expiryDate}
                                   </div>
                                 </div>
                                 <div className="mt-3 pt-3 border-t border-[#ddd]/40 flex items-center justify-between">
                                   <p className="text-[10px] text-[#333]/40 font-mono">{p.certificateNumber}</p>
                                   {p.qrCode && (
                                     <Link
-                                      href={`/certificate/${p.qrCode}`}
+                                      href={getLink(`/certificate/${p.qrCode}`)}
                                       className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0066CC] hover:underline"
                                     >
                                       <ExternalLink className="w-3 h-3" />
@@ -668,7 +662,7 @@ export default function RegistryPage({ locale }: Props) {
                                     <td className="px-4 py-3">
                                       {p.qrCode && (
                                         <Link
-                                          href={`/certificate/${p.qrCode}`}
+                                          href={getLink(`/certificate/${p.qrCode}`)}
                                           className="inline-flex items-center gap-1 text-xs font-semibold text-[#0066CC] hover:underline"
                                         >
                                           <ExternalLink className="w-3.5 h-3.5" />
@@ -690,7 +684,7 @@ export default function RegistryPage({ locale }: Props) {
                         <p className="text-[#333]/60 mb-6">{tReg('no_results_desc')}</p>
                         <button onClick={clearFilters} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0066CC] text-white font-semibold hover:bg-[#0055aa] transition-colors">
                           <X className="w-4 h-4" />
-                          {isEs ? 'Limpiar filtros' : 'Clear filters'}
+                          {tReg('clear_filters')}
                         </button>
                       </motion.div>
                     )}
@@ -736,33 +730,33 @@ export default function RegistryPage({ locale }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer} className="text-center mb-16">
             <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {isEs ? 'Ventajas' : 'Advantages'}
+              {tReg('features_eyebrow')}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-              {isEs ? 'Características del Registro' : 'Registry Features'}
+              {tReg('features_title')}
             </motion.h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: <UserCheck className="w-10 h-10" />,
-                title: isEs ? 'Inclusión Voluntaria' : 'Voluntary Inclusion',
-                desc: isEs ? 'La participación es voluntaria y refuerza el reconocimiento profesional en el mercado.' : 'Participation is voluntary and reinforces professional recognition in the market.',
+                title: tReg('feature_voluntary_title'),
+                desc: tReg('feature_voluntary_desc'),
               },
               {
                 icon: <Monitor className="w-10 h-10" />,
-                title: isEs ? 'Verificación en Línea' : 'Online Verification',
-                desc: isEs ? 'Búsqueda fácil y acceso inmediato al estado de certificaciones de profesionales.' : 'Easy search and immediate access to the certification status of professionals.',
+                title: tReg('feature_online_title'),
+                desc: tReg('feature_online_desc'),
               },
               {
                 icon: <FileCheck className="w-10 h-10" />,
-                title: isEs ? 'Estándares AECOMI' : 'AECOMI Standards',
-                desc: isEs ? 'Solo profesionales que cumplen estándares internacionales aparecen en el directorio.' : 'Only professionals who meet international standards appear in the directory.',
+                title: tReg('feature_standards_title'),
+                desc: tReg('feature_standards_desc'),
               },
               {
                 icon: <Globe className="w-10 h-10" />,
-                title: isEs ? 'Comunidad Internacional' : 'International Community',
-                desc: isEs ? 'Acceso a profesionales certificados en todo el mundo, con cobertura global.' : 'Access to certified professionals worldwide, with global coverage.',
+                title: tReg('feature_community_title'),
+                desc: tReg('feature_community_desc'),
               },
             ].map((card, idx) => (
               <motion.div
@@ -789,53 +783,53 @@ export default function RegistryPage({ locale }: Props) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer} className="text-center mb-12">
             <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {isEs ? 'Detalles' : 'Details'}
+              {tReg('details_eyebrow')}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-              {isEs ? 'Información Importante' : 'Important Information'}
+              {tReg('details_title')}
             </motion.h2>
           </motion.div>
           <div className="space-y-4">
             {[
               {
                 icon: <UserCheck className="w-5 h-5" />,
-                title: isEs ? '¿Cómo aparecer en el Registro?' : 'How to appear in the Registry?',
+                title: tReg('info_appear_title'),
                 content: (
                   <div className="space-y-3">
-                    <p>{isEs ? 'La inclusión en el Registro de Certificaciones es completamente voluntaria. Los profesionales certificados pueden optar por aparecer en el directorio público desde su dashboard de cliente.' : 'Inclusion in the Certification Registry is completely voluntary. Certified professionals can choose to appear in the public directory from their client dashboard.'}</p>
+                    <p>{tReg('info_appear_desc')}</p>
                     <Link href={getLink('/certifications')} className="inline-flex items-center gap-2 text-[#0066CC] font-semibold hover:underline">
-                      {isEs ? 'Obtener certificación' : 'Get certified'} <ArrowRight className="w-4 h-4" />
+                      {tReg('info_appear_link')} <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 ),
               },
               {
                 icon: <Lock className="w-5 h-5" />,
-                title: isEs ? 'Privacidad y Protección de Datos' : 'Privacy & Data Protection',
+                title: tReg('info_privacy_title'),
                 content: (
                   <div className="space-y-3">
-                    <p>{isEs ? 'AECOMI cumple con el Reglamento General de Protección de Datos (GDPR). La información mostrada es limitada y el número de certificado se muestra parcialmente por seguridad. Los profesionales pueden solicitar la eliminación de sus datos en cualquier momento.' : 'AECOMI complies with the General Data Protection Regulation (GDPR). The displayed information is limited and the certificate number is partially shown for security. Professionals can request deletion of their data at any time.'}</p>
+                    <p>{tReg('info_privacy_desc')}</p>
                   </div>
                 ),
               },
               {
                 icon: <BadgeCheck className="w-5 h-5" />,
-                title: isEs ? 'Verificación de Certificados' : 'Certificate Verification',
+                title: tReg('info_verify_title'),
                 content: (
                   <div className="space-y-3">
-                    <p>{isEs ? 'Para verificar que un certificado es auténtico, escanea el código QR, introduce el código manual, o busca al profesional en este registro.' : 'To verify that a certificate is authentic, scan the QR code, enter the manual code, or search for the professional in this registry.'}</p>
+                    <p>{tReg('info_verify_desc')}</p>
                     <Link href={getLink('/contact')} className="inline-flex items-center gap-2 text-[#0066CC] font-semibold hover:underline">
-                      {isEs ? 'Contacta con nosotros' : 'Contact us'} <ArrowRight className="w-4 h-4" />
+                      {tReg('info_verify_link')} <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 ),
               },
               {
                 icon: <RefreshCw className="w-5 h-5" />,
-                title: isEs ? 'Actualizar Datos' : 'Update Data',
+                title: tReg('info_update_title'),
                 content: (
                   <div className="space-y-3">
-                    <p>{isEs ? 'Los profesionales certificados pueden solicitar actualizar sus datos de contacto, empresa o país de residencia desde su dashboard de cliente.' : 'Certified professionals can request to update their contact details, company or country of residence from their client dashboard.'}</p>
+                    <p>{tReg('info_update_desc')}</p>
                   </div>
                 ),
               },
@@ -851,10 +845,10 @@ export default function RegistryPage({ locale }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer} className="text-center mb-16">
             <motion.span variants={fadeInUp} className="inline-block text-[#0066CC] font-semibold text-sm tracking-wider uppercase mb-3">
-              {isEs ? 'Números' : 'Numbers'}
+              {tReg('stats_eyebrow')}
             </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-              {isEs ? 'Estadísticas del Registro' : 'Registry Statistics'}
+              {tReg('stats_title')}
             </motion.h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -898,17 +892,17 @@ export default function RegistryPage({ locale }: Props) {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={staggerContainer}>
             <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {isEs ? '¿No estás en el Registro?' : 'Not in the Registry?'}
+              {tReg('cta_title')}
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-lg text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-              {isEs ? 'Obtén tu certificación AECOMI y únete al directorio de profesionales BIM de clase mundial.' : 'Get your AECOMI certification and join the directory of world-class BIM professionals.'}
+              {tReg('cta_desc')}
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={getLink('/certifications')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-white text-[#0066CC] px-10 py-4 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                {isEs ? 'Ver Certificaciones' : 'View Certifications'} <ArrowRight className="w-5 h-5" />
+                {tReg('cta_view_certifications')} <ArrowRight className="w-5 h-5" />
               </Link>
               <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl border-2 border-white/40 text-white hover:bg-white/10 px-10 py-4 transition-all duration-300 hover:-translate-y-1">
-                {isEs ? 'Contacta con Nosotros' : 'Contact Us'}
+                {tReg('cta_contact')}
               </Link>
             </motion.div>
           </motion.div>

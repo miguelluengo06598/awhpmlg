@@ -6,7 +6,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, Globe, Users, Award, FileText, Landmark, MessageSquare, ClipboardList, Layers, HardHat, Search, BadgeCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/useTranslation'
-import { type Locale, LOCALES, localizePath } from '@/lib/locale'
+import { type Locale, LOCALES, LOCALE_NAMES, localizePath } from '@/lib/locale'
+import FlagIcon from '@/components/FlagIcon'
 
 export default function Header() {
   const { currentLang, t, getLink } = useTranslation()
@@ -30,8 +31,6 @@ export default function Header() {
   // Etiqueta 3-idiomas para textos del menú que no están en el objeto translations.
   const L = (es: string, en: string, pt: string) =>
     currentLang === 'es' ? es : currentLang === 'en' ? en : pt
-
-  const LANG_LABELS: Record<Locale, string> = { es: 'ES', en: 'EN', pt: 'PT' }
 
   const toggleSubmenu = (name: string) => {
     setExpandedSubmenu(expandedSubmenu === name ? null : name)
@@ -184,21 +183,23 @@ export default function Header() {
 
           {/* Right utilities */}
           <div className="flex items-center gap-1 sm:gap-2 ml-auto">
-            {/* Language selector (EN / ES / PT) */}
+            {/* Language selector (banderas 🇪🇸 / 🇬🇧 / 🇵🇹) */}
             <div className="hidden md:flex items-center gap-0.5 rounded-lg border border-gray-200 p-0.5" role="group" aria-label={t.nav.language}>
               <Globe className="w-3.5 h-3.5 text-gray-400 mx-1" aria-hidden />
               {LOCALES.map((lng) => (
                 <button
                   key={lng}
                   onClick={() => changeLanguage(lng)}
+                  aria-label={LOCALE_NAMES[lng]}
                   aria-current={currentLang === lng ? 'true' : undefined}
-                  className={`text-[12px] font-semibold px-2 py-1 rounded-md transition-colors ${
+                  title={LOCALE_NAMES[lng]}
+                  className={`px-1.5 py-1 rounded-md transition-all ${
                     currentLang === lng
-                      ? 'bg-pmi-dark text-white'
-                      : 'text-gray-600 hover:text-pmi-dark hover:bg-gray-50'
+                      ? 'bg-pmi-dark/10 ring-1 ring-pmi-dark/30 opacity-100'
+                      : 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 hover:bg-gray-50'
                   }`}
                 >
-                  {LANG_LABELS[lng]}
+                  <FlagIcon locale={lng} className="w-6 h-4 rounded-[2px] ring-1 ring-black/10" />
                 </button>
               ))}
             </div>
@@ -331,7 +332,7 @@ export default function Header() {
                 </motion.div>
               ))}
 
-              {/* Bottom utilities: language selector (EN / ES / PT) */}
+              {/* Bottom utilities: language selector (banderas 🇪🇸 / 🇬🇧 / 🇵🇹) */}
               <div className="px-5 py-4 border-t border-gray-100 flex items-center gap-3">
                 <Globe className="w-4 h-4 text-gray-400" aria-hidden />
                 <div className="flex items-center gap-1" role="group" aria-label={t.nav.language}>
@@ -342,12 +343,16 @@ export default function Header() {
                         changeLanguage(lng)
                         setMobileMenuOpen(false)
                       }}
+                      aria-label={LOCALE_NAMES[lng]}
                       aria-current={currentLang === lng ? 'true' : undefined}
-                      className={`text-[13px] font-semibold px-2.5 py-1 rounded-md transition-colors ${
-                        currentLang === lng ? 'bg-pmi-dark text-white' : 'text-gray-600 hover:bg-gray-50'
+                      title={LOCALE_NAMES[lng]}
+                      className={`px-2 py-1.5 rounded-md transition-all ${
+                        currentLang === lng
+                          ? 'bg-pmi-dark/10 ring-1 ring-pmi-dark/30 opacity-100'
+                          : 'opacity-50 grayscale hover:opacity-100 hover:grayscale-0 hover:bg-gray-50'
                       }`}
                     >
-                      {LANG_LABELS[lng]}
+                      <FlagIcon locale={lng} className="w-7 h-[18px] rounded-[2px] ring-1 ring-black/10" />
                     </button>
                   ))}
                 </div>

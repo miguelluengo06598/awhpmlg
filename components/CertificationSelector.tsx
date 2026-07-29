@@ -5,14 +5,18 @@ import { motion } from 'framer-motion'
 import { FileCheck, Clock, ArrowRight, HelpCircle, Mail } from 'lucide-react'
 import Link from 'next/link'
 
+/** Valor con una variante por idioma soportado. */
+type Localized<T> = Record<'es' | 'en' | 'pt', T>
+
 export interface CertificationOption {
   id: string
   name: string
+  /** Nombre comercial: no se traduce, es el mismo en los tres idiomas. */
   displayName: string
-  description: string
+  description: Localized<string>
   color: string
-  requirements: string[]
-  duration: string
+  requirements: Localized<string[]>
+  duration: Localized<string>
 }
 
 const CERTIFICATIONS: CertificationOption[] = [
@@ -20,40 +24,88 @@ const CERTIFICATIONS: CertificationOption[] = [
     id: 'Information_Delivery_Manager',
     name: 'information-delivery-manager',
     displayName: 'Information Delivery Manager',
-    description: 'Especialista en gestión estratégica de información BIM',
+    description: {
+      es: 'Especialista en gestión estratégica de información BIM',
+      en: 'Specialist in strategic BIM information management',
+      pt: 'Especialista em gestão estratégica de informação BIM',
+    },
     color: '#0066CC',
-    requirements: [
-      '3+ años de experiencia en BIM',
-      'Conocimiento de ISO 19650',
-      'Experiencia en gestión de información',
-    ],
-    duration: '12-16 semanas',
+    requirements: {
+      es: [
+        '3+ años de experiencia en BIM',
+        'Conocimiento de ISO 19650',
+        'Experiencia en gestión de información',
+      ],
+      en: [
+        '3+ years of BIM experience',
+        'Knowledge of ISO 19650',
+        'Experience in information management',
+      ],
+      pt: [
+        '3+ anos de experiência em BIM',
+        'Conhecimento da ISO 19650',
+        'Experiência em gestão de informação',
+      ],
+    },
+    duration: { es: '12-16 semanas', en: '12-16 weeks', pt: '12-16 semanas' },
   },
   {
     id: 'BIM_Design_Manager',
     name: 'bim-design-manager',
     displayName: 'BIM Design Manager',
-    description: 'Coordinador de procesos BIM en fase de diseño',
+    description: {
+      es: 'Coordinador de procesos BIM en fase de diseño',
+      en: 'Coordinator of BIM processes in the design phase',
+      pt: 'Coordenador de processos BIM na fase de projeto',
+    },
     color: '#00AA88',
-    requirements: [
-      '2+ años de experiencia en diseño BIM',
-      'Conocimiento de software BIM',
-      'Experiencia en coordinación interdisciplinar',
-    ],
-    duration: '12-16 semanas',
+    requirements: {
+      es: [
+        '2+ años de experiencia en diseño BIM',
+        'Conocimiento de software BIM',
+        'Experiencia en coordinación interdisciplinar',
+      ],
+      en: [
+        '2+ years of BIM design experience',
+        'Knowledge of BIM software',
+        'Experience in interdisciplinary coordination',
+      ],
+      pt: [
+        '2+ anos de experiência em projeto BIM',
+        'Conhecimento de software BIM',
+        'Experiência em coordenação interdisciplinar',
+      ],
+    },
+    duration: { es: '12-16 semanas', en: '12-16 weeks', pt: '12-16 semanas' },
   },
   {
     id: 'BIM_Construction_Manager',
     name: 'bim-construction-manager',
     displayName: 'BIM Construction Manager',
-    description: 'Especialista en implantación BIM en fase de construcción',
+    description: {
+      es: 'Especialista en implantación BIM en fase de construcción',
+      en: 'Specialist in BIM implementation in the construction phase',
+      pt: 'Especialista em implementação BIM na fase de construção',
+    },
     color: '#FF6B35',
-    requirements: [
-      '2+ años de experiencia en construcción BIM',
-      'Conocimiento de procesos constructivos',
-      'Experiencia en planificación y seguimiento',
-    ],
-    duration: '12-16 semanas',
+    requirements: {
+      es: [
+        '2+ años de experiencia en construcción BIM',
+        'Conocimiento de procesos constructivos',
+        'Experiencia en planificación y seguimiento',
+      ],
+      en: [
+        '2+ years of BIM construction experience',
+        'Knowledge of construction processes',
+        'Experience in planning and monitoring',
+      ],
+      pt: [
+        '2+ anos de experiência em construção BIM',
+        'Conhecimento de processos construtivos',
+        'Experiência em planeamento e acompanhamento',
+      ],
+    },
+    duration: { es: '12-16 semanas', en: '12-16 weeks', pt: '12-16 semanas' },
   },
 ]
 
@@ -63,7 +115,8 @@ interface CertificationSelectorProps {
 }
 
 export default function CertificationSelector({ onSelect, locale = 'es' }: CertificationSelectorProps) {
-  const isEn = locale === 'en'
+  const L = (es: string, en: string, pt: string) =>
+    locale === 'es' ? es : locale === 'pt' ? pt : en
   const [hovered, setHovered] = useState<string | null>(null)
 
   return (
@@ -71,12 +124,14 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold text-pmi-dark mb-2">
-          {isEn ? 'Apply for Certification' : 'Solicitar Certificación'}
+          {L('Solicitar Certificación', 'Apply for Certification', 'Candidatar-se à Certificação')}
         </h1>
         <p className="text-gray-500 max-w-xl mx-auto">
-          {isEn
-            ? 'Choose the type of certification you want to apply for and complete the application process'
-            : 'Elige el tipo de certificación que deseas solicitar y completa el proceso de solicitud'}
+          {L(
+            'Elige el tipo de certificación que deseas solicitar y completa el proceso de solicitud',
+            'Choose the type of certification you want to apply for and complete the application process',
+            'Escolha o tipo de certificação a que se quer candidatar e complete o processo de candidatura',
+          )}
         </p>
       </div>
 
@@ -116,24 +171,24 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
 
               {/* Description */}
               <p className="text-sm text-gray-500 mb-4 leading-relaxed">
-                {cert.description}
+                {cert.description[locale]}
               </p>
 
               {/* Duration */}
               <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg mb-4 text-sm text-gray-600">
                 <Clock className="w-4 h-4 shrink-0" style={{ color: cert.color }} />
                 <span>
-                  <strong>{isEn ? 'Duration:' : 'Duración:'}</strong> {cert.duration}
+                  <strong>{L('Duración:', 'Duration:', 'Duração:')}</strong> {cert.duration[locale]}
                 </span>
               </div>
 
               {/* Requirements */}
               <div className="mb-5">
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                  {isEn ? 'Requirements:' : 'Requisitos:'}
+                  {L('Requisitos:', 'Requirements:', 'Requisitos:')}
                 </h4>
                 <ul className="space-y-1.5">
-                  {cert.requirements.map((req, idx) => (
+                  {cert.requirements[locale].map((req, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-sm text-gray-500">
                       <span className="font-bold shrink-0" style={{ color: cert.color }}>✓</span>
                       {req}
@@ -151,7 +206,7 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
                   opacity: isHovered ? 1 : 0.95,
                 }}
               >
-                {isEn ? 'Apply for Certification' : 'Solicitar Certificación'}
+                {L('Solicitar Certificación', 'Apply for Certification', 'Candidatar-se à Certificação')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
@@ -165,19 +220,21 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
           <HelpCircle className="w-6 h-6 text-pmi-blue" />
         </div>
         <h3 className="text-lg font-bold text-pmi-dark mb-2">
-          {isEn ? 'Need help?' : '¿Necesitas ayuda?'}
+          {L('¿Necesitas ayuda?', 'Need help?', 'Precisa de ajuda?')}
         </h3>
         <p className="text-gray-500 text-sm mb-4 max-w-md mx-auto">
-          {isEn
-            ? 'If you have questions about which certification is right for you, contact our team.'
-            : 'Si tienes dudas sobre cuál certificación es la más adecuada para ti, puedes contactar con nuestro equipo.'}
+          {L(
+            'Si tienes dudas sobre cuál certificación es la más adecuada para ti, puedes contactar con nuestro equipo.',
+            'If you have questions about which certification is right for you, contact our team.',
+            'Se tem dúvidas sobre qual a certificação mais adequada para si, contacte a nossa equipa.',
+          )}
         </p>
         <Link
-          href={isEn ? '/en/contact' : '/contact'}
+          href={locale === 'es' ? '/contact' : `/${locale}/contact`}
           className="inline-flex items-center gap-2 text-sm font-semibold text-pmi-blue hover:underline"
         >
           <Mail className="w-4 h-4" />
-          {isEn ? 'Contact us' : 'Contacta con nosotros'}
+          {L('Contacta con nosotros', 'Contact us', 'Contacte-nos')}
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
