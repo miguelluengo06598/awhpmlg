@@ -642,7 +642,10 @@ VALUES
     'image/png',
     'image/webp'
   ]),
-  ('certificates', 'certificates', TRUE, FALSE, 10485760, ARRAY[
+  -- PRIVADO: los PDFs de certificado se sirven mediante URLs firmadas con
+  -- expiración (createSignedUrl), no por URL pública. Evita la descarga anónima
+  -- por adivinación/enumeración de rutas.
+  ('certificates', 'certificates', FALSE, FALSE, 10485760, ARRAY[
     'application/pdf'
   ])
 ON CONFLICT (id) DO UPDATE SET
@@ -749,13 +752,21 @@ CREATE POLICY "Users can update own avatar"
   );
 
 -- ========================================
--- BUCKET: certificates (PÚBLICO)
+-- BUCKET: certificates (PRIVADO)
 -- ========================================
 
--- Cualquiera puede descargar certificados
-CREATE POLICY "Public certificates readable"
+-- Sin lectura pública. La descarga se hace por URL firmada generada server-side
+-- con service_role (bypass RLS). Solo el admin puede leer directamente por RLS.
+DROP POLICY IF EXISTS "Public certificates readable" ON storage.objects;
+CREATE POLICY "Admins can read certificates"
   ON storage.objects FOR SELECT
-  USING (bucket_id = 'certificates');
+  USING (
+    bucket_id = 'certificates'
+    AND auth.role() = 'authenticated'
+    AND EXISTS (
+      SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'admin'
+    )
+  );
 
 -- Solo admins pueden subir certificados
 CREATE POLICY "Admins can upload certificates"

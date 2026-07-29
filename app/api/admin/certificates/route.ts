@@ -52,11 +52,13 @@ export async function POST(req: NextRequest) {
       shareUrl: cert.qr_code,
     })
   } catch (error) {
+    // El detalle (mensaje/código de Postgres) se registra solo en el servidor;
+    // la respuesta al cliente es genérica para no filtrar el esquema.
     const msg = error instanceof Error ? error.message : String(error)
     const code = (error as { code?: string }).code
     console.error('[/api/admin/certificates] POST error:', msg, '| code:', code, '| full:', error)
     return NextResponse.json(
-      { error: msg || 'Error creando el certificado.', code },
+      { error: 'Error creando el certificado.' },
       { status: 500 }
     )
   }
@@ -67,7 +69,10 @@ export async function GET(req: NextRequest) {
     const { user, error: authError } = await requireAdmin(req)
     if (authError) return authError
 
-    const { data, error } = await supabase
+    // La tabla certificates tiene RLS; esta consulta corre server-side con
+    // service_role (la ruta ya está protegida por requireAdmin).
+    const svc = createServiceClient()
+    const { data, error } = await svc
       .from('certificates')
       .select('id, certification_type, certification_code, full_name, email, organization, issue_date, expiry_date, status, user_id, qr_code, created_at')
       .eq('issued_by_admin', user!.id)

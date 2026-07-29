@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabaseClient'
-import { rateLimit } from '@/lib/rateLimit'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 import { Resend } from 'resend'
+import escapeHtml from 'escape-html'
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY)
@@ -30,10 +31,10 @@ function validateContactForm(data: Record<string, unknown>) {
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+    const ip = getClientIp(req)
     const userAgent = req.headers.get('user-agent') ?? ''
 
-    if (!rateLimit(ip, 5, 60 * 60 * 1000)) {
+    if (!(await rateLimit(`contact:${ip}`, 5, 60 * 60 * 1000))) {
       return NextResponse.json(
         { success: false, error: 'Demasiadas solicitudes. Inténtalo en una hora.' },
         { status: 429 }
@@ -68,36 +69,43 @@ export async function POST(req: NextRequest) {
 
     const refId = saved.id as string
 
-    await Promise.allSettled([
-      getResend().emails.send({
-        from: FROM_EMAIL,
-        to: email,
-        subject: 'Hemos recibido tu mensaje — AECOMI',
-        html: `
-          <p>Hola ${name},</p>
-          <p>Hemos recibido tu mensaje sobre <strong>${subject}</strong>.</p>
-          <p>Nuestro equipo te responderá en las próximas 24–48 horas.</p>
-          <p style="color:#666;font-size:12px">Ref: ${refId}</p>
-        `,
-      }),
-      getResend().emails.send({
-        from: FROM_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `[Contacto] ${subject}`,
-        html: `
-          <h3>Nuevo mensaje de contacto</h3>
-          <p><strong>Nombre:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Teléfono:</strong> ${phone ?? '—'}</p>
-          <p><strong>Asunto:</strong> ${subject}</p>
-          <p><strong>Mensaje:</strong></p>
-          <blockquote style="border-left:3px solid #ccc;padding-left:12px;color:#333">
-            ${message.replace(/\n/g, '<br>')}
-          </blockquote>
-          <p style="color:#666;font-size:12px">IP: ${ip} | Ref: ${refId}</p>
-        `,
-      }),
-    ])
+    // Todo el contenido controlado por el usuario se ESCAPA antes de interpolarlo
+    // en HTML (previene inyección de HTML/enlaces de phishing en la bandeja del admin).
+    const safeName = escapeHtml(name)
+    const safeEmail = escapeHtml(email)
+    const safePhone = phone ? escapeHtml(phone) : '—'
+    const safeSubject = escapeHtml(subject)
+    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>')
+
+    // Un ÚNICO email, con destinatario FIJO (el admin). Nunca se envía a una
+    // dirección proporcionada por el usuario: eso convertía el endpoint en un
+    // relé de correo abierto (spam/phishing desde nuestro dominio). El email del
+    // remitente va solo en `replyTo`, que no genera ningún envío hacia él.
+    const send = await getResend().emails.send({
+      from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
+      // `email` ya pasó una regex que excluye espacios y saltos de línea (\s),
+      // por lo que es seguro como cabecera (sin header injection).
+      replyTo: email,
+      subject: `[Contacto] ${safeSubject}`,
+      html: `
+        <h3>Nuevo mensaje de contacto</h3>
+        <p><strong>Nombre:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        <p><strong>Teléfono:</strong> ${safePhone}</p>
+        <p><strong>Asunto:</strong> ${safeSubject}</p>
+        <p><strong>Mensaje:</strong></p>
+        <blockquote style="border-left:3px solid #ccc;padding-left:12px;color:#333">
+          ${safeMessage}
+        </blockquote>
+        <p style="color:#666;font-size:12px">IP: ${escapeHtml(ip)} | Ref: ${refId}</p>
+      `,
+    })
+
+    if (send.error) {
+      // El mensaje ya está guardado en BD; el fallo de email no debe romper la UX.
+      console.error('[/api/contact] Resend error:', send.error)
+    }
 
     return NextResponse.json({ success: true, id: refId }, { status: 200 })
   } catch (error) {

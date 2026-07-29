@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "sectest:phase1": "node scripts/sectests/phase1_privilege_escalation.test.mjs",
+    "sectest:phase1:sql": "node scripts/sectests/phase1_sql_exploit.mjs",
+    "sectest:phase1:state": "node scripts/sectests/phase1_state_verify.mjs",
+    "sectest:certificates-rls": "node scripts/sectests/certificates_rls.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.55.0",
@@ -15,14 +19,17 @@
     "@supabase/supabase-js": "^2.105.3",
     "@types/qrcode": "^1.5.6",
     "@types/qrcode.react": "^1.0.5",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "escape-html": "^1.0.3",
     "framer-motion": "^12.38.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "jsqr": "^1.4.0",
     "lucide-react": "^1.14.0",
-    "next": "16.2.6",
+    "next": "^16.2.12",
     "next-themes": "^0.4.6",
     "qrcode": "^1.5.4",
     "qrcode.react": "^4.2.0",
@@ -33,15 +40,23 @@
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
+    "@types/escape-html": "^1.0.4",
     "@types/node": "^20.19.40",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
-    "postcss": "^8.5.14",
+    "eslint-config-next": "16.2.12",
+    "pg": "^8.22.0",
+    "postcss": "^8.5.24",
     "tailwindcss": "^3.4.19",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "sharp": "^0.35.3",
+    "postcss": "^8.5.24",
+    "brace-expansion@1": "1.1.16",
+    "brace-expansion@2": "2.0.3"
   }
 }

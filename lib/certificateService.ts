@@ -1,7 +1,7 @@
 import QRCode from 'qrcode'
-import { supabase } from './supabaseClient'
 import { createServiceClient } from './supabaseServer'
 import { getCertificationName } from './qrGenerator'
+import { randomAlphanumeric } from './secureRandom'
 
 export interface CreateCertificateInput {
   certification_type: 'IDM' | 'BDM' | 'BCM'
@@ -17,7 +17,11 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://aecomi.com'
 
 function generateCertificationCode(type: string): string {
   const year = new Date().getFullYear()
-  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+  // 8 símbolos alfanuméricos con CSPRNG → ~41 bits de entropía (36^8 ≈ 2.8e12),
+  // frente a los 4 dígitos (10 000 valores) predecibles del generador anterior.
+  // Los códigos antiguos de 4 dígitos siguen validando (validateQRCode acepta
+  // [A-Z0-9]+), por lo que no requiere migración de datos.
+  const random = randomAlphanumeric(8)
   return `${type}-${year}-${random}`
 }
 

@@ -51,7 +51,7 @@ export const uploadApplicationDocument = async (
     validateFile(file, ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'])
 
     const ext = file.name.split('.').pop()?.toLowerCase() || 'pdf'
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`
+    const fileName = `${Date.now()}_${crypto.randomUUID().slice(0, 8)}.${ext}`
     const path = `${userId}/${applicationId}/${documentType}/${fileName}`
 
     if (isDev) console.log('Subiendo archivo:', path)
@@ -118,12 +118,15 @@ export const uploadProfilePicture = async (
 }
 
 /**
- * Subir certificado PDF
+ * Subir certificado PDF (bucket PRIVADO).
  * Estructura: certificates/qrCode.pdf
+ * Devuelve una URL FIRMADA con expiración (no pública): el bucket ya no permite
+ * lectura anónima, así que las rutas adivinables dejan de ser explotables.
  */
 export const uploadCertificate = async (
   qrCode: string,
-  file: File
+  file: File,
+  signedUrlExpiresIn = 60 * 60 // 1 hora
 ): Promise<{ path: string; url: string }> => {
   try {
     validateFile(file, ['pdf'])
@@ -140,11 +143,13 @@ export const uploadCertificate = async (
 
     if (error) throw error
 
-    const { data: urlData } = supabase.storage
+    const { data: urlData, error: urlError } = await supabase.storage
       .from('certificates')
-      .getPublicUrl(data.path)
+      .createSignedUrl(data.path, signedUrlExpiresIn)
 
-    return { path: data.path, url: urlData.publicUrl }
+    if (urlError) throw urlError
+
+    return { path: data.path, url: urlData.signedUrl }
   } catch (error: any) {
     console.error('Error en uploadCertificate:', error.message)
     throw new Error(error.message || 'Error al subir el certificado')

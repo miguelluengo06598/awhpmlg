@@ -50,6 +50,9 @@ CREDENCIALES_PRUEBA.md
 *.bak
 *.log
 
+# backups de estructura de producción (no versionar)
+/prod_backups
+
 # vercel
 .vercel
 

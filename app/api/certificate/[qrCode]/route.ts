@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabaseClient'
+import { createServiceClient } from '@/lib/supabaseServer'
 import { validateQRCode } from '@/lib/qrGenerator'
-import { rateLimit } from '@/lib/rateLimit'
+import { rateLimit, getClientIp } from '@/lib/rateLimit'
 
 const CERT_NAMES: Record<string, string> = {
   IDM: 'Information Delivery Manager',
@@ -13,8 +13,8 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ qrCode: string }> }
 ) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
-  if (!rateLimit(`cert-verify:${ip}`, 60, 60_000)) {
+  const ip = getClientIp(req)
+  if (!(await rateLimit(`cert-verify:${ip}`, 60, 60_000))) {
     return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
   }
 
@@ -26,10 +26,14 @@ export async function GET(
       return NextResponse.json({ error: 'Código de certificado inválido. Ejemplo: IDM-2026-1445' }, { status: 400 })
     }
 
-    const { data: cert, error } = await supabase
+    // Verificación pública: consulta server-side con service_role (la tabla tiene
+    // RLS activada). Se devuelven solo campos no sensibles (sin organization ni
+    // exam_score, que son PII).
+    const svc = createServiceClient()
+    const { data: cert, error } = await svc
       .from('certificates')
       .select(
-        'id, certification_type, certification_code, full_name, organization, issue_date, expiry_date, exam_score, status'
+        'id, certification_type, certification_code, full_name, issue_date, expiry_date, status'
       )
       .eq('certification_code', normalized)
       .single()
@@ -53,10 +57,8 @@ export async function GET(
         certificationCode: cert.certification_code,
         certificationType: cert.certification_type,
         certificationName: CERT_NAMES[cert.certification_type] ?? cert.certification_type,
-        organization: cert.organization ?? null,
         issueDate: cert.issue_date,
         expiryDate: cert.expiry_date ?? null,
-        examScore: cert.exam_score ?? null,
         status: certStatus,
         isActive: certStatus === 'active',
       },

@@ -20,6 +20,7 @@ import {
 import Link from 'next/link'
 import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
+import { setAuthHint } from '@/lib/authHint'
 import AuthLayout from './AuthLayout'
 
 interface FormData {
@@ -86,7 +87,13 @@ const validateField = (name: keyof FormData, value: string | boolean, formData: 
       return undefined
     case 'password':
       if (!value) return 'La contraseña es obligatoria'
-      if (typeof value === 'string' && value.length < 8) return 'Mínimo 8 caracteres'
+      if (typeof value === 'string') {
+        if (value.length < 10) return 'Mínimo 10 caracteres'
+        if (!/[A-Z]/.test(value)) return 'Incluye al menos una mayúscula'
+        if (!/[a-z]/.test(value)) return 'Incluye al menos una minúscula'
+        if (!/\d/.test(value)) return 'Incluye al menos un número'
+        if (!/[^A-Za-z0-9]/.test(value)) return 'Incluye al menos un símbolo'
+      }
       return undefined
     case 'confirmPassword':
       if (!value) return 'Confirma tu contraseña'
@@ -205,7 +212,7 @@ export default function SignUpForm() {
           const session = (await supabase.auth.getSession()).data.session
           if (session) {
             // If email confirmation is disabled, a session exists immediately — set the hint cookie
-            document.cookie = 'aecomi-auth=1; path=/; max-age=604800; SameSite=Lax'
+            setAuthHint()
             await fetch('/api/assign-certificates', {
               method: 'POST',
               headers: { Authorization: `Bearer ${session.access_token}` },

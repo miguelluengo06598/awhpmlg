@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
+import { clearAuthHint } from '@/lib/authHint'
 import { useAuth } from '@/hooks/useAuth'
 
 interface NavItem {
@@ -54,7 +55,7 @@ export default function DashboardShell({ children, navItems, role, basePath, bra
     await supabase.auth.signOut()
     localStorage.removeItem('aecomi_session')
     sessionStorage.removeItem('aecomi_session')
-    document.cookie = 'aecomi-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax'
+    clearAuthHint()
     router.push('/auth/signin')
   }
 

@@ -20,8 +20,11 @@ export function ProtectedRoute({ requiredRole, children }: ProtectedRouteProps) 
       router.replace('/auth/signin')
       return
     }
-    if (requiredRole && user.role && user.role !== requiredRole) {
-      router.replace(user.role === 'admin' ? '/dashboard/admin' : '/dashboard/client')
+    // Fail-closed: si se exige un rol y NO coincide (incluido rol desconocido),
+    // se deniega. Un rol undefined ya no concede acceso por defecto.
+    if (requiredRole && user.role !== requiredRole) {
+      if (!user.role) router.replace('/auth/signin')
+      else router.replace(user.role === 'admin' ? '/dashboard/admin' : '/dashboard/client')
     }
   }, [user, loading, requiredRole, router])
 
@@ -34,7 +37,7 @@ export function ProtectedRoute({ requiredRole, children }: ProtectedRouteProps) 
   }
 
   if (!user) return null
-  if (requiredRole && user.role && user.role !== requiredRole) return null
+  if (requiredRole && user.role !== requiredRole) return null
 
   return <>{children}</>
 }

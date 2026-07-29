@@ -18,6 +18,7 @@ import {
 import Link from 'next/link'
 import { useTranslation } from '@/lib/useTranslation'
 import { supabase } from '@/lib/supabaseClient'
+import { setAuthHint } from '@/lib/authHint'
 import AuthLayout from './AuthLayout'
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -102,7 +103,7 @@ export default function SignInForm() {
           : (authData.user.email || 'Usuario')
 
         // Set a hint cookie so the proxy can redirect instantly on next visit
-        document.cookie = 'aecomi-auth=1; path=/; max-age=604800; SameSite=Lax'
+        setAuthHint()
 
         // Redirect to the originally-requested page (from proxy ?next=) or default dashboard
         const next = searchParams.get('next')

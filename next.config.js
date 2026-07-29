@@ -1,9 +1,13 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 const securityHeaders = [
   { key: 'X-Content-Type-Options',  value: 'nosniff' },
   { key: 'X-Frame-Options',         value: 'DENY' },
-  { key: 'X-XSS-Protection',        value: '1; mode=block' },
+  // 0 es el valor recomendado hoy: el filtro heurístico (1; mode=block) está
+  // obsoleto y ha introducido vulnerabilidades propias. La CSP es la defensa real.
+  { key: 'X-XSS-Protection',        value: '0' },
   { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=()' },
   {
@@ -14,7 +18,11 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // 'unsafe-eval' solo en desarrollo (React lo usa para depuración). En
+      // producción no se necesita. Eliminar 'unsafe-inline' requeriría migrar a
+      // nonces (fuerza render dinámico + romper estilos inline de framer-motion):
+      // ver SECURITY_PENDIENTE.md.
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https: blob:",
       "font-src 'self' data:",

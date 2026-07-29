@@ -2,6 +2,8 @@
  * QR Code Generator Utilities for AECOMI Certificate Verification
  */
 
+import { randomAlphanumeric } from './secureRandom';
+
 export type CertificationType = 'IDM' | 'BDM' | 'BCM';
 
 export interface CertificateData {
@@ -22,20 +24,9 @@ export interface CertificateData {
  */
 export function generateQRCode(certificationType: CertificationType): string {
   const year = new Date().getFullYear();
-  const randomPart = generateRandomAlphanumeric(12);
+  // CSPRNG (Web Crypto) en lugar de Math.random(): código impredecible.
+  const randomPart = randomAlphanumeric(12);
   return `${certificationType}-${year}-${randomPart}`;
-}
-
-/**
- * Generate a random alphanumeric string of given length
- */
-function generateRandomAlphanumeric(length: number): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
 }
 
 /**

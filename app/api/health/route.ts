@@ -18,11 +18,13 @@ export async function GET() {
       checks: { database: 'ok', api: 'ok' },
     })
   } catch (error) {
+    // El detalle del error (nombres de tabla/columna, esquema) se registra solo
+    // en el servidor; la respuesta pública no lo revela.
+    console.error('[/api/health] check failed:', error)
     return NextResponse.json(
       {
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 503 }
     )
