@@ -46,8 +46,8 @@ export default function Header() {
           title: L('Información', 'Information', 'Informação'),
           items: [
             { name: L('Sobre AECOMI', 'About AECOMI', 'Sobre a AECOMI'), href: getLink('/about'), icon: Users },
-            { name: L('Gobierno y Organización', 'Governance & Organization', 'Governo e Organização'), href: getLink('/about/gobierno'), icon: Landmark },
-            { name: L('Contactar', 'Contact', 'Contactar'), href: getLink('/contact'), icon: MessageSquare },
+            { name: L('Gobierno y Organización', 'Governance & Organization', 'Governança e Organização'), href: getLink('/about/gobierno'), icon: Landmark },
+            { name: L('Contactar', 'Contact', 'Contato'), href: getLink('/contact'), icon: MessageSquare },
           ],
         },
       ],
@@ -57,7 +57,7 @@ export default function Header() {
       href: getLink('/certifications'),
       mega: [
         {
-          title: L('Nuestras Certificaciones', 'Our Certifications', 'As Nossas Certificações'),
+          title: L('Nuestras Certificaciones', 'Our Certifications', 'Nossas Certificações'),
           items: [
             { name: 'Information Delivery Manager', href: getLink('/certifications/information-delivery-manager'), icon: ClipboardList },
             { name: 'BIM Design Manager', href: getLink('/certifications/bim-design-manager'), icon: Layers },
@@ -67,7 +67,7 @@ export default function Header() {
         {
           title: L('Información', 'Information', 'Informação'),
           items: [
-            { name: L('Registro de Certificados', 'Certification Registry', 'Registo de Certificados'), href: getLink('/certifications/registro'), icon: BadgeCheck },
+            { name: L('Registro de Certificados', 'Certification Registry', 'Registro de Certificados'), href: getLink('/certifications/registro'), icon: BadgeCheck },
             { name: L('Ver todas las Cert.', 'View all Cert.', 'Ver todas as Cert.'), href: getLink('/certifications'), icon: Award },
             { name: L('Proceso de Certificación', 'Certification Process', 'Processo de Certificação'), href: getLink('/certifications'), icon: FileText },
           ],

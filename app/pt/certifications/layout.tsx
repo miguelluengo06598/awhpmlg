@@ -4,7 +4,7 @@
 export const metadata = {
   title: 'Certificações BIM — AECOMI',
   description:
-    'Certificações internacionais BIM da AECOMI: Information Delivery Manager, BIM Design Manager e BIM Construction Manager. Requisitos, processo de candidatura e exame.',
+    'Certificações internacionais BIM da AECOMI: Information Delivery Manager, BIM Design Manager e BIM Construction Manager. Requisitos, processo de inscrição e exame.',
 };
 
 export default function CertificationsLayout({ children }: { children: React.ReactNode }) {

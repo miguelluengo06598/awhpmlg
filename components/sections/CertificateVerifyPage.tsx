@@ -172,7 +172,7 @@ export default function CertificateVerifyPage({ qrCode, locale }: Props) {
               className="flex flex-col items-center justify-center py-20"
             >
               <div className="w-12 h-12 border-4 border-[#ddd] border-t-[#0066CC] rounded-full animate-spin mb-4" />
-              <p className="text-[#333]/60 text-sm">{locale === 'es' ? 'Verificando certificación...' : locale === 'pt' ? 'A verificar certificação...' : 'Verifying certification...'}</p>
+              <p className="text-[#333]/60 text-sm">{locale === 'es' ? 'Verificando certificación...' : locale === 'pt' ? 'Verificando certificação...' : 'Verifying certification...'}</p>
             </motion.div>
           ) : certificate ? (
             <motion.div

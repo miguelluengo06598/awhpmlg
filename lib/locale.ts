@@ -19,8 +19,8 @@ export const LOCALE_COOKIE = 'NEXT_LOCALE'
 
 // ── Presentación de idiomas (compartida por Header público y panel admin) ─────
 // Las banderas se dibujan como SVG inline en components/FlagIcon.tsx (no emoji:
-// Windows no tiene glifo de bandera). pt usa la bandera de Portugal porque las
-// traducciones son portugués europeo (equipa, registo, contacto, utilizador).
+// Windows no tiene glifo de bandera). pt usa la bandera de Brasil porque las
+// traducciones son portugués brasileño (time, registro, contato, usuário).
 //
 // Nombre completo del idioma, en su propio idioma. Se expone como aria-label
 // del botón para que la bandera nunca quede sin contexto textual.

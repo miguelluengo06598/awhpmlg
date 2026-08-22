@@ -107,10 +107,10 @@ export default function IDMCertificationPage({ locale }: Props) {
   ];
 
   const processSteps = [
-    { step: '01', title: t.idm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : locale === 'pt' ? 'Registo e preparação de documentação' : 'Registration and documentation preparation' },
+    { step: '01', title: t.idm.process_step_1, desc: locale === 'es' ? 'Registro y preparación de documentación' : locale === 'pt' ? 'Registro e preparação de documentação' : 'Registration and documentation preparation' },
     { step: '02', title: t.idm.process_step_2, desc: locale === 'es' ? 'Evaluación de competencias técnicas' : locale === 'pt' ? 'Avaliação de competências técnicas' : 'Technical competency assessment' },
     { step: '03', title: t.idm.process_step_3, desc: locale === 'es' ? 'Evaluación de competencias transversales' : locale === 'pt' ? 'Avaliação de competências transversais' : 'Transversal competency assessment' },
-    { step: '04', title: t.idm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : locale === 'pt' ? 'Entrevista com o júri' : 'Interview with the board' },
+    { step: '04', title: t.idm.process_step_4, desc: locale === 'es' ? 'Entrevista con el tribunal' : locale === 'pt' ? 'Entrevista com a banca' : 'Interview with the board' },
     { step: '05', title: t.idm.process_step_5, desc: locale === 'es' ? 'Emisión de certificado digital' : locale === 'pt' ? 'Emissão de certificado digital' : 'Digital certificate issuance' },
   ];
 
@@ -652,7 +652,7 @@ export default function IDMCertificationPage({ locale }: Props) {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-[#0066CC] text-white">
-                    <th className="px-6 py-4 font-bold">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspeto' : 'Aspect'}</th>
+                    <th className="px-6 py-4 font-bold">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspecto' : 'Aspect'}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_idm}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_bdm}</th>
                     <th className="px-6 py-4 font-bold">{t.idm.compare_bcm}</th>
@@ -661,7 +661,7 @@ export default function IDMCertificationPage({ locale }: Props) {
                 <tbody>
                   {[
                     { label: t.idm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
-                    { label: t.idm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermédio' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
+                    { label: t.idm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermediário' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermediário' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
                     { label: t.idm.compare_exp, values: [expYears(3), expYears(3), expYears(5)] },
                     { label: t.idm.compare_price, values: ['€350', '€350', '€450'] },
                   ].map((row, rIdx) => (
@@ -709,9 +709,9 @@ export default function IDMCertificationPage({ locale }: Props) {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Carlos Martínez', role: locale === 'es' ? 'Jefe de Proyectos BIM' : locale === 'pt' ? 'Chefe de Projetos BIM' : 'BIM Project Manager', company: 'Ingeconsult SA', quote: locale === 'es' ? 'La certificación IDM me abrió puertas en proyectos internacionales. Es un reconocimiento que realmente marca la diferencia.' : locale === 'pt' ? 'A certificação IDM abriu-me portas em projetos internacionais. É um reconhecimento que realmente faz a diferença.' : 'The IDM certification opened doors for me on international projects. It is a recognition that truly makes a difference.' },
-              { name: 'Ana Gómez', role: locale === 'es' ? 'Directora de Innovación' : locale === 'pt' ? 'Diretora de Inovação' : 'Innovation Director', company: 'Construtech', quote: locale === 'es' ? 'Como directora, valorar que mi equipo cuente con certificaciones AECOMI nos da una ventaja competitiva real en licitaciones.' : locale === 'pt' ? 'Como diretora, o facto de a minha equipa ter certificações AECOMI dá-nos uma vantagem competitiva real em concursos.' : 'As a director, valuing that my team has AECOMI certifications gives us a real competitive advantage in tenders.' },
-              { name: 'James Wilson', role: locale === 'es' ? 'Consultor BIM Senior' : locale === 'pt' ? 'Consultor BIM Sénior' : 'Senior BIM Consultant', company: 'DigitalBuild UK', quote: locale === 'es' ? 'El nivel de exigencia de esta certificación la convierte en un estándar de referencia en la industria global.' : locale === 'pt' ? 'O nível de exigência desta certificação torna-a num padrão de referência na indústria global.' : 'The demanding level of this certification makes it a reference standard in the global industry.' },
+              { name: 'Carlos Martínez', role: locale === 'es' ? 'Jefe de Proyectos BIM' : locale === 'pt' ? 'Gerente de Projetos BIM' : 'BIM Project Manager', company: 'Ingeconsult SA', quote: locale === 'es' ? 'La certificación IDM me abrió puertas en proyectos internacionales. Es un reconocimiento que realmente marca la diferencia.' : locale === 'pt' ? 'A certificação IDM me abriu portas em projetos internacionais. É um reconhecimento que realmente faz a diferença.' : 'The IDM certification opened doors for me on international projects. It is a recognition that truly makes a difference.' },
+              { name: 'Ana Gómez', role: locale === 'es' ? 'Directora de Innovación' : locale === 'pt' ? 'Diretora de Inovação' : 'Innovation Director', company: 'Construtech', quote: locale === 'es' ? 'Como directora, valorar que mi equipo cuente con certificaciones AECOMI nos da una ventaja competitiva real en licitaciones.' : locale === 'pt' ? 'Como diretora, o fato de minha equipe ter certificações AECOMI nos dá uma vantagem competitiva real em licitações.' : 'As a director, valuing that my team has AECOMI certifications gives us a real competitive advantage in tenders.' },
+              { name: 'James Wilson', role: locale === 'es' ? 'Consultor BIM Senior' : locale === 'pt' ? 'Consultor BIM Sênior' : 'Senior BIM Consultant', company: 'DigitalBuild UK', quote: locale === 'es' ? 'El nivel de exigencia de esta certificación la convierte en un estándar de referencia en la industria global.' : locale === 'pt' ? 'O nível de exigência desta certificação a torna um padrão de referência na indústria global.' : 'The demanding level of this certification makes it a reference standard in the global industry.' },
             ].map((timo, idx) => (
               <motion.div
                 key={idx}

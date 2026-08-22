@@ -52,25 +52,29 @@ export default function FlagIcon({ locale, className = 'w-6 h-4' }: Props) {
   }
 
   if (locale === 'pt') {
-    // Verde 2/5 + rojo 3/5, con esfera armilar y escudo simplificados: a 24 px
-    // el detalle real del escudo (quinas y castillos) se convierte en ruido.
+    // Brasil: verde, rombo amarillo y globo azul. La banda blanca se dibuja como
+    // un círculo grande de trazo blanco recortado al globo (así solo asoma el
+    // arco inferior, como en la bandera real). Las 27 estrellas se reducen a
+    // unos pocos puntos: a 24 px el detalle exacto sería ruido.
+    const clipGlobe = `${uid}-globe`
     return (
       <svg {...common}>
-        <rect width="60" height="40" fill="#DA291C" />
-        <rect width="24" height="40" fill="#046A38" />
-        <g transform="translate(24 20)" fill="none" stroke="#FFE800" strokeWidth="1.5">
-          <circle r="9" />
-          <ellipse rx="4.4" ry="9" />
-          <path d="M-9 0h18" />
-        </g>
-        <g transform="translate(24 20)">
-          <path
-            d="M-3.7-5.6h7.4v5.2a3.7 3.7 0 0 1-3.7 3.9 3.7 3.7 0 0 1-3.7-3.9z"
-            fill="#fff"
-            stroke="#DA291C"
-            strokeWidth="1.5"
-          />
-          <rect x="-1.5" y="-2.6" width="3" height="4" rx="1.4" fill="#003399" />
+        <rect width="60" height="40" fill="#009C3B" />
+        <path d="M30 4.9 54.9 20 30 35.1 5.1 20z" fill="#FEDF00" />
+        <clipPath id={clipGlobe}>
+          <circle cx="30" cy="20" r="10" />
+        </clipPath>
+        <circle cx="30" cy="20" r="10" fill="#002776" />
+        <g clipPath={`url(#${clipGlobe})`}>
+          <circle cx="30" cy="9" r="15.7" fill="none" stroke="#fff" strokeWidth="2.8" />
+          <g fill="#fff">
+            <circle cx="24" cy="15" r="0.9" />
+            <circle cx="30" cy="13.4" r="0.9" />
+            <circle cx="36" cy="15.5" r="0.9" />
+            <circle cx="27" cy="17.6" r="0.9" />
+            <circle cx="34" cy="18.2" r="0.9" />
+            <circle cx="30" cy="28.8" r="0.9" />
+          </g>
         </g>
       </svg>
     )

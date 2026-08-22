@@ -125,14 +125,14 @@ const whyCards = [
   {
     icon: Globe,
     title: 'Reconhecimento Global',
-    description: 'Validação internacional das suas competências BIM com padrões de nível mundial.',
+    description: 'Validação internacional de suas competências BIM com padrões de nível mundial.',
     gradient: 'from-blue-500 to-indigo-600',
     bg: 'bg-blue-50',
     border: 'border-blue-100',
   },
   {
     icon: BarChart3,
-    title: 'Procura do Mercado',
+    title: 'Demanda do Mercado',
     description: 'Os profissionais BIM certificados são muito procurados pelas empresas líderes do setor.',
     gradient: 'from-emerald-500 to-teal-600',
     bg: 'bg-emerald-50',
@@ -166,7 +166,7 @@ const certificaciones = [
   {
     icon: Layers,
     title: 'BIM Design Manager',
-    level: 'Nível: Intermédio',
+    level: 'Nível: Intermediário',
     description:
       'Coordenação interdisciplinar na fase de projeto. Auditoria de modelos digitais e federados.',
     color: 'from-teal-600 to-emerald-800',
@@ -182,7 +182,7 @@ const certificaciones = [
     title: 'BIM Construction Manager',
     level: 'Nível: Avançado',
     description:
-      'Implementação BIM na fase de construção. Controlo de qualidade e gestão de modelos federados.',
+      'Implementação BIM na fase de construção. Controle de qualidade e gestão de modelos federados.',
     color: 'from-orange-600 to-red-800',
     accent: 'bg-orange-500',
     border: 'border-orange-200',
@@ -197,21 +197,21 @@ const timelineSteps = [
   {
     icon: UserCheck,
     title: 'Elegibilidade',
-    description: 'Verifique que cumpre os requisitos de experiência e formação.',
+    description: 'Verifique se você atende aos requisitos de experiência e formação.',
     color: 'bg-violet-500',
     soft: 'bg-violet-50',
   },
   {
     icon: FileText,
-    title: 'Candidatura',
-    description: 'Preencha a sua candidatura com informação de contacto e experiência.',
+    title: 'Inscrição',
+    description: 'Preencha sua inscrição com dados de contato e experiência.',
     color: 'bg-blue-500',
     soft: 'bg-blue-50',
   },
   {
     icon: Search,
     title: 'Revisão',
-    description: 'Validamos as suas credenciais e experiência profissional.',
+    description: 'Validamos suas credenciais e sua experiência profissional.',
     color: 'bg-cyan-500',
     soft: 'bg-cyan-50',
   },
@@ -225,7 +225,7 @@ const timelineSteps = [
   {
     icon: GraduationCap,
     title: 'Exame',
-    description: 'Exame técnico + entrevista pessoal com um avaliador sénior.',
+    description: 'Exame técnico + entrevista pessoal com um avaliador sênior.',
     color: 'bg-emerald-500',
     soft: 'bg-emerald-50',
   },
@@ -261,26 +261,26 @@ const comparativa = [
 const consejos = [
   {
     icon: Clock,
-    title: 'Reúna Informação com Antecedência',
-    description: 'Reúna o seu CV, certificados e evidências de projetos antes de começar.',
+    title: 'Reúna as Informações com Antecedência',
+    description: 'Junte seu currículo, certificados e evidências de projetos antes de começar.',
     color: 'from-blue-500 to-indigo-600',
   },
   {
     icon: BookMarked,
-    title: 'Reveja o Manual de Certificação',
-    description: 'Cada programa tem o seu manual. Leia-o com atenção antes do exame.',
+    title: 'Revise o Manual de Certificação',
+    description: 'Cada programa tem seu manual. Leia-o com atenção antes do exame.',
     color: 'from-teal-500 to-emerald-600',
   },
   {
     icon: School,
     title: 'Curso Preparatório Recomendado',
-    description: 'Os nossos cursos preparatórios aumentam significativamente a taxa de aprovação.',
+    description: 'Nossos cursos preparatórios aumentam significativamente a taxa de aprovação.',
     color: 'from-amber-500 to-orange-600',
   },
   {
     icon: MessageCircle,
     title: 'Junte-se a um Grupo de Estudo',
-    description: 'Ligue-se a outros candidatos e partilhe conhecimento na nossa comunidade.',
+    description: 'Conecte-se a outros candidatos e compartilhe conhecimento em nossa comunidade.',
     color: 'from-violet-500 to-purple-600',
   },
 ]
@@ -288,54 +288,54 @@ const consejos = [
 const faqGeneral = [
   {
     q: 'Como obtenho uma certificação AECOMI?',
-    a: 'Deve cumprir os critérios de elegibilidade, preencher a candidatura online, passar na revisão da sua experiência, efetuar o pagamento e ser aprovado no exame técnico juntamente com a entrevista pessoal.',
+    a: 'Você deve atender aos critérios de elegibilidade, preencher a inscrição online, passar pela análise da sua experiência, efetuar o pagamento e ser aprovado no exame técnico e na entrevista pessoal.',
   },
   {
-    q: 'Como preencho a candidatura?',
-    a: 'A candidatura é preenchida através do nosso portal online. Necessitará de informação de contacto, das suas credenciais académicas e de uma descrição detalhada da sua experiência profissional em projetos BIM.',
+    q: 'Como preencho a inscrição?',
+    a: 'A inscrição é preenchida em nosso portal online. Você precisará de dados de contato, de suas credenciais acadêmicas e de uma descrição detalhada da sua experiência profissional em projetos BIM.',
   },
   {
     q: 'Que documentação devo apresentar?',
-    a: 'Geralmente é exigido: identificação oficial, CV detalhado, certificados académicos, referências profissionais e evidências dos projetos em que participou.',
+    a: 'Geralmente é exigido: identificação oficial, currículo detalhado, certificados acadêmicos, referências profissionais e evidências dos projetos dos quais você participou.',
   },
 ]
 
 const faqExamen = [
   {
     q: 'Como marco a data do exame?',
-    a: 'Assim que a sua elegibilidade for aprovada, receberá uma ligação para aceder ao calendário de exames e selecionar a data e hora que melhor se adequam à sua disponibilidade.',
+    a: 'Assim que sua elegibilidade for aprovada, você receberá um link para acessar o calendário de exames e escolher a data e o horário que melhor se ajustem à sua disponibilidade.',
   },
   {
     q: 'Onde se realiza o exame?',
-    a: 'Os exames são realizados online através da nossa plataforma segura. Dispomos também de centros físicos em cidades selecionadas.',
+    a: 'Os exames são realizados online em nossa plataforma segura. Também contamos com centros físicos em cidades selecionadas.',
   },
   {
-    q: 'Os exames estão disponíveis noutros idiomas?',
-    a: 'Atualmente os exames estão disponíveis em espanhol e inglês. Estamos a trabalhar para adicionar mais idiomas em breve.',
+    q: 'Os exames estão disponíveis em outros idiomas?',
+    a: 'Atualmente os exames estão disponíveis em espanhol e inglês. Estamos trabalhando para adicionar mais idiomas em breve.',
   },
   {
     q: 'Se não for aprovado, posso repetir?',
-    a: 'Sim, dispõe de até 3 tentativas durante um período de um ano a partir da aprovação da sua elegibilidade.',
+    a: 'Sim, você dispõe de até 3 tentativas durante um período de um ano a partir da aprovação da sua elegibilidade.',
   },
   {
     q: 'O que acontece se a minha elegibilidade expirar?',
-    a: 'Se o seu período de elegibilidade expirar, deverá submeter uma nova candidatura completa e pagar a taxa correspondente.',
+    a: 'Se seu período de elegibilidade expirar, você deverá enviar uma nova inscrição completa e pagar a taxa correspondente.',
   },
   {
     q: 'Como marco a minha entrevista pessoal?',
-    a: 'Depois de ser aprovado no exame técnico, a nossa equipa entrará em contacto consigo para coordenar a entrevista pessoal com um avaliador sénior da AECOMI.',
+    a: 'Depois de ser aprovado no exame técnico, nossa equipe entrará em contato com você para agendar a entrevista pessoal com um avaliador sênior da AECOMI.',
   },
   {
     q: 'Como decorre a minha entrevista pessoal?',
-    a: 'A entrevista decorre virtualmente por videochamada. As suas competências técnicas e transversais serão avaliadas ao longo de 45-60 minutos.',
+    a: 'A entrevista acontece virtualmente por videochamada. Suas competências técnicas e transversais serão avaliadas ao longo de 45-60 minutos.',
   },
   {
     q: 'Quem conduz a entrevista?',
-    a: 'A entrevista é conduzida por um avaliador sénior certificado pela AECOMI com vasta experiência em gestão internacional de projetos BIM.',
+    a: 'A entrevista é conduzida por um avaliador sênior certificado pela AECOMI com vasta experiência em gestão internacional de projetos BIM.',
   },
   {
-    q: 'O que acontece se eu não cumprir os requisitos?',
-    a: 'Se não cumprir os requisitos em alguma fase, receberá feedback detalhado e poderá candidatar-se novamente após um período de espera definido.',
+    q: 'O que acontece se eu não atender aos requisitos?',
+    a: 'Se você não atender aos requisitos em alguma etapa, receberá um feedback detalhado e poderá se inscrever novamente após um período de espera definido.',
   },
 ]
 
@@ -431,7 +431,7 @@ export default function CertificationsPage() {
                 href="/pt/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 rounded-full hover:shadow-lg hover:shadow-orange-500/30 transition-all hover:-translate-y-0.5"
               >
-                <Zap className="w-5 h-5" />Inicie a sua Certificação</Link>
+                <Zap className="w-5 h-5" />Comece sua Certificação</Link>
               <Link
                 href="#certificaciones"
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
@@ -465,7 +465,7 @@ export default function CertificationsPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-blue uppercase bg-blue-50 rounded-full mb-6 border border-blue-100">Vantagens</span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Porquê certificar-se com a AECOMI?</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Por que se certificar com a AECOMI?</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -510,7 +510,7 @@ export default function CertificationsPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-purple uppercase bg-purple-50 rounded-full mb-6 border border-purple-100">Programas</span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">As Nossas Certificações</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Nossas Certificações</h2>
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -558,7 +558,7 @@ export default function CertificationsPage() {
                   <Link
                     href={cert.slug}
                     className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl bg-gradient-to-r ${cert.color} hover:shadow-lg transition-all hover:-translate-y-0.5`}
-                  >Candidatar Agora<ArrowRight className="w-4 h-4" />
+                  >Inscreva-se Agora<ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
                     href={cert.slug}
@@ -589,7 +589,7 @@ export default function CertificationsPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-teal uppercase bg-teal-50 rounded-full mb-6 border border-teal-100">5 Passos</span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Caminho para a sua Certificação</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Caminho para sua Certificação</h2>
           </motion.div>
 
           {/* Desktop Timeline horizontal */}
@@ -718,7 +718,7 @@ export default function CertificationsPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-orange uppercase bg-orange-50 rounded-full mb-6 border border-orange-100">Comparação</span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Encontre a sua Certificação</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Encontre sua Certificação</h2>
           </motion.div>
 
           <motion.div
@@ -817,11 +817,11 @@ export default function CertificationsPage() {
             <AccordionItem icon={UserCheck} title="Passo 1: Cumprir os Critérios de Elegibilidade" defaultOpen>
               <div className="space-y-3">
                 <p>
-                  Exige experiência e conhecimentos especializados em gestão BIM. Reveja o manual de
+                  Exige experiência e conhecimentos especializados em gestão BIM. Revise o manual de
                   certificação correspondente para conhecer os requisitos específicos de cada programa.
                 </p>
                 <ul className="space-y-2">
-                  {['Experiência comprovável em projetos BIM', 'Formação académica relacionada', 'Referências profissionais'].map(
+                  {['Experiência comprovada em projetos BIM', 'Formação acadêmica relacionada', 'Referências profissionais'].map(
                     (item) => (
                       <li key={item} className="flex items-center gap-2 text-sm">
                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -832,26 +832,26 @@ export default function CertificationsPage() {
                 </ul>
               </div>
             </AccordionItem>
-            <AccordionItem icon={FileText} title="Passo 2: Preencher a Candidatura">
+            <AccordionItem icon={FileText} title="Passo 2: Preencher a Inscrição">
               <p>
-                Forneça informação de contacto, formação e experiência profissional. Tem{' '}
-                <strong>100 dias</strong>para concluir a sua candidatura depois de iniciada.</p>
+                Forneça dados de contato, formação e experiência profissional. Você tem{' '}
+                <strong>100 dias</strong>para concluir sua inscrição depois de iniciada.</p>
             </AccordionItem>
-            <AccordionItem icon={Search} title="Passo 3: Revisão da Candidatura">
+            <AccordionItem icon={Search} title="Passo 3: Análise da Inscrição">
               <p>
-                Verificação dos critérios de elegibilidade e validação da experiência. O processo demora aproximadamente{' '}
+                Verificação dos critérios de elegibilidade e validação da experiência. O processo leva aproximadamente{' '}
                 <strong>15 dias úteis</strong>.
               </p>
             </AccordionItem>
             <AccordionItem icon={CreditCard} title="Passo 4: Pagamento">
               <p>
-                Sistema de pagamento online seguro para concluir o seu registo. Só paga{' '}
+                Sistema de pagamento online seguro para concluir seu cadastro. Você só paga{' '}
                 <strong>após a aprovação da sua elegibilidade</strong>.
               </p>
             </AccordionItem>
             <AccordionItem icon={GraduationCap} title="Passo 5: Marcar Exame e Entrevista">
               <p>
-                Exame de competências técnicas e entrevista pessoal com avaliadores. Tem{' '}
+                Exame de competências técnicas e entrevista pessoal com avaliadores. Você tem{' '}
                 <strong>1 ano com 3 tentativas</strong>para aprovar.</p>
             </AccordionItem>
           </div>
@@ -876,7 +876,7 @@ export default function CertificationsPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-pmi-purple uppercase bg-purple-50 rounded-full mb-6 border border-purple-100">Dicas</span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Conselhos para Aprovar</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">Dicas para ser Aprovado</h2>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -927,12 +927,12 @@ export default function CertificationsPage() {
                 <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 flex items-center justify-center mb-6">
                   <RefreshCw className="w-7 h-7" />
                 </div>
-                <h3 className="text-3xl font-bold mb-4">Mantenha a sua Certificação</h3>
+                <h3 className="text-3xl font-bold mb-4">Mantenha sua Certificação</h3>
                 <p className="text-white/70 leading-relaxed mb-8">
-                  As certificações AECOMI exigem processos periódicos de renovação orientados a garantir que os
-                  profissionais mantêm atualizados os seus conhecimentos e competências.
+                  As certificações AECOMI exigem processos periódicos de renovação voltados a garantir que os
+                  profissionais mantenham atualizados seus conhecimentos e competências.
                 </p>
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-pmi-dark font-bold rounded-xl hover:bg-white/90 transition-all shadow-lg">Informação de Renovação<ArrowRight className="w-4 h-4" />
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-pmi-dark font-bold rounded-xl hover:bg-white/90 transition-all shadow-lg">Informações de Renovação<ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
@@ -950,12 +950,12 @@ export default function CertificationsPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pmi-blue to-pmi-cyan flex items-center justify-center mb-6 shadow-lg">
                   <Award className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-pmi-dark mb-4">Registe-se Publicamente</h3>
+                <h3 className="text-3xl font-bold text-pmi-dark mb-4">Cadastre-se Publicamente</h3>
                 <p className="text-gray-600 leading-relaxed mb-8">
-                  A AECOMI mantém um registo atualizado de profissionais certificados para trazer transparência e
+                  A AECOMI mantém um registro atualizado de profissionais certificados para trazer transparência e
                   confiança ao mercado. Verifique credenciais de forma rápida e segura.
                 </p>
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-pmi-dark text-white font-bold rounded-xl hover:bg-pmi-blue transition-all shadow-lg">Ver Registo de Certificados<ArrowRight className="w-4 h-4" />
+                <button className="inline-flex items-center gap-2 px-6 py-3 bg-pmi-dark text-white font-bold rounded-xl hover:bg-pmi-blue transition-all shadow-lg">Ver Registro de Certificados<ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
@@ -1049,7 +1049,7 @@ export default function CertificationsPage() {
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
               Pronto para Transformar{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
-                a sua Carreira?
+                sua Carreira?
               </span>
             </h2>
             <p className="text-lg sm:text-xl text-white/60 max-w-xl mx-auto mb-10">
@@ -1067,7 +1067,7 @@ export default function CertificationsPage() {
                 href="/pt/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
               >
-                <Mail className="w-5 h-5" />Contacte-nos</Link>
+                <Mail className="w-5 h-5" />Fale conosco</Link>
             </div>
 
             {/* Stats */}

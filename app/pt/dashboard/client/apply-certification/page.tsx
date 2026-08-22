@@ -51,11 +51,11 @@ export default function ApplyCertificationPage() {
         <div className="flex items-center gap-3 mb-2">
           <ClipboardList className="w-6 h-6 text-pmi-blue" />
           <h1 className="text-2xl sm:text-3xl font-bold text-pmi-dark">
-            Candidatar-se a uma Certificação
+            Inscrever-se em uma Certificação
           </h1>
         </div>
         <p className="text-gray-500">
-          Escolha uma certificação e complete o processo de candidatura
+          Escolha uma certificação e complete o processo de inscrição
         </p>
       </motion.div>
 

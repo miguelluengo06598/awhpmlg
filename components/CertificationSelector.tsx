@@ -102,7 +102,7 @@ const CERTIFICATIONS: CertificationOption[] = [
       pt: [
         '2+ anos de experiência em construção BIM',
         'Conhecimento de processos construtivos',
-        'Experiência em planeamento e acompanhamento',
+        'Experiência em planejamento e acompanhamento',
       ],
     },
     duration: { es: '12-16 semanas', en: '12-16 weeks', pt: '12-16 semanas' },
@@ -124,13 +124,13 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold text-pmi-dark mb-2">
-          {L('Solicitar Certificación', 'Apply for Certification', 'Candidatar-se à Certificação')}
+          {L('Solicitar Certificación', 'Apply for Certification', 'Inscrever-se na Certificação')}
         </h1>
         <p className="text-gray-500 max-w-xl mx-auto">
           {L(
             'Elige el tipo de certificación que deseas solicitar y completa el proceso de solicitud',
             'Choose the type of certification you want to apply for and complete the application process',
-            'Escolha o tipo de certificação a que se quer candidatar e complete o processo de candidatura',
+            'Escolha o tipo de certificação em que deseja se inscrever e complete o processo de inscrição',
           )}
         </p>
       </div>
@@ -206,7 +206,7 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
                   opacity: isHovered ? 1 : 0.95,
                 }}
               >
-                {L('Solicitar Certificación', 'Apply for Certification', 'Candidatar-se à Certificação')}
+                {L('Solicitar Certificación', 'Apply for Certification', 'Inscrever-se na Certificação')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
@@ -226,7 +226,7 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
           {L(
             'Si tienes dudas sobre cuál certificación es la más adecuada para ti, puedes contactar con nuestro equipo.',
             'If you have questions about which certification is right for you, contact our team.',
-            'Se tem dúvidas sobre qual a certificação mais adequada para si, contacte a nossa equipa.',
+            'Se você tem dúvidas sobre qual certificação é a mais adequada para o seu perfil, fale com nossa equipe.',
           )}
         </p>
         <Link
@@ -234,7 +234,7 @@ export default function CertificationSelector({ onSelect, locale = 'es' }: Certi
           className="inline-flex items-center gap-2 text-sm font-semibold text-pmi-blue hover:underline"
         >
           <Mail className="w-4 h-4" />
-          {L('Contacta con nosotros', 'Contact us', 'Contacte-nos')}
+          {L('Contacta con nosotros', 'Contact us', 'Fale conosco')}
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

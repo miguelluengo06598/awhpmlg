@@ -39,7 +39,7 @@ const misionItems = [
   {
     icon: BookOpen,
     title: 'Formação Especializada',
-    description: 'Promovemos a formação e o reconhecimento de competências alinhadas com o mercado.',
+    description: 'Promovemos a formação e o reconhecimento de competências alinhadas ao mercado.',
   },
 ]
 
@@ -48,7 +48,7 @@ const visionPilares = [
     icon: Users,
     title: 'Profissionais Preparados',
     description:
-      'Liderança em processos colaborativos complexos, formando especialistas capazes de gerir projetos multidisciplinares com excelência.',
+      'Liderança em processos colaborativos complexos, formando especialistas capazes de gerenciar projetos multidisciplinares com excelência.',
   },
   {
     icon: Zap,
@@ -60,7 +60,7 @@ const visionPilares = [
     icon: TrendingUp,
     title: 'Excelência Contínua',
     description:
-      'Trabalhamos em conjunto com especialistas internacionais, instituições académicas e empresas comprometidas com a inovação.',
+      'Trabalhamos em conjunto com especialistas internacionais, instituições acadêmicas e empresas comprometidas com a inovação.',
   },
 ]
 
@@ -87,7 +87,7 @@ const valores = [
     icon: RefreshCw,
     title: 'Melhoria Contínua',
     description:
-      'Avaliamos e aperfeiçoamos constantemente os nossos programas para nos mantermos na vanguarda.',
+      'Avaliamos e aperfeiçoamos constantemente nossos programas para nos mantermos na vanguarda.',
   },
 ]
 
@@ -97,13 +97,13 @@ const queHacemosItems = [
     icon: BadgeCheck,
     title: 'Certificações Profissionais',
     description:
-      'Programas de certificação orientados a reconhecer as competências dos perfis BIM mais relevantes do setor AEC, alinhados com padrões internacionais.',
+      'Programas de certificação voltados a reconhecer as competências dos perfis BIM mais relevantes do setor AEC, alinhados a padrões internacionais.',
   },
   {
     icon: FlaskConical,
-    title: 'Formação e Investigação',
+    title: 'Formação e Pesquisa',
     description:
-      'Promovemos atividades de formação, investigação e divulgação de boas práticas em gestão da informação e transformação digital.',
+      'Promovemos atividades de formação, pesquisa e divulgação de boas práticas em gestão da informação e transformação digital.',
   },
   {
     icon: UsersRound,
@@ -125,25 +125,25 @@ const valoresCorporativos = [
     icon: Award,
     title: 'Excelência',
     description:
-      'A responsabilidade, o reconhecimento de uma competência técnica excelente e o comportamento ético asseguram o nosso compromisso com todas as partes da cadeia de valor.',
+      'A responsabilidade, o reconhecimento de uma competência técnica excelente e o comportamento ético asseguram nosso compromisso com todas as partes da cadeia de valor.',
   },
   {
     icon: Globe,
     title: 'Visão Global',
     description:
-      'Reunir os membros da comunidade global e partilhar critérios é a melhor forma de melhorar a prática dos profissionais do setor.',
+      'Reunir os membros da comunidade global e compartilhar critérios é a melhor forma de melhorar a prática dos profissionais do setor.',
   },
   {
     icon: HeartHandshake,
     title: 'Compromisso',
     description:
-      'Incentivamos a diversidade de pontos de vista para que as pessoas contribuam com o seu conhecimento e experiência, permitindo uma maior e melhor transformação do setor AEC.',
+      'Incentivamos a diversidade de pontos de vista para que as pessoas contribuam com seu conhecimento e experiência, permitindo uma maior e melhor transformação do setor AEC.',
   },
 ]
 
 const colaboradores = [
   { icon: Globe, label: 'Especialistas Internacionais' },
-  { icon: GraduationCap, label: 'Instituições Académicas' },
+  { icon: GraduationCap, label: 'Instituições Acadêmicas' },
   { icon: Building2, label: 'Empresas Inovadoras' },
   { icon: HardHat, label: 'Profissionais do Setor AEC' },
 ]
@@ -201,7 +201,7 @@ export default function AboutPage() {
               Porque Existimos
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pmi-dark tracking-tight">
-              A Nossa Missão
+              Nossa Missão
             </h2>
             <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               A AECOMI nasceu com a vocação de se tornar uma referência internacional
@@ -281,7 +281,7 @@ export default function AboutPage() {
                 Para Onde Vamos
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-                A Nossa Visão
+                Nossa Visão
               </h2>
               <p className="mt-6 text-lg text-gray-600 leading-relaxed">
                 Acreditamos que a transformação digital da indústria AEC exige profissionais
@@ -325,7 +325,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-pmi-blue uppercase bg-blue-50 rounded-full mb-4">
-              A Nossa Atividade
+              Nossa Atividade
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pmi-dark tracking-tight">
               O Que Fazemos?
@@ -371,10 +371,10 @@ export default function AboutPage() {
               O Que Nos Define
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pmi-dark tracking-tight">
-              Os Nossos Valores
+              Nossos Valores
             </h2>
             <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              A experiência acumulada pelas nossas equipas permite-nos oferecer um quadro
+              A experiência acumulada por nossas equipes nos permite oferecer um quadro
               sólido baseado em princípios que orientam cada decisão.
             </p>
           </motion.div>
@@ -419,7 +419,7 @@ export default function AboutPage() {
             <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               A AECOMI é impulsionada por uma missão clara e por um conjunto de valores que inspiram a
               forma como agimos. Estes valores são fundamentais, duradouros e profundamente
-              enraizados, orientando o nosso comportamento em todos os momentos.
+              enraizados, orientando nosso comportamento em todos os momentos.
             </p>
           </motion.div>
 
@@ -449,8 +449,8 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-12 text-center text-gray-600 leading-relaxed max-w-3xl mx-auto"
           >
-            Em tempos de crescimento e mudança, os nossos valores centrais proporcionam
-            continuidade e uma bússola moral, comunicando as nossas convicções e orientando o nosso
+            Em tempos de crescimento e mudança, nossos valores centrais proporcionam
+            continuidade e uma bússola moral, comunicando nossas convicções e orientando nosso
             comportamento enquanto organização.
           </motion.p>
         </div>
@@ -472,21 +472,21 @@ export default function AboutPage() {
             </div>
             <div className="relative">
               <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-white/90 uppercase bg-white/10 rounded-full mb-6 border border-white/10">
-                Estrutura de Governo
+                Estrutura de Governança
               </span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-                Governo e Organização
+                Governança e Organização
               </h2>
               <p className="mt-6 text-lg text-white/80 max-w-2xl mx-auto leading-relaxed">
                 Descubra como a AECOMI garante a transparência, a qualidade e o cumprimento de
-                princípios éticos através dos seus órgãos de governo.
+                princípios éticos por meio de seus órgãos de governança.
               </p>
               <div className="mt-10">
                 <Link
                   href="/pt/about/gobierno"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-pmi-dark font-semibold rounded-full hover:bg-white/90 transition-all shadow-lg hover:shadow-xl text-base"
                 >
-                  Descubra a nossa estrutura de governo
+                  Conheça nossa estrutura de governança
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -547,8 +547,8 @@ export default function AboutPage() {
               Faça Parte da Mudança
             </h2>
             <p className="mt-6 text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
-              O nosso objetivo é contribuir para gerar uma cultura de trabalho mais integrada,
-              transparente e orientada a acrescentar valor real aos projetos.
+              Nosso objetivo é contribuir para gerar uma cultura de trabalho mais integrada,
+              transparente e voltada a agregar valor real aos projetos.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
@@ -562,7 +562,7 @@ export default function AboutPage() {
                 href="/pt/certifications"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-medium rounded-full border border-white/30 hover:bg-white/10 transition-all text-base"
               >
-                Explore as Nossas Certificações
+                Explore Nossas Certificações
               </Link>
             </div>
           </motion.div>

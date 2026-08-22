@@ -57,7 +57,7 @@ const pilares = [
   {
     icon: Users,
     title: 'Diversidade',
-    description: 'Múltiplas perspetivas e percursos que enriquecem cada debate e reforçam as nossas conclusões.',
+    description: 'Múltiplas perspectivas e trajetórias que enriquecem cada debate e reforçam nossas conclusões.',
     gradient: 'from-sky-500 to-blue-600',
     bgSoft: 'bg-sky-50',
     border: 'border-sky-100',
@@ -89,7 +89,7 @@ const pilares = [
 const funcionesAsesor = [
   'Definir padrões e requisitos de certificação',
   'Estabelecer o mapa de competências',
-  'Orientar linhas de investigação',
+  'Orientar linhas de pesquisa',
   'Guiar boas práticas BIM',
   'Assegurar qualidade e relevância',
 ]
@@ -98,13 +98,13 @@ const funcionesEjecutivo = [
   'Direção e administração da AECOMI',
   'Execução de atividades',
   'Cumprimento de objetivos estratégicos',
-  'Observância de políticas de governo',
-  'Cumprimento de fins fundacionais',
+  'Observância de políticas de governança',
+  'Cumprimento das finalidades fundacionais',
 ]
 
 const miembrosPlaceholder = [
-  { nombre: 'Membro do Conselho', cargo: 'Presidente', especialidad: 'Estratégia e Governo' },
-  { nombre: 'Membro do Conselho', cargo: 'Vice-Presidente', especialidad: 'Investigação BIM' },
+  { nombre: 'Membro do Conselho', cargo: 'Presidente', especialidad: 'Estratégia e Governança' },
+  { nombre: 'Membro do Conselho', cargo: 'Vice-Presidente', especialidad: 'Pesquisa BIM' },
   { nombre: 'Membro do Conselho', cargo: 'Diretor', especialidad: 'Certificações' },
   { nombre: 'Membro do Conselho', cargo: 'Consultor', especialidad: 'Boas Práticas' },
 ]
@@ -125,7 +125,7 @@ export default function GobiernoPage() {
               Sobre nós
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-gray-900 font-medium">Governo e Organização</span>
+            <span className="text-gray-900 font-medium">Governança e Organização</span>
           </nav>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function GobiernoPage() {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05]"
             >
-              Governo e{' '}
+              Governança e{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
                 Organização
               </span>
@@ -178,7 +178,7 @@ export default function GobiernoPage() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="mt-8 text-xl text-white/70 max-w-2xl leading-relaxed"
             >
-              Estrutura de governo transparente e ética, assente na excelência e no desenvolvimento sustentável do setor AEC.
+              Estrutura de governança transparente e ética, baseada na excelência e no desenvolvimento sustentável do setor AEC.
             </motion.p>
           </motion.div>
         </div>
@@ -208,14 +208,14 @@ export default function GobiernoPage() {
               Dois Órgãos, Um Propósito
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              Estrutura de Governo AECOMI
+              Estrutura de Governança AECOMI
             </h2>
             <p className="mt-8 text-lg sm:text-xl text-gray-600 leading-relaxed">
-              A estrutura de governo da AECOMI foi concebida para garantir a{' '}
+              A estrutura de governança da AECOMI foi projetada para garantir a{' '}
               <span className="text-pmi-blue font-semibold">transparência</span>, a{' '}
               <span className="text-pmi-blue font-semibold">qualidade</span> e o cumprimento dos
               princípios éticos que inspiram todas as nossas atividades e processos de certificação.
-              O Governo da AECOMI é regido por dois órgãos.
+              A governança da AECOMI é exercida por dois órgãos.
             </p>
           </motion.div>
         </div>
@@ -240,7 +240,7 @@ export default function GobiernoPage() {
               Fundamentos
             </span>
             <h2 className="text-4xl sm:text-5xl font-bold text-pmi-dark tracking-tight leading-[1.15]">
-              Os Pilares do Nosso Governo
+              Os Pilares da Nossa Governança
             </h2>
           </motion.div>
 
@@ -306,10 +306,10 @@ export default function GobiernoPage() {
                 Conselho Consultivo
               </h2>
               <p className="text-gray-600 leading-relaxed text-lg mb-8">
-                É constituído por profissionais e especialistas de reconhecido prestígio internacional. A missão do
-                Conselho Consultivo é definir os padrões a seguir pela AECOMI, bem como os requisitos a cumprir e o
-                mapa de competências exigido nas diferentes certificações, orientar as linhas de investigação do instituto e
-                guiar a definição de boas práticas nos usos do BIM e a sua implementação nas
+                É formado por profissionais e especialistas de reconhecido prestígio internacional. A missão do
+                Conselho Consultivo é definir os padrões a serem seguidos pela AECOMI, bem como os requisitos a cumprir e o
+                mapa de competências exigido nas diferentes certificações, orientar as linhas de pesquisa do instituto e
+                guiar a definição de boas práticas nos usos do BIM e sua implementação nas
                 organizações.
               </p>
 
@@ -474,7 +474,7 @@ export default function GobiernoPage() {
               <p className="text-gray-600 leading-relaxed text-lg mb-8">
                 A missão do Conselho Executivo é dirigir e administrar a AECOMI para executar as atividades da
                 organização, garantindo o cumprimento dos objetivos estratégicos mediante a observância das
-                políticas de governo que dão cumprimento aos nossos fins fundacionais.
+                políticas de governança que atendem às nossas finalidades fundacionais.
               </p>
 
               <div className="space-y-3">
@@ -618,10 +618,10 @@ export default function GobiernoPage() {
 
                 <div className="w-full max-w-2xl">
                   <p className="text-gray-700 text-lg leading-relaxed text-center">
-                    Ambos os órgãos trabalham em conjunto para consolidar uma instituição orientada para a excelência e
+                    Ambos os órgãos trabalham em conjunto para consolidar uma instituição voltada à excelência e
                     o desenvolvimento sustentável do setor AEC. A sabedoria coletiva, a experiência, a diversidade e
-                    a paixão dos membros dos dois órgãos de governo da AECOMI são os pilares
-                    sobre os quais se estabelecem e executam a nossa ideologia, propósito e valores centrais.
+                    a paixão dos membros dos dois órgãos de governança da AECOMI são os pilares
+                    sobre os quais se estabelecem e se executam nossa ideologia, propósito e valores centrais.
                   </p>
                 </div>
 
@@ -675,10 +675,10 @@ export default function GobiernoPage() {
             className="text-center"
           >
             <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-8 leading-[1.15]">
-              Conheça o Nosso Impacto
+              Conheça Nosso Impacto
             </h2>
             <p className="text-lg text-white/60 max-w-xl mx-auto mb-10">
-              Explore as nossas certificações ou entre em contacto connosco para saber mais.
+              Explore nossas certificações ou entre em contato conosco para saber mais.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
@@ -686,14 +686,14 @@ export default function GobiernoPage() {
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white bg-pmi-orange rounded-full hover:bg-pmi-orange/90 transition-all shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5"
               >
                 <FileBadge className="w-5 h-5" />
-                Ver as Nossas Certificações
+                Ver Nossas Certificações
               </Link>
               <Link
                 href="/pt/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
               >
                 <Mail className="w-5 h-5" />
-                Contacte-nos
+                Fale conosco
               </Link>
             </div>
           </motion.div>

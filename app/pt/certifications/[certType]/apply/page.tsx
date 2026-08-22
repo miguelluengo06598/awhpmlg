@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { certType } = await params
   const cert = certificationMap[certType]
   return {
-    title: cert ? `Candidatura a ${cert.name} — AECOMI` : 'Candidatura a Certificação — AECOMI',
-    description: cert?.description || 'Candidate-se à sua certificação profissional BIM com a AECOMI.',
+    title: cert ? `Inscrição em ${cert.name} — AECOMI` : 'Inscrição em Certificação — AECOMI',
+    description: cert?.description || 'Inscreva-se na sua certificação profissional BIM com a AECOMI.',
   }
 }
 
@@ -56,13 +56,13 @@ export default async function ApplyCertificationPage({ params }: Props) {
       <section className="relative py-16 sm:py-20 bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pmi-blue/10 text-pmi-blue text-xs font-semibold uppercase tracking-wider mb-4">
-            Candidatura a Certificação
+            Inscrição em Certificação
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-pmi-dark mb-3">
-            Candidatura a {cert.name}
+            Inscrição em {cert.name}
           </h1>
           <p className="text-gray-500 max-w-lg mx-auto">
-            Complete o formulário passo a passo. Vai precisar da sua informação profissional e documentos comprovativos.
+            Complete o formulário passo a passo. Você vai precisar das suas informações profissionais e dos documentos comprobatórios.
           </p>
         </div>
       </section>

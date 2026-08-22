@@ -2,7 +2,7 @@ import LegalPage from '@/components/sections/LegalPage';
 
 export const metadata = {
   title: 'Termos e Condições — AECOMI',
-  description: 'Termos e condições de utilização do website e serviços da AECOMI.',
+  description: 'Termos e condições de uso do site e dos serviços da AECOMI.',
 };
 
 const sections = [
@@ -11,9 +11,9 @@ const sections = [
     title: 'Introdução',
     content: (
       <>
-        <p>Bem-vindo à AECOMI. Estes termos e condições regem o acesso e a utilização do website <strong>aecomi.com</strong> e de todos os serviços relacionados oferecidos pela AECOMI, incluindo, entre outros: certificações profissionais BIM, formação especializada, recursos técnicos e consultoria.</p>
-        <p>Ao aceder a este website e utilizar os nossos serviços, concorda ficar vinculado a estes termos e condições, à nossa política de privacidade e a todas as demais políticas aplicáveis. Se não concordar com qualquer parte destes termos, não deverá utilizar o nosso website nem os nossos serviços.</p>
-        <p>Estes termos podem ser modificados periodicamente. É da sua responsabilidade revê-los regularmente. A utilização continuada do site após qualquer modificação implica a aceitação dos termos atualizados.</p>
+        <p>Bem-vindo à AECOMI. Estes termos e condições regem o acesso e o uso do site <strong>aecomi.com</strong> e de todos os serviços relacionados oferecidos pela AECOMI, incluindo, entre outros: certificações profissionais BIM, formação especializada, recursos técnicos e consultoria.</p>
+        <p>Ao acessar este site e utilizar nossos serviços, você concorda em ficar vinculado a estes termos e condições, à nossa política de privacidade e a todas as demais políticas aplicáveis. Se não concordar com qualquer parte destes termos, você não deve utilizar nosso site nem nossos serviços.</p>
+        <p>Estes termos podem ser modificados periodicamente. É sua responsabilidade revisá-los regularmente. O uso continuado do site após qualquer modificação implica a aceitação dos termos atualizados.</p>
       </>
     ),
   },
@@ -22,38 +22,38 @@ const sections = [
     title: '1. Aceitação dos Termos',
     content: (
       <>
-        <p>Ao utilizar o website da AECOMI, confirma que:</p>
+        <p>Ao utilizar o site da AECOMI, você confirma que:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li>Tem pelo menos 18 anos de idade ou dispõe do consentimento dos seus pais ou tutores legais.</li>
-          <li>Tem capacidade legal para celebrar contratos vinculativos.</li>
-          <li>Leu, compreendeu e concorda em cumprir estes termos e condições.</li>
-          <li>A informação que fornece é verdadeira, exata, atual e completa.</li>
+          <li>Tem pelo menos 18 anos de idade ou dispõe do consentimento dos seus pais ou responsáveis legais.</li>
+          <li>Tem capacidade legal para celebrar contratos vinculantes.</li>
+          <li>Leu, entendeu e concorda em cumprir estes termos e condições.</li>
+          <li>As informações que você fornece são verdadeiras, exatas, atuais e completas.</li>
         </ul>
-        <p className="mt-4">Se não aceitar estes termos na sua totalidade, deverá abster-se de utilizar o nosso website e serviços. O acesso não autorizado ou a utilização do website para fins ilícitos são estritamente proibidos.</p>
+        <p className="mt-4">Se você não aceitar estes termos na íntegra, deve se abster de utilizar nosso site e serviços. O acesso não autorizado ou o uso do site para fins ilícitos são estritamente proibidos.</p>
       </>
     ),
   },
   {
     id: 'access-use',
-    title: '2. Acesso e Utilização do Site',
+    title: '2. Acesso e Uso do Site',
     content: (
       <>
-        <p>A AECOMI concede-lhe uma licença limitada, não exclusiva, intransmissível e revogável para aceder e utilizar o website e o seu conteúdo para fins pessoais e não comerciais, ou para os fins especificamente autorizados no âmbito dos nossos serviços de certificação e formação.</p>
-        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Utilização permitida</h3>
+        <p>A AECOMI concede a você uma licença limitada, não exclusiva, intransferível e revogável para acessar e utilizar o site e seu conteúdo para fins pessoais e não comerciais, ou para os fins especificamente autorizados no âmbito dos nossos serviços de certificação e formação.</p>
+        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Uso permitido</h3>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Navegar no website e aceder a informação pública.</li>
-          <li>Registar-se como utilizador e gerir a sua conta pessoal.</li>
-          <li>Solicitar certificações e participar em programas de formação.</li>
-          <li>Descarregar recursos técnicos expressamente disponíveis para descarga.</li>
-          <li>Contactar a AECOMI através dos canais disponibilizados.</li>
+          <li>Navegar no site e acessar informações públicas.</li>
+          <li>Cadastrar-se como usuário e gerenciar sua conta pessoal.</li>
+          <li>Solicitar certificações e participar de programas de formação.</li>
+          <li>Baixar recursos técnicos expressamente disponibilizados para download.</li>
+          <li>Entrar em contato com a AECOMI pelos canais disponibilizados.</li>
         </ul>
-        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Utilização proibida</h3>
+        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Uso proibido</h3>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Reproduzir, duplicar, copiar, vender, revender ou explorar qualquer parte do website para fins comerciais sem autorização expressa.</li>
-          <li>Modificar, adaptar, traduzir, fazer engenharia inversa ou descompilar qualquer parte do website.</li>
-          <li>Utilizar o website de forma que possa danificar, desativar, sobrecarregar ou prejudicar os servidores ou redes da AECOMI.</li>
-          <li>Tentar obter acesso não autorizado a contas de outros utilizadores, sistemas ou redes ligadas ao site.</li>
-          <li>Utilizar robôs, spiders, scrapers ou outros meios automatizados para aceder ao site sem autorização.</li>
+          <li>Reproduzir, duplicar, copiar, vender, revender ou explorar qualquer parte do site para fins comerciais sem autorização expressa.</li>
+          <li>Modificar, adaptar, traduzir, fazer engenharia reversa ou descompilar qualquer parte do site.</li>
+          <li>Utilizar o site de forma que possa danificar, desativar, sobrecarregar ou prejudicar os servidores ou as redes da AECOMI.</li>
+          <li>Tentar obter acesso não autorizado a contas de outros usuários, sistemas ou redes conectadas ao site.</li>
+          <li>Utilizar robôs, spiders, scrapers ou outros meios automatizados para acessar o site sem autorização.</li>
           <li>Publicar ou transmitir conteúdo ilegal, difamatório, obsceno, ofensivo ou que infrinja direitos de terceiros.</li>
         </ul>
       </>
@@ -64,9 +64,9 @@ const sections = [
     title: '3. Propriedade Intelectual',
     content: (
       <>
-        <p>Todo o conteúdo disponível no website da AECOMI, incluindo, entre outros, textos, gráficos, logótipos, ícones, imagens, clips de áudio, descargas digitais, compilações de dados e software, é propriedade da AECOMI ou dos seus licenciadores e está protegido por leis internacionais de direitos de autor, marcas registadas e outras leis de propriedade intelectual.</p>
-        <p>A marca AECOMI, os logótipos, os nomes das certificações e todos os gráficos relacionados são marcas registadas da AECOMI. A utilização destas marcas sem o consentimento prévio e por escrito da AECOMI não é permitida.</p>
-        <p>O conteúdo gerado pelos utilizadores (como testemunhos, comentários ou contribuições em fóruns) permanece sob a propriedade intelectual do utilizador, mas, ao publicá-lo no nosso site, concede à AECOMI uma licença não exclusiva, mundial, isenta de royalties e sublicenciável para utilizar, reproduzir, modificar, adaptar, publicar, traduzir e distribuir esse conteúdo.</p>
+        <p>Todo o conteúdo disponível no site da AECOMI, incluindo, entre outros, textos, gráficos, logotipos, ícones, imagens, clipes de áudio, downloads digitais, compilações de dados e software, é propriedade da AECOMI ou de seus licenciadores e está protegido por leis internacionais de direitos autorais, marcas registradas e outras leis de propriedade intelectual.</p>
+        <p>A marca AECOMI, os logotipos, os nomes das certificações e todos os gráficos relacionados são marcas registradas da AECOMI. O uso dessas marcas sem o consentimento prévio e por escrito da AECOMI não é permitido.</p>
+        <p>O conteúdo gerado pelos usuários (como depoimentos, comentários ou contribuições em fóruns) permanece sob a propriedade intelectual do usuário, mas, ao publicá-lo em nosso site, você concede à AECOMI uma licença não exclusiva, mundial, isenta de royalties e sublicenciável para usar, reproduzir, modificar, adaptar, publicar, traduzir e distribuir esse conteúdo.</p>
       </>
     ),
   },
@@ -75,20 +75,20 @@ const sections = [
     title: '4. Limitação de Responsabilidade',
     content: (
       <>
-        <p>O website e todos os serviços da AECOMI são fornecidos <strong>"tal como estão"</strong> e <strong>"conforme disponíveis"</strong>, sem garantias de qualquer tipo, expressas ou implícitas.</p>
+        <p>O site e todos os serviços da AECOMI são fornecidos <strong>"no estado em que se encontram"</strong> e <strong>"conforme disponíveis"</strong>, sem garantias de qualquer tipo, expressas ou implícitas.</p>
         <p>A AECOMI não garante que:</p>
         <ul className="list-disc pl-5 space-y-1 mt-3">
-          <li>O website funcionará de forma ininterrupta, segura ou isenta de erros.</li>
-          <li>Os resultados obtidos com a utilização do website serão exatos ou fiáveis.</li>
+          <li>O site funcionará de forma ininterrupta, segura ou livre de erros.</li>
+          <li>Os resultados obtidos com o uso do site serão exatos ou confiáveis.</li>
           <li>Os defeitos de funcionamento ou de conteúdo serão corrigidos.</li>
-          <li>O website estará livre de vírus ou outros componentes nocivos.</li>
+          <li>O site estará livre de vírus ou outros componentes nocivos.</li>
         </ul>
-        <p className="mt-4">Em nenhum caso a AECOMI será responsável por danos diretos, indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo, entre outros: perda de lucros, dados, utilização, reputação ou outras perdas intangíveis, resultantes de:</p>
+        <p className="mt-4">Em nenhuma hipótese a AECOMI será responsável por danos diretos, indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo, entre outros: perda de lucros, dados, uso, reputação ou outras perdas intangíveis, resultantes de:</p>
         <ul className="list-disc pl-5 space-y-1 mt-3">
-          <li>O acesso ou utilização, ou a impossibilidade de aceder ou utilizar o website.</li>
-          <li>Qualquer conduta ou conteúdo de terceiros no website.</li>
-          <li>Qualquer conteúdo obtido a partir do website.</li>
-          <li>O acesso não autorizado, alteração ou perda de transmissões ou dados.</li>
+          <li>O acesso ou uso, ou a impossibilidade de acessar ou usar o site.</li>
+          <li>Qualquer conduta ou conteúdo de terceiros no site.</li>
+          <li>Qualquer conteúdo obtido a partir do site.</li>
+          <li>O acesso não autorizado, a alteração ou a perda de transmissões ou dados.</li>
         </ul>
       </>
     ),
@@ -98,48 +98,48 @@ const sections = [
     title: '5. Certificações e Serviços',
     content: (
       <>
-        <p>Os serviços de certificação da AECOMI estão sujeitos a termos e condições específicos adicionais que lhe serão fornecidos durante o processo de candidatura.</p>
+        <p>Os serviços de certificação da AECOMI estão sujeitos a termos e condições específicos adicionais, que serão fornecidos a você durante o processo de inscrição.</p>
         <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Requisitos gerais</h3>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Cumprir os critérios de elegibilidade estabelecidos para cada certificação.</li>
-          <li>Fornecer informação verdadeira e documentação verificável.</li>
+          <li>Atender aos critérios de elegibilidade estabelecidos para cada certificação.</li>
+          <li>Fornecer informações verdadeiras e documentação verificável.</li>
           <li>Pagar as taxas correspondentes de acordo com as condições de pagamento estabelecidas.</li>
           <li>Cumprir o código de ética e conduta profissional da AECOMI.</li>
         </ul>
-        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Processo de candidatura</h3>
-        <p>Ao candidatar-se a uma certificação, a AECOMI avaliará a sua elegibilidade de acordo com os critérios estabelecidos. Reservamo-nos o direito de recusar qualquer candidatura que não cumpra os requisitos mínimos, sem obrigação de fornecer uma explicação detalhada.</p>
+        <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Processo de inscrição</h3>
+        <p>Ao se inscrever em uma certificação, a AECOMI avaliará sua elegibilidade de acordo com os critérios estabelecidos. Reservamo-nos o direito de recusar qualquer inscrição que não atenda aos requisitos mínimos, sem obrigação de fornecer uma explicação detalhada.</p>
         <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Cancelamento e reembolsos</h3>
-        <p>As taxas de candidatura e de exame são, em geral, não reembolsáveis depois de iniciado o processo de avaliação. Em casos excecionais (força maior, circunstâncias médicas documentadas), poderá ser avaliado um reembolso parcial ao critério da AECOMI.</p>
+        <p>As taxas de inscrição e de exame são, em geral, não reembolsáveis depois de iniciado o processo de avaliação. Em casos excepcionais (força maior, circunstâncias médicas documentadas), poderá ser avaliado um reembolso parcial a critério da AECOMI.</p>
         <h3 className="text-lg font-bold text-[#333] mt-4 mb-2">Validade e renovação</h3>
-        <p>As certificações têm um período de validade limitado (geralmente 3 anos). Os titulares de certificados devem concluir o processo de renovação antes do vencimento para manterem o estado ativo.</p>
+        <p>As certificações têm um período de validade limitado (geralmente 3 anos). Os titulares de certificados devem concluir o processo de renovação antes do vencimento para manter o status ativo.</p>
       </>
     ),
   },
   {
     id: 'accounts',
-    title: '6. Contas de Utilizador',
+    title: '6. Contas de Usuário',
     content: (
       <>
-        <p>Para aceder a determinados serviços da AECOMI, poderá ter de criar uma conta de utilizador. Ao fazê-lo, concorda em:</p>
+        <p>Para acessar determinados serviços da AECOMI, você poderá precisar criar uma conta de usuário. Ao fazê-lo, você concorda em:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li><strong>Informação correta:</strong> Fornecer informação exata, atual e completa durante o registo.</li>
-          <li><strong>Segurança da conta:</strong> Manter a confidencialidade da sua palavra-passe e não partilhar a sua conta com terceiros.</li>
-          <li><strong>Notificação de incidentes:</strong> Notificar-nos de imediato de qualquer utilização não autorizada da sua conta ou de qualquer outra violação de segurança.</li>
-          <li><strong>Responsabilidade:</strong> Assumir total responsabilidade por todas as atividades que ocorram na sua conta.</li>
-          <li><strong>Não transferência:</strong> Não transferir, vender ou ceder a sua conta a terceiros sem a autorização expressa da AECOMI.</li>
+          <li><strong>Informações corretas:</strong> Fornecer informações exatas, atuais e completas durante o cadastro.</li>
+          <li><strong>Segurança da conta:</strong> Manter a confidencialidade da sua senha e não compartilhar sua conta com terceiros.</li>
+          <li><strong>Notificação de incidentes:</strong> Notificar-nos imediatamente sobre qualquer uso não autorizado da sua conta ou qualquer outra violação de segurança.</li>
+          <li><strong>Responsabilidade:</strong> Assumir total responsabilidade por todas as atividades que ocorrerem na sua conta.</li>
+          <li><strong>Não transferência:</strong> Não transferir, vender ou ceder sua conta a terceiros sem a autorização expressa da AECOMI.</li>
         </ul>
-        <p className="mt-4">A AECOMI reserva-se o direito de suspender ou encerrar contas que violem estes termos, apresentem informação fraudulenta ou desenvolvam atividades que consideremos prejudiciais para outros utilizadores ou para a organização.</p>
+        <p className="mt-4">A AECOMI se reserva o direito de suspender ou encerrar contas que violem estes termos, apresentem informações fraudulentas ou desenvolvam atividades que consideremos prejudiciais a outros usuários ou à organização.</p>
       </>
     ),
   },
   {
     id: 'third-party-links',
-    title: '7. Ligações a Terceiros',
+    title: '7. Links para Terceiros',
     content: (
       <>
-        <p>O nosso website pode conter ligações a websites de terceiros que não são propriedade nem estão sob o controlo da AECOMI. Estas ligações são fornecidas unicamente para sua conveniência e informação.</p>
-        <p>A AECOMI não tem controlo sobre o conteúdo, as políticas de privacidade ou as práticas de websites de terceiros e não assume qualquer responsabilidade pelos mesmos. O acesso e a utilização de websites de terceiros ligados a partir do nosso site são por sua conta e risco.</p>
-        <p>Recomendamos que reveja os termos e condições e as políticas de privacidade de quaisquer websites de terceiros que visite antes de fornecer qualquer informação pessoal ou realizar transações.</p>
+        <p>Nosso site pode conter links para sites de terceiros que não são de propriedade nem estão sob o controle da AECOMI. Esses links são fornecidos apenas para sua conveniência e informação.</p>
+        <p>A AECOMI não tem controle sobre o conteúdo, as políticas de privacidade ou as práticas de sites de terceiros e não assume qualquer responsabilidade por eles. O acesso e o uso de sites de terceiros vinculados a partir do nosso site são por sua conta e risco.</p>
+        <p>Recomendamos que você revise os termos e condições e as políticas de privacidade de quaisquer sites de terceiros que visitar antes de fornecer qualquer informação pessoal ou realizar transações.</p>
       </>
     ),
   },
@@ -148,14 +148,14 @@ const sections = [
     title: '8. Modificação do Serviço',
     content: (
       <>
-        <p>A AECOMI reserva-se o direito, ao seu exclusivo critério, de:</p>
+        <p>A AECOMI se reserva o direito, a seu exclusivo critério, de:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
-          <li>Modificar, suspender ou descontinuar, temporária ou permanentemente, qualquer parte do website ou dos serviços, com ou sem aviso prévio.</li>
-          <li>Estabelecer limites em determinadas funcionalidades e serviços ou restringir o acesso a partes ou à totalidade do website sem qualquer responsabilidade.</li>
-          <li>Atualizar, alterar ou eliminar conteúdos, funcionalidades ou recursos a qualquer momento.</li>
+          <li>Modificar, suspender ou descontinuar, temporária ou permanentemente, qualquer parte do site ou dos serviços, com ou sem aviso prévio.</li>
+          <li>Estabelecer limites em determinadas funcionalidades e serviços ou restringir o acesso a partes ou à totalidade do site sem qualquer responsabilidade.</li>
+          <li>Atualizar, alterar ou excluir conteúdos, funcionalidades ou recursos a qualquer momento.</li>
           <li>Modificar as taxas de certificação e formação com o devido aviso.</li>
         </ul>
-        <p className="mt-4">Não seremos responsáveis perante si ou qualquer terceiro por qualquer modificação, suspensão ou interrupção do serviço.</p>
+        <p className="mt-4">Não seremos responsáveis perante você ou qualquer terceiro por qualquer modificação, suspensão ou interrupção do serviço.</p>
       </>
     ),
   },
@@ -164,24 +164,24 @@ const sections = [
     title: '9. Lei Aplicável e Jurisdição',
     content: (
       <>
-        <p>Estes termos e condições regem-se e são interpretados de acordo com as leis de Espanha, sem consideração das suas normas de conflito de leis.</p>
-        <p>Qualquer litígio, controvérsia ou reclamação decorrente ou relacionada com estes termos, incluindo a sua validade, interpretação ou incumprimento, será submetido à jurisdição exclusiva dos tribunais de Madrid, Espanha.</p>
-        <p>Se alguma disposição destes termos for considerada inválida ou inaplicável por um tribunal competente, essa disposição será modificada na medida necessária para a tornar válida e aplicável, permanecendo as restantes disposições em pleno vigor e efeito.</p>
+        <p>Estes termos e condições são regidos e interpretados de acordo com as leis da Espanha, sem consideração às suas normas de conflito de leis.</p>
+        <p>Qualquer litígio, controvérsia ou reclamação decorrente ou relacionada a estes termos, incluindo sua validade, interpretação ou descumprimento, será submetido à jurisdição exclusiva dos tribunais de Madri, Espanha.</p>
+        <p>Se alguma disposição destes termos for considerada inválida ou inaplicável por um tribunal competente, essa disposição será modificada na medida necessária para torná-la válida e aplicável, permanecendo as demais disposições em pleno vigor e efeito.</p>
       </>
     ),
   },
   {
     id: 'contact',
-    title: '10. Contacto',
+    title: '10. Contato',
     content: (
       <>
-        <p>Se tiver alguma pergunta, dúvida ou comentário sobre estes termos e condições, pode contactar-nos através de:</p>
+        <p>Se você tiver alguma pergunta, dúvida ou comentário sobre estes termos e condições, pode entrar em contato conosco por meio de:</p>
         <ul className="list-disc pl-5 space-y-2 mt-3">
           <li><strong>Email:</strong> <a href="mailto:legal@aecomi.com" className="text-[#0066CC] hover:underline">legal@aecomi.com</a></li>
-          <li><strong>Formulário de contacto:</strong> <a href="/pt/contact" className="text-[#0066CC] hover:underline">aecomi.com/contact</a></li>
-          <li><strong>Endereço postal:</strong> AECOMI, Madrid, Espanha</li>
+          <li><strong>Formulário de contato:</strong> <a href="/pt/contact" className="text-[#0066CC] hover:underline">aecomi.com/contact</a></li>
+          <li><strong>Endereço postal:</strong> AECOMI, Madri, Espanha</li>
         </ul>
-        <p className="mt-4">Esforçamo-nos por responder a todas as questões num prazo máximo de 10 dias úteis.</p>
+        <p className="mt-4">Nos esforçamos para responder a todas as dúvidas no prazo máximo de 10 dias úteis.</p>
       </>
     ),
   },
@@ -192,7 +192,7 @@ export default function Page() {
     <LegalPage
       locale="pt"
       title="Termos e Condições"
-      subtitle="Regras de utilização do website e serviços da AECOMI"
+      subtitle="Regras de uso do site e dos serviços da AECOMI"
       lastUpdated="15 de janeiro de 2025"
       sections={sections}
       type="terms"

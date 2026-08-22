@@ -1,7 +1,7 @@
 import RegistryPage from '@/components/sections/RegistryPage';
 
 export const metadata = {
-  title: 'Registo de Certificações — AECOMI',
+  title: 'Registro de Certificações — AECOMI',
   description: 'Diretório de profissionais certificados AECOMI. Verifique a validade de certificações internacionais BIM.',
 };
 
