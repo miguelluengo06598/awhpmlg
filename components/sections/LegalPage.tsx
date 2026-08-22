@@ -28,13 +28,20 @@ const fadeInUp = {
 
 export default function LegalPage({ locale, title, subtitle, lastUpdated, sections, type }: Props) {
   const { t, getLink } = useTranslation(locale);
-  const isEs = locale === 'es';
+  // Etiqueta 3-idiomas para el "chrome" de la página legal (el cuerpo llega por props).
+  const L = (es: string, en: string, pt: string) =>
+    locale === 'es' ? es : locale === 'en' ? en : pt;
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
 
+  // Los slugs legales difieren por idioma: es usa /legal/privacidad|terminos,
+  // en y pt comparten /legal/privacy|terms bajo su propio prefijo de ruta.
+  const legalHref = (es: string, shared: string) =>
+    locale === 'es' ? es : `/${locale}${shared}`;
+
   const otherPages = [
-    { key: 'privacy', label: isEs ? 'Privacidad' : 'Privacy', href: isEs ? '/legal/privacidad' : '/en/legal/privacy', icon: Shield },
-    { key: 'terms', label: isEs ? 'Términos' : 'Terms', href: isEs ? '/legal/terminos' : '/en/legal/terms', icon: FileText },
-    { key: 'cookies', label: isEs ? 'Cookies' : 'Cookies', href: isEs ? '/legal/cookies' : '/en/legal/cookies', icon: Cookie },
+    { key: 'privacy', label: L('Privacidad', 'Privacy', 'Privacidade'), href: legalHref('/legal/privacidad', '/legal/privacy'), icon: Shield },
+    { key: 'terms', label: L('Términos', 'Terms', 'Termos'), href: legalHref('/legal/terminos', '/legal/terms'), icon: FileText },
+    { key: 'cookies', label: L('Cookies', 'Cookies', 'Cookies'), href: legalHref('/legal/cookies', '/legal/cookies'), icon: Cookie },
   ];
 
   const scrollToSection = (id: string) => {
@@ -58,7 +65,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
             className="text-center max-w-3xl mx-auto"
           >
             <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-[#0066CC] uppercase bg-white rounded-full mb-4 border border-[#0066CC]/10">
-              {isEs ? 'Información Legal' : 'Legal Information'}
+              {L('Información Legal', 'Legal Information', 'Informações Legais')}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-[#333] tracking-tight mb-4">
               {title}
@@ -81,7 +88,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
                 onClick={() => setMobileTocOpen(!mobileTocOpen)}
                 className="w-full flex items-center justify-between p-4 rounded-xl bg-[#f9fbff] border border-[#ddd]/60 text-[#333] font-semibold"
               >
-                <span>{isEs ? 'Tabla de Contenidos' : 'Table of Contents'}</span>
+                <span>{L('Tabla de Contenidos', 'Table of Contents', 'Índice')}</span>
                 <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${mobileTocOpen ? 'rotate-180' : ''}`} />
               </button>
               {mobileTocOpen && (
@@ -103,7 +110,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
             <div className="hidden lg:block sticky top-24">
               <div className="p-5 rounded-xl bg-[#f9fbff] border border-[#ddd]/40">
                 <h3 className="text-xs font-bold text-[#666] uppercase tracking-wider mb-4">
-                  {isEs ? 'Contenido' : 'Contents'}
+                  {L('Contenido', 'Contents', 'Conteúdo')}
                 </h3>
                 <nav className="flex flex-col gap-0.5">
                   {sections.map((s) => (
@@ -121,7 +128,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
               {/* Other legal pages */}
               <div className="mt-4 p-5 rounded-xl bg-[#f9fbff] border border-[#ddd]/40">
                 <h3 className="text-xs font-bold text-[#666] uppercase tracking-wider mb-3">
-                  {isEs ? 'Más información' : 'More info'}
+                  {L('Más información', 'More info', 'Mais informações')}
                 </h3>
                 <div className="flex flex-col gap-1">
                   {otherPages
@@ -145,7 +152,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
           <div className="flex-1 min-w-0">
             <div className="max-w-3xl">
               <p className="text-sm text-[#333]/50 mb-8">
-                {isEs ? 'Última actualización:' : 'Last updated:'} {lastUpdated}
+                {L('Última actualización:', 'Last updated:', 'Última atualização:')} {lastUpdated}
               </p>
 
               <div className="space-y-12">
@@ -173,7 +180,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
                 <div className="flex flex-wrap items-center gap-4">
                   <Link href={getLink('/')} className="inline-flex items-center gap-2 text-sm text-[#0066CC] hover:underline font-medium">
                     <Home className="w-4 h-4" />
-                    {isEs ? 'Volver al inicio' : 'Back to home'}
+                    {L('Volver al inicio', 'Back to home', 'Voltar ao início')}
                   </Link>
                   <span className="text-[#ddd]">|</span>
                   {otherPages
@@ -187,7 +194,7 @@ export default function LegalPage({ locale, title, subtitle, lastUpdated, sectio
                       </span>
                     ))}
                   <span className="text-sm text-[#333]/40">
-                    {isEs ? 'Última actualización:' : 'Last updated:'} {lastUpdated}
+                    {L('Última actualización:', 'Last updated:', 'Última atualização:')} {lastUpdated}
                   </span>
                 </div>
               </div>

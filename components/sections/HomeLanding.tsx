@@ -34,7 +34,6 @@ const GRID_BG = {
 export default function HomeLanding() {
   const { t, getLink, currentLang } = useTranslation()
   const h = t.home
-  const isEs = currentLang === 'es'
 
   const certs = [
     {
@@ -207,7 +206,7 @@ export default function HomeLanding() {
                     className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold transition-all group-hover:gap-2.5"
                     style={{ color: cert.hexColor }}
                   >
-                    {isEs ? `Explorar ${cert.acronym}` : `Explore ${cert.acronym}`}
+                    {currentLang === 'en' ? `Explore ${cert.acronym}` : `Explorar ${cert.acronym}`}
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </div>

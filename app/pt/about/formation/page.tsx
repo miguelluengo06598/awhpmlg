@@ -1,8 +1,8 @@
 import FormationPage from "@/components/sections/FormationPage";
 
 export const metadata = {
-  title: "AECOMI - Specialized Training",
-  description: "Professional training in BIM methodology and international standards",
+  title: "AECOMI - Formação em BIM",
+  description: "Formação profissional em metodologia BIM e padrões internacionais",
 };
 
 export default function FormationPageEn() {

@@ -8,8 +8,8 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { qrCode } = await params;
   return {
-    title: `Verify Certification — ${qrCode} | AECOMI`,
-    description: 'Verify the authenticity of an AECOMI professional certification.',
+    title: `Verificar Certificação — ${qrCode} | AECOMI`,
+    description: 'Verifique a autenticidade de uma certificação profissional AECOMI.',
   };
 }
 

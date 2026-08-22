@@ -2,8 +2,8 @@ import { Suspense } from 'react'
 import SignInForm from "@/components/auth/SignInForm";
 
 export const metadata = {
-  title: "AECOMI - Sign In",
-  description: "Sign in to your AECOMI account",
+  title: "AECOMI - Entrar",
+  description: "Acesse sua conta AECOMI",
 };
 
 export default function SignInPage() {

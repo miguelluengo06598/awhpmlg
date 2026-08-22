@@ -100,50 +100,6 @@ const academicPartners = [
   },
 ]
 
-const criteria = [
-  { icon: Laptop, title: 'Modalidad', desc: 'Elige entre online, presencial o híbrida según tu disponibilidad y preferencia de aprendizaje.' },
-  { icon: Clock, title: 'Duración', desc: 'Los programas varían entre 8 y 16 semanas. Considera tu agenda laboral actual.' },
-  { icon: Users, title: 'Experiencia del Instructor', desc: 'Verifica que los instructores tengan experiencia práctica en la industria, no solo teórica.' },
-  { icon: DollarSign, title: 'Costo', desc: 'Compara precios pero considera la calidad. No siempre lo más caro es lo mejor.' },
-  { icon: BarChart3, title: 'Tasa de Aprobación', desc: 'Pregunta por el porcentaje de estudiantes que aprueban el examen de certificación AECOMI.' },
-  { icon: Network, title: 'Comunidad', desc: 'Una buena comunidad de estudiantes es valiosa para networking y apoyo mutuo.' },
-]
-
-const processSteps = [
-  { number: '01', title: 'Cuéntanos tus necesidades', desc: 'Contacta con nuestro equipo y comparte tu experiencia, disponibilidad y objetivos profesionales.' },
-  { number: '02', title: 'Análisis personalizado', desc: 'Analizamos qué certificación es ideal para tu perfil y qué entidad se adapta mejor a tu situación.' },
-  { number: '03', title: 'Recomendación', desc: 'Te recomendamos 2-3 opciones con sus ventajas y desventajas claramente explicadas.' },
-  { number: '04', title: 'Apoyo durante la formación', desc: 'Estamos disponibles para resolver dudas mientras realizas el curso preparatorio.' },
-  { number: '05', title: 'Examen y Certificación', desc: 'Realizas el examen de certificación AECOMI y obtienes tu credencial profesional.' },
-]
-
-const faqs = [
-  {
-    question: '¿AECOMI vende formación?',
-    answer: 'No. AECOMI es el organismo certificador, no un proveedor de formación. Nosotros validamos y emitimos certificaciones. Recomendamos entidades académicas de calidad para que te prepares adecuadamente.',
-  },
-  {
-    question: '¿Puedo prepararme en otra entidad que no esté en la lista?',
-    answer: 'Sí, puedes. La lista es de recomendaciones basadas en calidad verificada. Si encuentras otro proveedor que cumpla los estándares requeridos, puedes utilizarlo. Lo importante es que estés bien preparado para el examen AECOMI.',
-  },
-  {
-    question: '¿Cuál es la diferencia entre las entidades recomendadas?',
-    answer: 'Cada una tiene fortalezas distintas. Algunas son más teóricas, otras más prácticas. Algunas online, otras presenciales. Contáctanos y te recomendamos según tu perfil específico.',
-  },
-  {
-    question: '¿Qué pasa si elijo una formación que no recomiendan?',
-    answer: 'Nada cambia. Nuestras recomendaciones son orientativas. Al final, lo que importa es que apruebes el examen AECOMI. Muchos estudiantes de otros proveedores también obtienen la certificación exitosamente.',
-  },
-  {
-    question: '¿Puedo estudiar sin hacer formación formal?',
-    answer: 'Es difícil pero posible si tienes experiencia previa en BIM. La formación acelera el proceso y estructura el conocimiento de forma óptima. La recomendamos al 100% para mejores resultados.',
-  },
-  {
-    question: '¿Hacen descuentos para sus estudiantes?',
-    answer: 'Los descuentos dependen de cada entidad académica. Algunas ofrecen condiciones especiales para miembros de AECOMI. Consulta directamente con ellas mencionando que vienes de nuestra recomendación.',
-  },
-]
-
 const certColors: Record<string, string> = {
   IDM: 'bg-blue-600',
   BDM: 'bg-teal-600',
@@ -155,8 +111,186 @@ const SHOW_ACADEMIC_PARTNERS = false
 
 export default function FormationPage() {
   const { getLink, currentLang } = useTranslation()
-  const isEn = currentLang === 'en'
+  // Etiqueta 3-idiomas para textos que no están en el objeto translations.
+  const L = (es: string, en: string, pt: string) =>
+    currentLang === 'es' ? es : currentLang === 'en' ? en : pt
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const criteria = [
+    {
+      icon: Laptop,
+      title: L('Modalidad', 'Format', 'Modalidade'),
+      desc: L(
+        'Elige entre online, presencial o híbrida según tu disponibilidad y preferencia de aprendizaje.',
+        'Choose between online, in-person, or hybrid depending on your availability and learning preference.',
+        'Escolha entre online, presencial ou híbrida conforme sua disponibilidade e preferência de aprendizado.',
+      ),
+    },
+    {
+      icon: Clock,
+      title: L('Duración', 'Duration', 'Duração'),
+      desc: L(
+        'Los programas varían entre 8 y 16 semanas. Considera tu agenda laboral actual.',
+        'Programs range from 8 to 16 weeks. Consider your current work schedule.',
+        'Os programas variam de 8 a 16 semanas. Considere sua agenda de trabalho atual.',
+      ),
+    },
+    {
+      icon: Users,
+      title: L('Experiencia del Instructor', 'Instructor Experience', 'Experiência do Instrutor'),
+      desc: L(
+        'Verifica que los instructores tengan experiencia práctica en la industria, no solo teórica.',
+        'Check that instructors have hands-on industry experience, not just theoretical knowledge.',
+        'Verifique se os instrutores têm experiência prática no setor, e não apenas teórica.',
+      ),
+    },
+    {
+      icon: DollarSign,
+      title: L('Costo', 'Cost', 'Custo'),
+      desc: L(
+        'Compara precios pero considera la calidad. No siempre lo más caro es lo mejor.',
+        'Compare prices but consider quality. The most expensive is not always the best.',
+        'Compare preços, mas considere a qualidade. O mais caro nem sempre é o melhor.',
+      ),
+    },
+    {
+      icon: BarChart3,
+      title: L('Tasa de Aprobación', 'Pass Rate', 'Taxa de Aprovação'),
+      desc: L(
+        'Pregunta por el porcentaje de estudiantes que aprueban el examen de certificación AECOMI.',
+        'Ask about the percentage of students who pass the AECOMI certification exam.',
+        'Pergunte qual é o percentual de alunos aprovados no exame de certificação AECOMI.',
+      ),
+    },
+    {
+      icon: Network,
+      title: L('Comunidad', 'Community', 'Comunidade'),
+      desc: L(
+        'Una buena comunidad de estudiantes es valiosa para networking y apoyo mutuo.',
+        'A good student community is valuable for networking and mutual support.',
+        'Uma boa comunidade de alunos é valiosa para networking e apoio mútuo.',
+      ),
+    },
+  ]
+
+  const processSteps = [
+    {
+      number: '01',
+      title: L('Cuéntanos tus necesidades', 'Tell us your needs', 'Conte-nos suas necessidades'),
+      desc: L(
+        'Contacta con nuestro equipo y comparte tu experiencia, disponibilidad y objetivos profesionales.',
+        'Contact our team and share your experience, availability, and professional goals.',
+        'Fale com nossa equipe e compartilhe sua experiência, disponibilidade e objetivos profissionais.',
+      ),
+    },
+    {
+      number: '02',
+      title: L('Análisis personalizado', 'Personalized analysis', 'Análise personalizada'),
+      desc: L(
+        'Analizamos qué certificación es ideal para tu perfil y qué entidad se adapta mejor a tu situación.',
+        'We analyze which certification is ideal for your profile and which entity best fits your situation.',
+        'Analisamos qual certificação é ideal para o seu perfil e qual instituição se adapta melhor à sua situação.',
+      ),
+    },
+    {
+      number: '03',
+      title: L('Recomendación', 'Recommendation', 'Recomendação'),
+      desc: L(
+        'Te recomendamos 2-3 opciones con sus ventajas y desventajas claramente explicadas.',
+        'We recommend 2-3 options with their advantages and disadvantages clearly explained.',
+        'Recomendamos 2-3 opções com suas vantagens e desvantagens claramente explicadas.',
+      ),
+    },
+    {
+      number: '04',
+      title: L('Apoyo durante la formación', 'Support during training', 'Apoio durante a formação'),
+      desc: L(
+        'Estamos disponibles para resolver dudas mientras realizas el curso preparatorio.',
+        'We are available to answer questions while you take the preparatory course.',
+        'Estamos disponíveis para tirar dúvidas enquanto você faz o curso preparatório.',
+      ),
+    },
+    {
+      number: '05',
+      title: L('Examen y Certificación', 'Exam and Certification', 'Exame e Certificação'),
+      desc: L(
+        'Realizas el examen de certificación AECOMI y obtienes tu credencial profesional.',
+        'You take the AECOMI certification exam and obtain your professional credential.',
+        'Você faz o exame de certificação AECOMI e obtém sua credencial profissional.',
+      ),
+    },
+  ]
+
+  const faqs = [
+    {
+      question: L('¿AECOMI vende formación?', 'Does AECOMI sell training?', 'A AECOMI vende formação?'),
+      answer: L(
+        'No. AECOMI es el organismo certificador, no un proveedor de formación. Nosotros validamos y emitimos certificaciones. Recomendamos entidades académicas de calidad para que te prepares adecuadamente.',
+        'No. AECOMI is the certifying body, not a training provider. We validate and issue certifications. We recommend quality academic entities so that you can prepare properly.',
+        'Não. A AECOMI é o organismo certificador, não um provedor de formação. Nós validamos e emitimos certificações. Recomendamos instituições acadêmicas de qualidade para que você se prepare adequadamente.',
+      ),
+    },
+    {
+      question: L(
+        '¿Puedo prepararme en otra entidad que no esté en la lista?',
+        'Can I prepare at an entity that is not on the list?',
+        'Posso me preparar em outra instituição que não esteja na lista?',
+      ),
+      answer: L(
+        'Sí, puedes. La lista es de recomendaciones basadas en calidad verificada. Si encuentras otro proveedor que cumpla los estándares requeridos, puedes utilizarlo. Lo importante es que estés bien preparado para el examen AECOMI.',
+        'Yes, you can. The list contains recommendations based on verified quality. If you find another provider that meets the required standards, you can use it. What matters is that you are well prepared for the AECOMI exam.',
+        'Sim, pode. A lista traz recomendações baseadas em qualidade verificada. Se você encontrar outro provedor que atenda aos padrões exigidos, pode utilizá-lo. O importante é estar bem preparado para o exame AECOMI.',
+      ),
+    },
+    {
+      question: L(
+        '¿Cuál es la diferencia entre las entidades recomendadas?',
+        'What is the difference between the recommended entities?',
+        'Qual é a diferença entre as instituições recomendadas?',
+      ),
+      answer: L(
+        'Cada una tiene fortalezas distintas. Algunas son más teóricas, otras más prácticas. Algunas online, otras presenciales. Contáctanos y te recomendamos según tu perfil específico.',
+        'Each one has different strengths. Some are more theoretical, others more practical. Some are online, others in person. Contact us and we will recommend one based on your specific profile.',
+        'Cada uma tem pontos fortes diferentes. Algumas são mais teóricas, outras mais práticas. Algumas online, outras presenciais. Fale conosco e recomendamos de acordo com o seu perfil específico.',
+      ),
+    },
+    {
+      question: L(
+        '¿Qué pasa si elijo una formación que no recomiendan?',
+        'What if I choose training that you do not recommend?',
+        'O que acontece se eu escolher uma formação que vocês não recomendam?',
+      ),
+      answer: L(
+        'Nada cambia. Nuestras recomendaciones son orientativas. Al final, lo que importa es que apruebes el examen AECOMI. Muchos estudiantes de otros proveedores también obtienen la certificación exitosamente.',
+        'Nothing changes. Our recommendations are only guidance. In the end, what matters is that you pass the AECOMI exam. Many students from other providers also obtain the certification successfully.',
+        'Nada muda. Nossas recomendações são apenas orientativas. No fim, o que importa é você ser aprovado no exame AECOMI. Muitos alunos de outros provedores também obtêm a certificação com sucesso.',
+      ),
+    },
+    {
+      question: L(
+        '¿Puedo estudiar sin hacer formación formal?',
+        'Can I study without formal training?',
+        'Posso estudar sem fazer uma formação formal?',
+      ),
+      answer: L(
+        'Es difícil pero posible si tienes experiencia previa en BIM. La formación acelera el proceso y estructura el conocimiento de forma óptima. La recomendamos al 100% para mejores resultados.',
+        'It is difficult but possible if you have prior BIM experience. Training speeds up the process and structures knowledge optimally. We recommend it 100% for better results.',
+        'É difícil, mas possível se você já tem experiência prévia em BIM. A formação acelera o processo e estrutura o conhecimento de forma ideal. Recomendamos 100% para obter melhores resultados.',
+      ),
+    },
+    {
+      question: L(
+        '¿Hacen descuentos para sus estudiantes?',
+        'Do you offer discounts for students?',
+        'Vocês oferecem descontos para os alunos?',
+      ),
+      answer: L(
+        'Los descuentos dependen de cada entidad académica. Algunas ofrecen condiciones especiales para miembros de AECOMI. Consulta directamente con ellas mencionando que vienes de nuestra recomendación.',
+        'Discounts depend on each academic entity. Some offer special conditions for AECOMI members. Ask them directly, mentioning that you come from our recommendation.',
+        'Os descontos dependem de cada instituição acadêmica. Algumas oferecem condições especiais para membros da AECOMI. Consulte diretamente com elas mencionando que você veio por indicação nossa.',
+      ),
+    },
+  ]
 
   return (
     <>
@@ -173,20 +307,24 @@ export default function FormationPage() {
             className="max-w-3xl"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-cyan uppercase bg-white/[0.06] rounded-full mb-8 border border-white/[0.08]">
-              {isEn ? 'Training' : 'Formación BIM'}
+              {L('Formación BIM', 'Training', 'Formação BIM')}
             </span>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white leading-[1.05] tracking-tight">
-              {isEn ? 'BIM Training' : 'Formación en BIM'}
+              {L('Formación en BIM', 'BIM Training', 'Formação em BIM')}
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-white/60 leading-relaxed max-w-2xl">
-              {isEn
-                ? 'We recommend the best academic entities for your certification preparation'
-                : 'Recomendamos las mejores entidades académicas para tu preparación'}
+              {L(
+                'Recomendamos las mejores entidades académicas para tu preparación',
+                'We recommend the best academic entities for your certification preparation',
+                'Recomendamos as melhores instituições acadêmicas para a sua preparação',
+              )}
             </p>
             <p className="mt-4 text-base text-white/40 leading-relaxed max-w-2xl">
-              {isEn
-                ? 'AECOMI does not offer training directly, but we have validated and partnered with the best academic institutions so you receive quality preparation.'
-                : 'AECOMI no ofrece formación directa, pero hemos validado y aliado con las mejores instituciones académicas para que recibas una preparación de calidad.'}
+              {L(
+                'AECOMI no ofrece formación directa, pero hemos validado y aliado con las mejores instituciones académicas para que recibas una preparación de calidad.',
+                'AECOMI does not offer training directly, but we have validated and partnered with the best academic institutions so you receive quality preparation.',
+                'A AECOMI não oferece formação diretamente, mas validamos e firmamos parceria com as melhores instituições acadêmicas para que você receba uma preparação de qualidade.',
+              )}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
@@ -194,13 +332,13 @@ export default function FormationPage() {
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold text-pmi-dark bg-white rounded-full hover:bg-pmi-cream transition-all hover:-translate-y-0.5 shadow-lg"
               >
                 <Mail className="w-5 h-5" />
-                {isEn ? 'Request Advisory' : 'Solicitar Asesoramiento'}
+                {L('Solicitar Asesoramiento', 'Request Advisory', 'Solicitar Orientação')}
               </Link>
               <Link
                 href={getLink('/certifications')}
                 className="inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white border border-white/20 rounded-full hover:bg-white/10 transition-all hover:-translate-y-0.5"
               >
-                {isEn ? 'View Certifications' : 'Ver Certificaciones'}
+                {L('Ver Certificaciones', 'View Certifications', 'Ver Certificações')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -215,15 +353,17 @@ export default function FormationPage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-blue-50/70 rounded-full mb-4 border border-blue-100/60">
-              {isEn ? 'Academic Partners' : 'Entidades Recomendadas'}
+              {L('Entidades Recomendadas', 'Academic Partners', 'Instituições Recomendadas')}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {isEn ? 'Recommended Academic Entities' : 'Entidades Académicas Recomendadas'}
+              {L('Entidades Académicas Recomendadas', 'Recommended Academic Entities', 'Instituições Acadêmicas Recomendadas')}
             </h2>
             <p className="mt-4 text-base text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              {isEn
-                ? 'We have selected these institutions for their academic excellence, proven experience, and student results.'
-                : 'Hemos seleccionado estas instituciones por su excelencia académica, experiencia comprobada y resultados de sus estudiantes.'}
+              {L(
+                'Hemos seleccionado estas instituciones por su excelencia académica, experiencia comprobada y resultados de sus estudiantes.',
+                'We have selected these institutions for their academic excellence, proven experience, and student results.',
+                'Selecionamos estas instituições por sua excelência acadêmica, experiência comprovada e pelos resultados de seus alunos.',
+              )}
             </p>
           </motion.div>
 
@@ -272,10 +412,10 @@ export default function FormationPage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-14">
             <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-white rounded-full mb-4 border border-gray-100">
-              {isEn ? 'Selection Guide' : 'Guía de Selección'}
+              {L('Guía de Selección', 'Selection Guide', 'Guia de Seleção')}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {isEn ? 'How to Choose the Right Training' : 'Cómo Elegir la Formación Correcta'}
+              {L('Cómo Elegir la Formación Correcta', 'How to Choose the Right Training', 'Como Escolher a Formação Certa')}
             </h2>
           </motion.div>
 
@@ -306,13 +446,13 @@ export default function FormationPage() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeInUp} className="text-center mb-16">
             <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-blue-50/70 rounded-full mb-4 border border-blue-100/60">
-              {isEn ? 'Our Process' : 'Nuestro Proceso'}
+              {L('Nuestro Proceso', 'Our Process', 'Nosso Processo')}
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {isEn ? 'Our Recommendation Process' : 'Nuestro Proceso de Recomendación'}
+              {L('Nuestro Proceso de Recomendación', 'Our Recommendation Process', 'Nosso Processo de Recomendação')}
             </h2>
             <p className="mt-3 text-base text-gray-500 max-w-lg mx-auto">
-              {isEn ? 'Simple, personalized, and effective' : 'Simple, personalizado y efectivo'}
+              {L('Simple, personalizado y efectivo', 'Simple, personalized, and effective', 'Simples, personalizado e eficaz')}
             </p>
           </motion.div>
 
@@ -350,7 +490,7 @@ export default function FormationPage() {
               FAQ
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {isEn ? 'Frequently Asked Questions' : 'Preguntas Frecuentes'}
+              {L('Preguntas Frecuentes', 'Frequently Asked Questions', 'Perguntas Frequentes')}
             </h2>
           </motion.div>
 
@@ -397,12 +537,14 @@ export default function FormationPage() {
         <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <motion.div {...fadeInUp} className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1]">
-              {isEn ? 'Need Personalized Advisory?' : '¿Necesitas Asesoramiento Personalizado?'}
+              {L('¿Necesitas Asesoramiento Personalizado?', 'Need Personalized Advisory?', 'Precisa de Orientação Personalizada?')}
             </h2>
             <p className="mt-5 text-lg text-white/60 leading-relaxed">
-              {isEn
-                ? 'Contact our team. We will help you choose the training and academic entity that best suits your professional profile.'
-                : 'Contacta con nuestro equipo. Te ayudaremos a elegir la formación y entidad académica que mejor se adapte a tu perfil profesional.'}
+              {L(
+                'Contacta con nuestro equipo. Te ayudaremos a elegir la formación y entidad académica que mejor se adapte a tu perfil profesional.',
+                'Contact our team. We will help you choose the training and academic entity that best suits your professional profile.',
+                'Fale com nossa equipe. Vamos ajudar você a escolher a formação e a instituição acadêmica que melhor se adapta ao seu perfil profissional.',
+              )}
             </p>
             <p className="mt-3 text-base text-white/40">
               formacion@aecomi.com &nbsp;·&nbsp; +34 91 234 5678
@@ -413,14 +555,14 @@ export default function FormationPage() {
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-pmi-cream transition-all shadow-lg text-[15px]"
               >
                 <MessageSquare className="w-4 h-4" />
-                {isEn ? 'Request Advisory' : 'Solicitar Asesoramiento'}
+                {L('Solicitar Asesoramiento', 'Request Advisory', 'Solicitar Orientação')}
               </Link>
               <Link
                 href={getLink('/contact')}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white font-medium rounded-xl border border-white/20 hover:bg-white/5 transition-all text-[15px]"
               >
                 <Mail className="w-4 h-4" />
-                {isEn ? 'Contact by Email' : 'Contactar por Email'}
+                {L('Contactar por Email', 'Contact by Email', 'Entrar em contato por e-mail')}
               </Link>
             </div>
           </motion.div>

@@ -52,30 +52,23 @@ export default function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [statusMessage, setStatusMessage] = useState('')
 
-  const isEn = currentLang === 'en'
+  // Etiqueta 3-idiomas para textos que no están en el objeto translations.
+  const L = (es: string, en: string, pt: string) =>
+    currentLang === 'es' ? es : currentLang === 'en' ? en : pt
 
-  const asuntos = isEn
-    ? [
-        'Information about certifications',
-        'Training request',
-        'Institutional collaboration',
-        'Academic accreditation',
-        'Events',
-        'Other',
-      ]
-    : [
-        'Información sobre certificaciones',
-        'Solicitud de formación',
-        'Colaboración institucional',
-        'Acreditación académica',
-        'Eventos',
-        'Otro',
-      ]
+  const asuntos = [
+    L('Información sobre certificaciones', 'Information about certifications', 'Informações sobre certificações'),
+    L('Solicitud de formación', 'Training request', 'Solicitação de formação'),
+    L('Colaboración institucional', 'Institutional collaboration', 'Colaboração institucional'),
+    L('Acreditación académica', 'Academic accreditation', 'Acreditação acadêmica'),
+    L('Eventos', 'Events', 'Eventos'),
+    L('Otro', 'Other', 'Outro'),
+  ]
 
   const infoContacto = [
     { icon: Mail, label: c.info_email, value: 'info@aecomi.com', href: 'mailto:info@aecomi.com' },
     { icon: Phone, label: c.info_phone, value: '+34 XXX XXX XXX', href: 'tel:+34000000000' },
-    { icon: MapPin, label: c.info_location, value: isEn ? 'Madrid, Spain' : 'Madrid, España', href: '#' },
+    { icon: MapPin, label: c.info_location, value: L('Madrid, España', 'Madrid, Spain', 'Madri, Espanha'), href: '#' },
     { icon: Clock, label: c.info_hours, value: c.info_hours_value, href: '#' },
   ]
 
@@ -87,9 +80,33 @@ export default function ContactPage() {
   ]
 
   const compromisoPuntos = [
-    { icon: Headphones, title: isEn ? 'Quick Responses' : 'Respuestas ágiles', description: isEn ? 'We guarantee short response times for all inquiries.' : 'Garantizamos tiempos de respuesta cortos para todas las consultas.' },
-    { icon: Users, title: isEn ? 'Continuous Support' : 'Acompañamiento continuo', description: isEn ? 'We accompany you throughout the certification and registration process.' : 'Te acompañamos durante todo el proceso de certificación y registro.' },
-    { icon: MessageSquare, title: isEn ? 'Close Communication' : 'Comunicación cercana', description: isEn ? 'We maintain direct and personalized communication with each member.' : 'Mantenemos una comunicación directa y personalizada con cada miembro.' },
+    {
+      icon: Headphones,
+      title: L('Respuestas ágiles', 'Quick Responses', 'Respostas ágeis'),
+      description: L(
+        'Garantizamos tiempos de respuesta cortos para todas las consultas.',
+        'We guarantee short response times for all inquiries.',
+        'Garantimos tempos de resposta curtos para todas as dúvidas.',
+      ),
+    },
+    {
+      icon: Users,
+      title: L('Acompañamiento continuo', 'Continuous Support', 'Acompanhamento contínuo'),
+      description: L(
+        'Te acompañamos durante todo el proceso de certificación y registro.',
+        'We accompany you throughout the certification and registration process.',
+        'Acompanhamos você durante todo o processo de certificação e cadastro.',
+      ),
+    },
+    {
+      icon: MessageSquare,
+      title: L('Comunicación cercana', 'Close Communication', 'Comunicação próxima'),
+      description: L(
+        'Mantenemos una comunicación directa y personalizada con cada miembro.',
+        'We maintain direct and personalized communication with each member.',
+        'Mantemos uma comunicação direta e personalizada com cada membro.',
+      ),
+    },
   ]
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

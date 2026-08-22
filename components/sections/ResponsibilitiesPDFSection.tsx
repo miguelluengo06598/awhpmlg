@@ -37,7 +37,9 @@ export default function ResponsibilitiesPDFSection({
   bgClass = 'bg-[#f9fbff]',
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const isEn = locale === 'en'
+  // Etiqueta 3-idiomas para el texto del bloque (el título puede llegar por prop).
+  const L = (es: string, en: string, pt: string) =>
+    locale === 'es' ? es : locale === 'en' ? en : pt
 
   const accentHex = `rgb(${accentColorRgb.join(',')})`
 
@@ -82,12 +84,14 @@ export default function ResponsibilitiesPDFSection({
             </motion.span>
           )}
           <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#333]">
-            {sectionTitle ?? (isEn ? 'Main Responsibilities' : 'Responsabilidades Principales')}
+            {sectionTitle ?? L('Responsabilidades Principales', 'Main Responsibilities', 'Responsabilidades Principais')}
           </motion.h2>
           <motion.p variants={fadeInUp} className="mt-3 text-[#333]/60 max-w-xl mx-auto text-base">
-            {isEn
-              ? 'Download the full document to review, print, or share.'
-              : 'Descarga el documento completo para revisar, imprimir o compartir.'}
+            {L(
+              'Descarga el documento completo para revisar, imprimir o compartir.',
+              'Download the full document to review, print, or share.',
+              'Baixe o documento completo para revisar, imprimir ou compartilhar.',
+            )}
           </motion.p>
         </motion.div>
 
@@ -108,10 +112,10 @@ export default function ResponsibilitiesPDFSection({
             </div>
             <div>
               <h3 className="font-bold text-[#333] text-lg">
-                {certificationCode} — {isEn ? 'Main Responsibilities' : 'Responsabilidades Principales'}
+                {certificationCode} — {L('Responsabilidades Principales', 'Main Responsibilities', 'Responsabilidades Principais')}
               </h3>
               <p className="text-sm text-[#333]/50 mt-0.5">
-                {certificationName} · {responsibilities.length} {isEn ? 'items' : 'responsabilidades'} · PDF
+                {certificationName} · {responsibilities.length} {L('responsabilidades', 'items', 'responsabilidades')} · PDF
               </p>
             </div>
           </div>
@@ -119,7 +123,7 @@ export default function ResponsibilitiesPDFSection({
           {/* Preview list */}
           <div className="px-6 py-5">
             <p className="text-xs font-semibold text-[#333]/40 uppercase tracking-wider mb-3">
-              {isEn ? 'Preview' : 'Vista previa'}
+              {L('Vista previa', 'Preview', 'Prévia')}
             </p>
             <ul className="space-y-2">
               {preview.map((item, idx) => (
@@ -130,7 +134,7 @@ export default function ResponsibilitiesPDFSection({
               ))}
               {responsibilities.length > 5 && (
                 <li className="text-sm text-[#333]/40 pl-6">
-                  + {responsibilities.length - 5} {isEn ? 'more...' : 'más...'}
+                  + {responsibilities.length - 5} {L('más...', 'more...', 'mais...')}
                 </li>
               )}
             </ul>
@@ -146,13 +150,15 @@ export default function ResponsibilitiesPDFSection({
             >
               <Download className={`w-5 h-5 ${loading ? 'animate-bounce' : ''}`} />
               {loading
-                ? (isEn ? 'Generating…' : 'Generando…')
-                : (isEn ? 'Download PDF' : 'Descargar PDF')}
+                ? L('Generando…', 'Generating…', 'Gerando…')
+                : L('Descargar PDF', 'Download PDF', 'Baixar PDF')}
             </button>
             <p className="text-xs text-[#333]/40">
-              {isEn
-                ? 'The file will download automatically to your device.'
-                : 'El archivo se descargará automáticamente a tu dispositivo.'}
+              {L(
+                'El archivo se descargará automáticamente a tu dispositivo.',
+                'The file will download automatically to your device.',
+                'O arquivo será baixado automaticamente no seu dispositivo.',
+              )}
             </p>
           </div>
         </motion.div>
