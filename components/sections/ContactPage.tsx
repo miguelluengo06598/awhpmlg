@@ -67,7 +67,7 @@ export default function ContactPage() {
 
   const infoContacto = [
     { icon: Mail, label: c.info_email, value: 'info@aecomi.com', href: 'mailto:info@aecomi.com' },
-    { icon: Phone, label: c.info_phone, value: '+34 XXX XXX XXX', href: 'tel:+34000000000' },
+    { icon: Phone, label: c.info_phone, value: '+34 646 799 005', href: 'tel:+34646799005' },
     { icon: MapPin, label: c.info_location, value: L('Madrid, España', 'Madrid, Spain', 'Madri, Espanha'), href: '#' },
     { icon: Clock, label: c.info_hours, value: c.info_hours_value, href: '#' },
   ]

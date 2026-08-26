@@ -547,7 +547,7 @@ export default function FormationPage() {
               )}
             </p>
             <p className="mt-3 text-base text-white/40">
-              formacion@aecomi.com &nbsp;·&nbsp; +34 91 234 5678
+              formacion@aecomi.com &nbsp;·&nbsp; +34 646 799 005
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

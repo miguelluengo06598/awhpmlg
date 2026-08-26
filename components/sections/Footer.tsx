@@ -126,9 +126,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+34000000000" className="flex items-start gap-3 text-sm text-gray-400 hover:text-white transition-colors group">
+                <a href="tel:+34646799005" className="flex items-start gap-3 text-sm text-gray-400 hover:text-white transition-colors group">
                   <Phone className="w-4 h-4 mt-0.5 text-gray-500 group-hover:text-pmi-cyan transition-colors" />
-                  <span>+34 XXX XXX XXX</span>
+                  <span>+34 646 799 005</span>
                 </a>
               </li>
               <li>
