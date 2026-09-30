@@ -7,6 +7,7 @@ import { LocaleSync } from "@/components/LocaleSync";
 import ServiceWorkerCleanup from "@/components/ServiceWorkerCleanup";
 import { PageTransition } from "@/components/PageTransition";
 import { AuthProvider } from "@/lib/authContext";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
