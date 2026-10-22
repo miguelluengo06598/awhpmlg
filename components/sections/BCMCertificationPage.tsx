@@ -294,11 +294,10 @@ export default function BCMCertificationPage({ locale }: Props) {
               {t.bcm.context_desc}
             </motion.p>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 sm:max-w-3xl sm:mx-auto gap-6">
             {[
-              { title: t.bcm.context_1, desc: t.bcm.context_1_desc, icon: <Building2 className="w-6 h-6" />, bg: 'bg-blue-50', text: 'text-blue-600' },
-              { title: t.bcm.context_2, desc: t.bcm.context_2_desc, icon: <Globe className="w-6 h-6" />, bg: 'bg-violet-50', text: 'text-violet-600' },
-              { title: t.bcm.context_3, desc: t.bcm.context_3_desc, icon: <Briefcase className="w-6 h-6" />, bg: 'bg-amber-50', text: 'text-amber-600' },
+              { title: t.bcm.context_1, desc: t.bcm.context_1_desc, icon: <Globe className="w-6 h-6" />, bg: 'bg-violet-50', text: 'text-violet-600' },
+              { title: t.bcm.context_2, desc: t.bcm.context_2_desc, icon: <Briefcase className="w-6 h-6" />, bg: 'bg-amber-50', text: 'text-amber-600' },
             ].map((card, idx) => (
               <motion.div
                 key={idx}
