@@ -1,69 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import {
-  ChevronDown,
-  CheckCircle2,
-  ArrowRight,
-  Globe,
-  Shield,
-  Briefcase,
-  Users,
-  GraduationCap,
-  FileCheck,
-  Award,
-  TrendingUp,
-  MessageSquare,
-  Building2,
-  BarChart3,
-  LayoutTemplate,
-  PenTool,
-  ClipboardCheck,
-  HardHat,
-  BadgeCheck,
-  Layers,
-  Box,
-  Wrench,
-  FolderOpen,
-  Cog,
-  Calendar,
-  Clock,
-  Zap,
-  Truck,
-  Star,
-  HelpCircle,
+  CheckCircle2, ArrowRight, ArrowUpRight, Globe, Shield, Briefcase, Users,
+  GraduationCap, FileCheck, Award, Building2, BarChart3, LayoutTemplate,
+  ClipboardCheck, HardHat, Layers, Box, FolderOpen, Cog, Truck, Plus,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/useTranslation';
 import ResponsibilitiesPDFSection from './ResponsibilitiesPDFSection';
+import {
+  reveal, BLUEPRINT, RevealWords, Magnetic, Marquee, Eyebrow, ScrollWords, useDrawLine,
+} from '@/components/ui/motion-kit';
 
 interface Props {
   locale: 'es' | 'en' | 'pt';
 }
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const PRIMARY = '#FF6B35';
-const PRIMARY_BG = 'bg-[#FF6B35]';
-const PRIMARY_TEXT = 'text-[#FF6B35]';
-const PRIMARY_BG_LIGHT = 'bg-[#FF6B35]/10';
-const PRIMARY_BORDER = 'border-orange-50';
-const PRIMARY_GRADIENT_FROM = 'from-[#fff7ed]';
-const PRIMARY_GRADIENT_TO = 'to-[#ffedd5]';
-
 export default function BCMCertificationPage({ locale }: Props) {
   // Años de experiencia de la tabla comparativa (la unidad cambia por idioma).
   const expYears = (n: number) =>
     locale === 'es' ? n+'+ años' : locale === 'pt' ? n+'+ anos' : n+'+ years';
+  const L = (es: string, en: string, pt: string) =>
+    locale === 'es' ? es : locale === 'en' ? en : pt;
   const { t, getLink } = useTranslation(locale);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -130,116 +90,153 @@ export default function BCMCertificationPage({ locale }: Props) {
     { q: t.bcm.faq_5_q, a: t.bcm.faq_5_a },
   ];
 
+  const reduce = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const bigY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : -140]);
+  const heroFade = useTransform(heroScroll, [0, 0.8], [1, reduce ? 1 : 0.15]);
+
+  const procRef = useRef<HTMLDivElement>(null);
+  const procLine = useDrawLine(procRef);
+
+  const spot = (e: React.MouseEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
+
+  const bcm = t.bcm as unknown as Record<string, string>;
+  const overview = [1, 2, 3].map((i) => ({
+    title: bcm[`overview_${i}_title`],
+    sub: bcm[`overview_${i}_subtitle`],
+    desc: bcm[`overview_${i}_desc`],
+  }));
+  const overviewIcons = [Globe, Shield, Award];
+
+  const requirements = [
+    { icon: <Briefcase className="h-7 w-7" />, title: t.bcm.req_exp_title, desc: t.bcm.req_exp_desc },
+    { icon: <GraduationCap className="h-7 w-7" />, title: t.bcm.req_edu_title, desc: t.bcm.req_edu_desc },
+    { icon: <Shield className="h-7 w-7" />, title: t.bcm.req_tech_title, desc: t.bcm.req_tech_desc },
+  ];
+
+  const compareRows = [
+    { label: t.bcm.compare_focus, values: [L('Gestión de Información', 'Information Management', 'Gestão de Informação'), L('Diseño BIM', 'BIM Design', 'Projeto BIM'), L('Construcción BIM', 'BIM Construction', 'Construção BIM')] },
+    { label: t.bcm.compare_level, values: [L('Intermedio', 'Intermediate', 'Intermediário'), L('Intermedio', 'Intermediate', 'Intermediário'), L('Avanzado', 'Advanced', 'Avançado')] },
+    { label: t.bcm.compare_exp, values: [expYears(3), expYears(3), expYears(5)] },
+    { label: t.bcm.compare_price, values: ['€350', '€350', '€450'] },
+  ];
+
+  const testimonials = [
+    { name: 'Roberto Sánchez', role: L('Jefe de Obra BIM', 'BIM Site Manager', 'Gerente de Obra BIM'), company: 'Construcciones del Norte', quote: L('La certificación BCM me permitió liderar la coordinación BIM en obra con total autoridad. Los clientes confían más en un perfil certificado.', 'The BCM certification allowed me to lead BIM coordination on site with full authority. Clients trust a certified profile more.', 'A certificação BCM me permitiu liderar a coordenação BIM em obra com total autoridade. Os clientes confiam mais em um perfil certificado.') },
+    { name: 'María José López', role: L('Directora de Construcción', 'Construction Director', 'Diretora de Construção'), company: 'Edifica Proyectos', quote: L('Como directora, valorar que mi equipo tenga certificaciones BCM nos da una ventaja real en licitaciones de obra pública.', 'As a director, having BCM certified team members gives us a real advantage in public construction tenders.', 'Como diretora, o fato de minha equipe ter certificações BCM nos dá uma vantagem real em licitações de obra pública.') },
+    { name: 'David Chen', role: L('Coordinador BIM de Obra', 'Site BIM Coordinator', 'Coordenador BIM de Obra'), company: 'GlobalBuild Asia', quote: L('El nivel práctico de esta certificación la convierte en imprescindible para cualquier profesional que gestione BIM en obra.', 'The practical level of this certification makes it essential for any professional managing BIM on site.', 'O nível prático desta certificação a torna indispensável para qualquer profissional que gerencie BIM em obra.') },
+  ];
+
+  const related = [
+    { href: getLink('/certifications/information-delivery-manager'), acronym: 'IDM', color: '#0066CC', title: 'Information Delivery Manager', desc: L('Gestión estratégica de información', 'Strategic information management', 'Gestão estratégica de informação') },
+    { href: getLink('/certifications/bim-design-manager'), acronym: 'BDM', color: '#00AA88', title: 'BIM Design Manager', desc: L('Coordinación de diseño BIM', 'BIM design coordination', 'Coordenação de projeto BIM') },
+  ];
+
+  const applyHref = getLink('/certifications/bim-construction-manager/apply');
+
   return (
     <div className="min-h-screen bg-white">
-      {/* ===== 1. HERO ===== */}
-      <section className="relative overflow-hidden bg-[#0B0F1C] py-20 md:py-32">
-        {/* Animated grid background */}
-        <div className="absolute inset-0 opacity-[0.07]">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#FF6B35" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-[#FF6B35] rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FF3333] rounded-full blur-[120px]" />
-        </div>
-        {/* Floating icon */}
-        <motion.div
-          animate={{ y: [0, -16, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className="hidden lg:flex absolute right-20 top-1/3 w-32 h-32 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 items-center justify-center text-[#FF6B35]/40"
+      {/* ═══ 1. HERO · nodos de datos ═══════════════════════════════ */}
+      <section ref={heroRef} className="relative flex min-h-[92vh] items-center overflow-hidden bg-[#070B16] text-white">
+        <div className="absolute inset-0" style={BLUEPRINT} aria-hidden />
+        <motion.span
+          style={{ y: bigY, WebkitTextStroke: '1.5px #FF9A6C', color: 'transparent' }}
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 0.4, x: 0 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-none absolute -right-10 top-1/2 hidden -translate-y-1/2 select-none font-display text-[300px] font-semibold leading-none tracking-tighter lg:block xl:text-[400px]"
+          aria-hidden
         >
-          <HardHat className="w-16 h-16" />
-        </motion.div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center"
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block px-5 py-2 rounded-full bg-white/10 text-[#FF6B35] text-sm font-medium mb-8 border border-white/10 backdrop-blur-md"
-            >
-              {t.bcm.badge}
-            </motion.span>
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-              {t.bcm.hero_title}
-            </motion.h1>
-            <motion.p variants={fadeInUp} className="text-2xl md:text-3xl font-medium mb-4 bg-gradient-to-r from-[#FF6B35] via-[#FF8C5A] to-[#FF3333] bg-clip-text text-transparent">
-              {t.bcm.hero_subtitle}
-            </motion.p>
-            <motion.p variants={fadeInUp} className="text-lg text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed">
-              {t.bcm.hero_desc}
-            </motion.p>
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={getLink('/certifications/bim-construction-manager/apply')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-[#FF6B35] hover:bg-[#e55a2b] text-white px-10 py-4 transition-colors shadow-lg shadow-orange-900/20">
-                <Award className="w-5 h-5" />
-                {t.bcm.hero_cta_primary}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <button className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl border border-white/20 text-white hover:bg-white/10 px-10 py-4 transition-colors">
-                <Calendar className="w-5 h-5" />
-                {t.bcm.hero_cta_secondary}
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </motion.div>
+          BCM
+        </motion.span>
+
+        {/* Red de entrega de información (CDE) */}
+        <svg className="pointer-events-none absolute right-0 top-0 hidden h-full w-[55%] lg:block" viewBox="0 0 600 700" fill="none" aria-hidden>
+          {[
+            'M120 160 L300 260', 'M300 260 L480 180', 'M300 260 L260 450', 'M260 450 L450 520', 'M120 160 L90 360', 'M90 360 L260 450',
+          ].map((d, i) => (
+            <motion.path
+              key={i}
+              d={d}
+              stroke="#FF9A6C"
+              strokeOpacity="0.35"
+              strokeWidth="1.2"
+              strokeDasharray="5 6"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.4, delay: 0.6 + i * 0.15 }}
+            />
+          ))}
+          {[[120, 160], [300, 260], [480, 180], [260, 450], [450, 520], [90, 360]].map(([x, y], i) => (
+            <motion.g key={i} initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', delay: 0.5 + i * 0.12 }} style={{ transformOrigin: `${x}px ${y}px` }}>
+              <circle cx={x} cy={y} r="18" fill="#FF6B35" fillOpacity="0.25" />
+              <motion.circle
+                cx={x} cy={y} r="7" fill="#FF9A6C"
+                animate={reduce ? undefined : { r: [7, 9, 7] }}
+                transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.3 }}
+              />
+            </motion.g>
+          ))}
+        </svg>
+
+        <motion.div style={{ opacity: heroFade }} className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Eyebrow dark>{t.bcm.badge}</Eyebrow>
           </motion.div>
-        </div>
+          <h1 className="mt-8 max-w-3xl font-display text-[44px] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-[84px]">
+            <RevealWords text={t.bcm.hero_title} />
+          </h1>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }} className="mt-6 max-w-2xl font-display text-xl text-[#FF9A6C] sm:text-2xl">
+            {t.bcm.hero_subtitle}
+          </motion.p>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.75 }} className="mt-5 max-w-xl text-base leading-relaxed text-white/60">
+            {t.bcm.hero_desc}
+          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.9 }} className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Magnetic>
+              <Link href={applyHref} className="group inline-flex items-center justify-center gap-2 rounded-full bg-pmi-orange px-7 py-3.5 text-[15px] font-semibold text-pmi-dark transition-colors hover:bg-[#f08430]">
+                {t.bcm.hero_cta_primary}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </Magnetic>
+            <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-[15px] font-medium text-white/80 transition-colors hover:border-white/40 hover:bg-white/[0.05] hover:text-white">
+              {t.bcm.hero_cta_secondary}
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* ===== 2. OVERVIEW (3 puntos) ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.overview_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.overview_title}
-            </motion.h2>
+      <Marquee items={[t.bcm.hero_title, 'ISO 19650', 'CDE', 'BIM', 'AECOMI']} />
+
+      {/* ═══ 2. OVERVIEW · tríptico ═════════════════════════════════ */}
+      <section className="bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.overview_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.overview_title}</h2>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => {
-              const gradients = [
-                'bg-gradient-to-br from-orange-50 to-white',
-                'bg-gradient-to-br from-red-50 to-white',
-                'bg-gradient-to-br from-amber-50 to-white',
-              ];
+          <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-pmi-dark/10 md:grid-cols-3">
+            {overview.map((o, i) => {
+              const Icon = overviewIcons[i];
               return (
                 <motion.div
                   key={i}
-                  variants={fadeInUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className={`group relative p-8 rounded-2xl ${gradients[i - 1]} border border-slate-100/80 shadow-lg shadow-orange-900/5 hover:-translate-y-2 hover:shadow-xl hover:shadow-orange-900/10 transition-all duration-300`}
+                  {...reveal}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group relative bg-white p-8 transition-colors duration-500 hover:bg-[#8A3414] lg:p-10"
                 >
-                  <div className={`w-14 h-14 rounded-xl ${PRIMARY_BG_LIGHT} flex items-center justify-center ${PRIMARY_TEXT} mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    {i === 1 ? <Box className="w-10 h-10" /> : i === 2 ? <Users className="w-10 h-10" /> : <BarChart3 className="w-10 h-10" />}
+                  <div className="flex items-start justify-between">
+                    <Icon className="h-10 w-10 text-[#C2410C] transition-colors duration-500 group-hover:text-[#FF9A6C]" />
+                    <span className="font-display text-6xl font-semibold tabular-nums text-pmi-dark/[0.07] transition-colors duration-500 group-hover:text-white/15">0{i + 1}</span>
                   </div>
-                  <h3 className="text-xl font-bold text-[#0B0F1C] mb-1">
-                    {(t.bcm as any)[`overview_${i}_title`]}
-                  </h3>
-                  <p className={`text-sm ${PRIMARY_TEXT} font-medium mb-3`}>
-                    {(t.bcm as any)[`overview_${i}_subtitle`]}
-                  </p>
-                  <p className="text-slate-600 leading-relaxed">
-                    {(t.bcm as any)[`overview_${i}_desc`]}
-                  </p>
+                  <h3 className="mt-10 font-display text-2xl font-semibold text-pmi-dark transition-colors duration-500 group-hover:text-white">{o.title}</h3>
+                  <p className="mt-1 text-sm font-semibold text-[#C2410C] transition-colors duration-500 group-hover:text-[#FF9A6C]">{o.sub}</p>
+                  <p className="mt-4 text-[15px] leading-relaxed text-pmi-dark/65 transition-colors duration-500 group-hover:text-white/70">{o.desc}</p>
                 </motion.div>
               );
             })}
@@ -247,78 +244,68 @@ export default function BCMCertificationPage({ locale }: Props) {
         </div>
       </section>
 
-      {/* ===== 3. DESCRIPCIÓN COMPLETA ===== */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-          >
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C] text-center mb-14">
-              {t.bcm.desc_title}
-            </motion.h2>
-            <div className="space-y-8">
-              <motion.div variants={fadeInUp} className="relative pl-6 border-l-4 border-[#FF6B35]">
-                <p className="text-lg text-slate-700 leading-[1.8]">{t.bcm.desc_p1}</p>
-              </motion.div>
-              <motion.div variants={fadeInUp} className="relative pl-6 border-l-4 border-[#FF6B35]">
-                <p className="text-lg text-slate-700 leading-[1.8]">{t.bcm.desc_p2}</p>
-              </motion.div>
-              <motion.div variants={fadeInUp} className="relative pl-6 border-l-4 border-[#FF6B35]">
-                <p className="text-lg text-slate-700 leading-[1.8]">{t.bcm.desc_p3}</p>
-              </motion.div>
+      {/* ═══ 3. DESCRIPCIÓN · título fijo + párrafos ════════════════ */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
+          <motion.div {...reveal} className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <Eyebrow>BCM</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[48px]">{t.bcm.desc_title}</h2>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* ===== 4. CONTEXTO INTERNACIONAL ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.context_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C] mb-4">
-              {t.bcm.context_title}
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-slate-600 max-w-2xl mx-auto">
-              {t.bcm.context_desc}
-            </motion.p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 sm:max-w-3xl sm:mx-auto gap-6">
-            {[
-              { title: t.bcm.context_1, desc: t.bcm.context_1_desc, icon: <Globe className="w-6 h-6" />, bg: 'bg-violet-50', text: 'text-violet-600' },
-              { title: t.bcm.context_2, desc: t.bcm.context_2_desc, icon: <Briefcase className="w-6 h-6" />, bg: 'bg-amber-50', text: 'text-amber-600' },
-            ].map((card, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="p-6 rounded-xl border border-slate-100 bg-white shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300"
-              >
-                <div className={`w-12 h-12 rounded-full ${card.bg} flex items-center justify-center ${card.text} mb-4`}>
-                  {card.icon}
-                </div>
-                <h3 className="font-bold text-[#0B0F1C] mb-1">{card.title}</h3>
-                <p className="text-sm text-slate-600">{card.desc}</p>
+          <div className="space-y-10 lg:col-span-7">
+            {[t.bcm.desc_p1, t.bcm.desc_p2, t.bcm.desc_p3].map((p, i) => (
+              <motion.div key={i} {...reveal} transition={{ duration: 0.55, delay: i * 0.06 }} className="relative pl-8">
+                <motion.span
+                  className="absolute bottom-0 left-0 top-0 w-0.5 origin-top bg-[#FF6B35]"
+                  initial={{ scaleY: 0 }}
+                  whileInView={{ scaleY: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.2 + i * 0.1 }}
+                />
+                <p className="text-lg leading-[1.8] text-pmi-dark/75">{p}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 5. RESPONSABILIDADES (PDF Download) ===== */}
+      {/* ═══ 4. CONTEXTO INTERNACIONAL ══════════════════════════════ */}
+      <section className="relative overflow-hidden bg-[#070B16] py-24 text-white md:py-32">
+        <div className="absolute inset-0" style={BLUEPRINT} aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="grid gap-6 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <Eyebrow dark>{t.bcm.context_badge}</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] md:text-[52px]">{t.bcm.context_title}</h2>
+            </div>
+            <p className="max-w-md text-[15px] leading-relaxed text-white/55 md:col-span-5 md:justify-self-end">{t.bcm.context_desc}</p>
+          </motion.div>
+          <div className="mt-14 grid gap-5 md:grid-cols-2">
+            {[
+              { title: t.bcm.context_1, desc: t.bcm.context_1_desc, icon: <Building2 className="h-8 w-8" /> },
+              { title: t.bcm.context_2, desc: t.bcm.context_2_desc, icon: <Globe className="h-8 w-8" /> },
+            ].map((c, i) => (
+              <motion.div
+                key={i}
+                {...reveal}
+                transition={{ duration: 0.55, delay: i * 0.1 }}
+                onMouseMove={spot}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 lg:p-10"
+              >
+                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(255,154,108,0.18), transparent 65%)' }} aria-hidden />
+                <div className="relative">
+                  <span className="text-[#FF9A6C]">{c.icon}</span>
+                  <h3 className="mt-8 font-display text-3xl font-semibold">{c.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-white/55">{c.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 5. RESPONSABILIDADES (PDF) ═════════════════════════════ */}
       <ResponsibilitiesPDFSection
         certificationName={t.bcm.hero_subtitle ?? 'BIM Construction Manager'}
         certificationCode="BCM"
@@ -330,511 +317,311 @@ export default function BCMCertificationPage({ locale }: Props) {
         bgClass="bg-slate-50"
       />
 
-      {/* ===== 6. COMPETENCIAS TÉCNICAS ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.tech_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.tech_title}
-            </motion.h2>
+      {/* ═══ 6. COMPETENCIAS TÉCNICAS · cuadrícula con foco ═════════ */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.tech_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.tech_title}</h2>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {techCompetencies.map((comp, idx) => (
+          <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-pmi-dark/10 sm:grid-cols-2 lg:grid-cols-3">
+            {techCompetencies.map((c, i) => (
               <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="group p-6 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border-t-4 border-t-[#FF6B35]"
+                key={i}
+                {...reveal}
+                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                onMouseMove={spot}
+                className="group relative overflow-hidden bg-white p-8"
               >
-                <div className={`w-14 h-14 rounded-2xl ${PRIMARY_BG_LIGHT} flex items-center justify-center ${PRIMARY_TEXT} mb-4 group-hover:${PRIMARY_BG} group-hover:text-white transition-colors duration-300`}>
-                  {comp.icon}
+                <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(255,107,53,0.10), transparent 65%)' }} aria-hidden />
+                <div className="relative">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#C2410C] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 [&>svg]:h-7 [&>svg]:w-7">{c.icon}</span>
+                    <span className="font-display text-sm font-semibold tabular-nums text-pmi-dark/25">{String(i + 1).padStart(2, '0')}</span>
+                  </div>
+                  <h3 className="mt-8 font-display text-lg font-semibold leading-snug text-pmi-dark">{c.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-pmi-dark/60">{c.desc}</p>
                 </div>
-                <h3 className="font-bold text-[#0B0F1C] mb-2">{comp.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{comp.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 7. COMPETENCIAS TRANSVERSALES ===== */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.trans_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.trans_title}
-            </motion.h2>
+      {/* ═══ 7. COMPETENCIAS TRANSVERSALES · píldoras ═══════════════ */}
+      <section className="bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.trans_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.trans_title}</h2>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {transversalItems.map((item, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
+          <ul className="mt-14 flex flex-wrap gap-3">
+            {transversalItems.map((label, i) => (
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex items-center gap-4 hover:-translate-y-1 hover:shadow-md transition-all duration-300"
+                transition={{ type: 'spring', stiffness: 240, damping: 18, delay: i * 0.08 }}
+                whileHover={reduce ? undefined : { y: -6, scale: 1.04 }}
+                className="flex items-center gap-3 rounded-full border border-pmi-dark/15 bg-white py-3 pl-3 pr-7"
               >
-                <div className="w-10 h-10 rounded-full bg-[#FF6B35]/10 flex items-center justify-center text-[#FF6B35] shrink-0">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <span className="text-slate-700 font-medium">{item}</span>
-              </motion.div>
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-pmi-dark font-display text-sm font-semibold text-white">0{i + 1}</span>
+                <span className="font-display text-base font-semibold text-pmi-dark md:text-lg">{label}</span>
+              </motion.li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* ===== 8. REQUISITOS ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.requirements_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.requirements_title}
-            </motion.h2>
+      {/* ═══ 8. REQUISITOS · lista de verificación ══════════════════ */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.requirements_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.requirements_title}</h2>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: <Briefcase className="w-6 h-6" />, title: t.bcm.req_exp_title, desc: t.bcm.req_exp_desc, gradient: 'from-orange-50 to-amber-50', circle: 'bg-[#FF6B35]' },
-              { icon: <GraduationCap className="w-6 h-6" />, title: t.bcm.req_edu_title, desc: t.bcm.req_edu_desc, gradient: 'from-blue-50 to-sky-50', circle: 'bg-[#0066CC]' },
-              { icon: <Shield className="w-6 h-6" />, title: t.bcm.req_tech_title, desc: t.bcm.req_tech_desc, gradient: 'from-emerald-50 to-teal-50', circle: 'bg-[#00AA88]' },
-            ].map((req, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className={`relative p-8 rounded-2xl bg-gradient-to-br ${req.gradient} border border-slate-100 shadow-sm hover:shadow-md transition-shadow`}
-              >
-                <div className={`w-14 h-14 rounded-full ${req.circle} flex items-center justify-center text-white mb-6 shadow-lg`}>
-                  {req.icon}
+          <ul className="mt-14 border-t border-pmi-dark/15">
+            {requirements.map((r, i) => (
+              <motion.li key={i} {...reveal} transition={{ duration: 0.5, delay: i * 0.08 }} className="grid items-center gap-5 border-b border-pmi-dark/15 py-8 md:grid-cols-12 md:py-10">
+                <span className="flex items-center gap-4 md:col-span-1">
+                  <svg viewBox="0 0 24 24" className="h-8 w-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="10" className="opacity-25" />
+                    <motion.path d="M7 12.5l3.2 3.2L17 9" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }} />
+                  </svg>
+                </span>
+                <div className="flex items-center gap-4 md:col-span-4">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FF6B35] text-white">{r.icon}</span>
+                  <h3 className="font-display text-xl font-semibold text-pmi-dark">{r.title}</h3>
                 </div>
-                <h3 className="text-xl font-bold text-[#0B0F1C] mb-3">{req.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{req.desc}</p>
-              </motion.div>
+                <p className="text-[15px] leading-relaxed text-pmi-dark/65 md:col-span-7">{r.desc}</p>
+              </motion.li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* ===== 9. PROCESO ===== */}
-      <section className="py-24 bg-[#0B0F1C]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className="inline-block text-[#FF8C5A] font-semibold text-sm tracking-wider uppercase mb-3">
-              {t.bcm.process_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-white">
-              {t.bcm.process_title}
-            </motion.h2>
+      {/* ═══ 9. PROCESO · línea que se dibuja ═══════════════════════ */}
+      <section className="bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.process_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.process_title}</h2>
           </motion.div>
-          <div className="relative">
-            {/* Desktop horizontal line */}
-            <div className="hidden md:block absolute top-10 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-[#FF6B35] via-[#FF3333] to-[#0066CC] shadow-[0_0_12px_rgba(255,107,53,0.4)]" />
-            {/* Mobile vertical line */}
-            <div className="md:hidden absolute left-10 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#FF6B35] via-[#FF3333] to-[#0066CC] shadow-[0_0_12px_rgba(255,107,53,0.4)]" />
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-8 relative">
-              {processSteps.map((s, idx) => (
-                <motion.div
-                  key={idx}
-                  variants={fadeInUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="relative flex md:flex-col items-start md:items-center gap-6 md:gap-0"
-                >
-                  <div className="w-20 h-20 shrink-0 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF3333] flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-orange-900/30 relative z-10">
+          <div ref={procRef} className="relative mt-16">
+            <div className="absolute left-5 top-0 h-full w-px bg-pmi-dark/10 md:left-0 md:right-0 md:top-6 md:h-px md:w-full" aria-hidden />
+            <motion.div style={{ scaleX: reduce ? 1 : procLine, scaleY: 1 }} className="absolute left-0 right-0 top-6 hidden h-0.5 origin-left bg-pmi-orange md:block" aria-hidden />
+            <motion.div style={{ scaleY: reduce ? 1 : procLine }} className="absolute left-[19px] top-0 h-full w-0.5 origin-top bg-pmi-orange md:hidden" aria-hidden />
+            <ol className="relative grid gap-10 md:grid-cols-5 md:gap-6">
+              {processSteps.map((s, i) => (
+                <motion.li key={i} {...reveal} transition={{ duration: 0.5, delay: i * 0.08 }} className="flex items-start gap-5 md:flex-col md:gap-0">
+                  <motion.span
+                    initial={{ scale: 0.4, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 16, delay: i * 0.12 }}
+                    whileHover={{ rotate: -8, scale: 1.1 }}
+                    className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pmi-dark font-display text-sm font-semibold text-white ring-4 ring-pmi-cream md:h-12 md:w-12"
+                  >
                     {s.step}
+                  </motion.span>
+                  <div className="md:mt-6">
+                    <h3 className="font-display text-lg font-semibold text-pmi-dark">{s.title}</h3>
+                    <p className="mt-1.5 max-w-[220px] text-sm leading-relaxed text-pmi-dark/60">{s.desc}</p>
                   </div>
-                  <div className="md:mt-6 md:text-center">
-                    <h3 className="font-semibold text-white text-lg">{s.title}</h3>
-                    <p className="text-sm text-gray-400 mt-1 max-w-[200px] mx-auto">{s.desc}</p>
-                  </div>
-                </motion.div>
+                </motion.li>
               ))}
-            </div>
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* ===== 10. BENEFICIOS ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.benefits_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.benefits_title}
-            </motion.h2>
+      {/* ═══ 10. BENEFICIOS ═════════════════════════════════════════ */}
+      <section className="relative overflow-hidden bg-[#8A3414] py-24 text-white md:py-32">
+        <div className="absolute inset-0" style={BLUEPRINT} aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow dark>{t.bcm.benefits_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] md:text-[52px]">{t.bcm.benefits_title}</h2>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map((b, idx) => (
+          <div className="mt-14 grid gap-5 sm:grid-cols-2">
+            {benefits.map((b, i) => (
               <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="p-8 rounded-2xl bg-white border border-slate-100 text-center shadow-lg hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border-t-4 border-t-[#FF6B35]"
+                key={i}
+                {...reveal}
+                transition={{ duration: 0.55, delay: i * 0.08 }}
+                whileHover={reduce ? undefined : { y: -6 }}
+                className="flex gap-6 rounded-3xl border border-white/15 bg-white/[0.06] p-8 backdrop-blur-sm lg:p-10"
               >
-                <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF3333] flex items-center justify-center text-white mb-6 shadow-lg shadow-orange-900/20">
-                  {b.icon}
+                <span className="font-display text-5xl font-semibold leading-none tabular-nums text-white/25">0{i + 1}</span>
+                <div>
+                  <span className="text-[#FF9A6C] [&>svg]:h-7 [&>svg]:w-7">{b.icon}</span>
+                  <h3 className="mt-4 font-display text-2xl font-semibold">{b.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-white/70">{b.desc}</p>
                 </div>
-                <h3 className="font-bold text-[#0B0F1C] text-lg mb-3">{b.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{b.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 11. OPORTUNIDADES DE CARRERA ===== */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp} className={`w-16 h-16 mx-auto rounded-full ${PRIMARY_BG_LIGHT} flex items-center justify-center ${PRIMARY_TEXT} mb-6`}>
-              <TrendingUp className="w-8 h-8" />
-            </motion.div>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C] mb-6">
-              {t.bcm.career_title}
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-lg text-slate-700 leading-relaxed">
-              {t.bcm.career_desc}
-            </motion.p>
+      {/* ═══ 11. CARRERA · manifiesto ═══════════════════════════════ */}
+      <section className="bg-white py-24 md:py-36">
+        <div className="mx-auto max-w-[1000px] px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal}>
+            <Eyebrow>{t.bcm.career_title}</Eyebrow>
           </motion.div>
+          <ScrollWords text={t.bcm.career_desc} className="mt-10 font-display text-3xl font-medium leading-[1.25] tracking-[-0.015em] text-pmi-dark sm:text-4xl md:text-[44px]" />
         </div>
       </section>
 
-      {/* ===== 12. FAQ ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.faq_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.faq_title}
-            </motion.h2>
+      {/* ═══ 12. COMPARATIVA ════════════════════════════════════════ */}
+      <section className="bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.compare_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.compare_title}</h2>
           </motion.div>
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className={`rounded-xl border border-slate-100 overflow-hidden shadow-sm ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}`}
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center gap-4 p-5 text-left hover:bg-slate-50/50 transition-colors"
-                >
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FF6B35]/10 flex items-center justify-center text-[#FF6B35]">
-                    <HelpCircle className="w-4 h-4" />
-                  </span>
-                  <span className="font-semibold text-[#0B0F1C] flex-1 pr-4">{faq.q}</span>
-                  <span className={`w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 shrink-0 ${openFaq === idx ? 'bg-[#FF6B35] border-[#FF6B35] text-white' : 'text-slate-400'}`}>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openFaq === idx ? 'rotate-180' : ''}`} />
-                  </span>
-                </button>
-                <AnimatePresence initial={false}>
-                  {openFaq === idx && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-5 pb-5 pl-[4.25rem] text-slate-600 leading-relaxed">
-                        {faq.a}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 13. COMPARATIVA ===== */}
-      <section className="py-24 bg-slate-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.compare_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.compare_title}
-            </motion.h2>
-          </motion.div>
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm"
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="bg-gradient-to-r from-[#c44a1a] to-[#FF6B35] text-white">
-                    <th className="px-6 py-4 font-semibold">{locale === 'es' ? 'Aspecto' : locale === 'pt' ? 'Aspecto' : 'Aspect'}</th>
-                    <th className="px-6 py-4 font-semibold">{t.bcm.compare_idm}</th>
-                    <th className="px-6 py-4 font-semibold">{t.bcm.compare_bdm}</th>
-                    <th className="px-6 py-4 font-semibold">{t.bcm.compare_bcm}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { label: t.bcm.compare_focus, values: [locale === 'es' ? 'Gestión de Información' : locale === 'pt' ? 'Gestão de Informação' : 'Information Management', locale === 'es' ? 'Diseño BIM' : locale === 'pt' ? 'Projeto BIM' : 'BIM Design', locale === 'es' ? 'Construcción BIM' : locale === 'pt' ? 'Construção BIM' : 'BIM Construction'] },
-                    { label: t.bcm.compare_level, values: [locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermediário' : 'Intermediate', locale === 'es' ? 'Intermedio' : locale === 'pt' ? 'Intermediário' : 'Intermediate', locale === 'es' ? 'Avanzado' : locale === 'pt' ? 'Avançado' : 'Advanced'] },
-                    { label: t.bcm.compare_exp, values: [expYears(3), expYears(3), expYears(5)] },
-                    { label: t.bcm.compare_price, values: ['€350', '€350', '€450'] },
-                  ].map((row, rIdx) => (
-                    <tr
-                      key={rIdx}
-                      className={`transition-colors hover:bg-slate-50 ${rIdx % 2 === 1 ? 'bg-slate-50/60' : 'bg-white'}`}
-                    >
-                      <td className="px-6 py-4 font-medium text-[#0B0F1C]">{row.label}</td>
-                      {row.values.map((v, cIdx) => (
-                        <td
-                          key={cIdx}
-                          className={`px-6 py-4 text-slate-700 ${cIdx === 2 ? 'bg-[#FF6B35]/5 text-[#FF6B35] font-medium' : ''}`}
-                        >
+          <motion.div {...reveal} className="mt-14 overflow-x-auto rounded-3xl border border-pmi-dark/10 bg-white">
+            <table className="w-full min-w-[640px] text-left">
+              <thead>
+                <tr>
+                  <th className="px-6 py-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-pmi-dark/45">{L('Aspecto', 'Aspect', 'Aspecto')}</th>
+                  <th className="px-6 py-5 font-display text-lg font-semibold text-pmi-dark">{t.bcm.compare_idm}</th>
+                  <th className="px-6 py-5 font-display text-lg font-semibold text-pmi-dark">{t.bcm.compare_bdm}</th>
+                  <th className="bg-[#FF6B35] px-6 py-5 font-display text-lg font-semibold text-pmi-dark">{t.bcm.compare_bcm}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {compareRows.map((row, r) => (
+                  <tr key={r} className="border-t border-pmi-dark/10 transition-colors hover:bg-pmi-cream/60">
+                    <td className="px-6 py-4 text-sm font-semibold text-pmi-dark/60">{row.label}</td>
+                    {row.values.map((v, c) => (
+                      <td key={c} className={`px-6 py-4 text-[15px] ${c === 2 ? 'bg-[#FF6B35]/[0.09] font-semibold text-[#8A3414]' : 'text-pmi-dark/75'}`}>
+                        <span className="flex items-center gap-2">
+                          {c === 2 && <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />}
                           {v}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </motion.div>
         </div>
       </section>
 
-      {/* ===== 14. TESTIMONIOS ===== */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-16"
-          >
-            <motion.span variants={fadeInUp} className={`inline-block ${PRIMARY_TEXT} font-semibold text-sm tracking-wider uppercase mb-3`}>
-              {t.bcm.testimonials_badge}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-[#0B0F1C]">
-              {t.bcm.testimonials_title}
-            </motion.h2>
+      {/* ═══ 13. TESTIMONIOS ════════════════════════════════════════ */}
+      <section className="bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{t.bcm.testimonials_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">{t.bcm.testimonials_title}</h2>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: 'Roberto Sánchez', role: locale === 'es' ? 'Jefe de Obra BIM' : locale === 'pt' ? 'Gerente de Obra BIM' : 'BIM Site Manager', company: 'Construcciones del Norte', quote: locale === 'es' ? 'La certificación BCM me permitió liderar la coordinación BIM en obra con total autoridad. Los clientes confían más en un perfil certificado.' : locale === 'pt' ? 'A certificação BCM me permitiu liderar a coordenação BIM em obra com total autoridade. Os clientes confiam mais em um perfil certificado.' : 'The BCM certification allowed me to lead BIM coordination on site with full authority. Clients trust a certified profile more.' },
-              { name: 'María José López', role: locale === 'es' ? 'Directora de Construcción' : locale === 'pt' ? 'Diretora de Construção' : 'Construction Director', company: 'Edifica Proyectos', quote: locale === 'es' ? 'Como directora, valorar que mi equipo tenga certificaciones BCM nos da una ventaja real en licitaciones de obra pública.' : locale === 'pt' ? 'Como diretora, o fato de minha equipe ter certificações BCM nos dá uma vantagem real em licitações de obra pública.' : 'As a director, having BCM certified team members gives us a real advantage in public construction tenders.' },
-              { name: 'David Chen', role: locale === 'es' ? 'Coordinador BIM de Obra' : locale === 'pt' ? 'Coordenador BIM de Obra' : 'Site BIM Coordinator', company: 'GlobalBuild Asia', quote: locale === 'es' ? 'El nivel práctico de esta certificación la convierte en imprescindible para cualquier profesional que gestione BIM en obra.' : locale === 'pt' ? 'O nível prático desta certificação a torna indispensável para qualquer profissional que gerencie BIM em obra.' : 'The practical level of this certification makes it essential for any professional managing BIM on site.' },
-            ].map((timo, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="p-8 rounded-2xl bg-slate-50 border border-slate-100 relative border-l-4 border-l-[#FF6B35]/30"
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {testimonials.map((tm, i) => (
+              <motion.figure
+                key={i}
+                {...reveal}
+                transition={{ duration: 0.55, delay: i * 0.1 }}
+                className={`flex flex-col justify-between rounded-3xl bg-pmi-cream p-8 ${i === 1 ? 'md:translate-y-8' : ''}`}
               >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, sIdx) => (
-                    <Star key={sIdx} className="w-4 h-4 fill-[#FF6B35] text-[#FF6B35]" />
-                  ))}
-                </div>
-                <p className="text-slate-700 text-lg italic leading-relaxed mb-6">&ldquo;{timo.quote}&rdquo;</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF3333] flex items-center justify-center text-white font-bold shadow-md">
-                    {timo.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-[#0B0F1C]">{timo.name}</div>
-                    <div className="text-sm text-slate-500">{timo.role} — {timo.company}</div>
-                  </div>
-                </div>
-              </motion.div>
+                <span className="font-display text-7xl leading-none text-[#C2410C]" aria-hidden>“</span>
+                <blockquote className="-mt-4 text-[17px] leading-relaxed text-pmi-dark/80">{tm.quote}</blockquote>
+                <figcaption className="mt-8 flex items-center gap-4">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-pmi-dark font-display font-semibold text-white">{tm.name.charAt(0)}</span>
+                  <span>
+                    <span className="block font-display font-semibold text-pmi-dark">{tm.name}</span>
+                    <span className="block text-sm text-pmi-dark/55">{tm.role} — {tm.company}</span>
+                  </span>
+                </figcaption>
+              </motion.figure>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== 15. CTA FINAL ===== */}
-      <section className="relative overflow-hidden py-24 bg-gradient-to-br from-[#0B0F1C] via-[#2a1a10] to-[#4a1a0a]">
-        {/* Floating decorative icons */}
-        <motion.div animate={{ y: [0, -12, 0], rotate: [0, 5, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} className="hidden lg:block absolute top-16 left-16 text-[#FF6B35]/10">
-          <Shield className="w-24 h-24" />
-        </motion.div>
-        <motion.div animate={{ y: [0, 12, 0], rotate: [0, -5, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} className="hidden lg:block absolute bottom-16 right-16 text-[#FF6B35]/10">
-          <Zap className="w-20 h-20" />
-        </motion.div>
-        <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }} className="hidden lg:block absolute top-1/2 right-1/4 text-[#FF3333]/10">
-          <Award className="w-16 h-16" />
-        </motion.div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-          >
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block px-5 py-2 rounded-full bg-white/10 text-[#FF6B35] text-sm font-medium mb-8 border border-white/10 backdrop-blur-md"
-            >
-              {locale === 'es' ? 'Certificación profesional' : locale === 'pt' ? 'Certificação profissional' : 'Professional certification'}
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {t.bcm.final_cta_title}
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-lg text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-              {t.bcm.final_cta_desc}
-            </motion.p>
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={getLink('/certifications/bim-construction-manager/apply')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl bg-[#FF6B35] hover:bg-[#e55a2b] text-white px-10 py-4 transition-colors shadow-lg shadow-orange-900/30">
-                {t.bcm.final_cta_primary} <ArrowRight className="w-5 h-5" />
+      {/* ═══ 14. FAQ ════════════════════════════════════════════════ */}
+      <section className="bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
+          <motion.div {...reveal} className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <Eyebrow>{t.bcm.faq_badge}</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[48px]">{t.bcm.faq_title}</h2>
+            </div>
+          </motion.div>
+          <ul className="border-t border-pmi-dark/15 lg:col-span-8">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <li key={idx} className="border-b border-pmi-dark/15">
+                  <button onClick={() => setOpenFaq(isOpen ? null : idx)} aria-expanded={isOpen} className="flex w-full items-center justify-between gap-6 py-5 text-left">
+                    <span className="font-display text-lg font-semibold text-pmi-dark">{faq.q}</span>
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-pmi-dark/20 transition-all duration-300 ${isOpen ? 'rotate-45 bg-pmi-dark text-white' : 'text-pmi-dark'}`}>
+                      <Plus className="h-4 w-4" />
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                        <p className="max-w-2xl pb-6 text-[15px] leading-relaxed text-pmi-dark/65">{faq.a}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      {/* ═══ 15. CTA FINAL ══════════════════════════════════════════ */}
+      <section className="bg-pmi-orange text-pmi-dark">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+          <motion.div {...reveal} className="grid gap-10 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <Eyebrow>{L('Certificación profesional', 'Professional certification', 'Certificação profissional')}</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.03] tracking-[-0.03em] sm:text-5xl lg:text-[68px]">{t.bcm.final_cta_title}</h2>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-pmi-dark/80">{t.bcm.final_cta_desc}</p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col">
+              <Link href={applyHref} className="group inline-flex items-center justify-center gap-2 rounded-full bg-pmi-dark px-7 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-black">
+                {t.bcm.final_cta_primary}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-3 text-lg font-semibold rounded-xl border border-white/20 text-white hover:bg-white/10 px-10 py-4 transition-colors">
+              <Link href={getLink('/contact')} className="inline-flex items-center justify-center gap-2 rounded-full border border-pmi-dark/50 px-7 py-4 text-[15px] font-semibold transition-colors hover:bg-pmi-dark/10">
                 {t.bcm.final_cta_secondary}
               </Link>
-            </motion.div>
-            <motion.div variants={fadeInUp} className="mt-12">
-              <Link href={getLink('/certifications')} className="text-sm text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2">
-                <ArrowRight className="w-4 h-4 rotate-180" /> {t.bcm.back_to_certs}
-              </Link>
-            </motion.div>
+            </div>
           </motion.div>
+          <Link href={getLink('/certifications')} className="mt-12 inline-flex items-center gap-2 text-sm font-semibold text-pmi-dark/70 transition-colors hover:text-pmi-dark">
+            <ArrowRight className="h-4 w-4 rotate-180" /> {t.bcm.back_to_certs}
+          </Link>
         </div>
       </section>
 
-      {/* ===== RELACIONADOS ===== */}
-      <section className="py-16 bg-slate-50 border-t border-slate-100">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="text-center mb-10"
-          >
-            <motion.h3 variants={fadeInUp} className="text-2xl font-bold text-[#0B0F1C] mb-2">
-              {locale === 'es' ? 'Explora otras certificaciones' : locale === 'pt' ? 'Explore outras certificações' : 'Explore other certifications'}
-            </motion.h3>
-            <motion.p variants={fadeInUp} className="text-slate-600">
-              {locale === 'es' ? 'Descubre el programa que mejor se adapta a tu perfil profesional' : locale === 'pt' ? 'Descubra o programa que melhor se adapta ao seu perfil profissional' : 'Discover the program that best fits your professional profile'}
-            </motion.p>
+      {/* ═══ RELACIONADAS ═══════════════════════════════════════════ */}
+      <section className="bg-white py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <h3 className="font-display text-3xl font-semibold tracking-tight text-pmi-dark">{L('Explora otras certificaciones', 'Explore other certifications', 'Explore outras certificações')}</h3>
+            <p className="mt-3 text-pmi-dark/60">{L('Descubre el programa que mejor se adapta a tu perfil profesional', 'Discover the program that best fits your professional profile', 'Descubra o programa que melhor se adapta ao seu perfil profissional')}</p>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <Link
-                href={getLink('/certifications/information-delivery-manager')}
-                className="flex items-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 border-l-4 border-l-[#0066CC]"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#0066CC]/10 flex items-center justify-center text-[#0066CC]">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-[#0B0F1C]">Information Delivery Manager</div>
-                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Gestión estratégica de información' : locale === 'pt' ? 'Gestão estratégica de informação' : 'Strategic information management'}</div>
-                </div>
-                <ArrowRight className="w-5 h-5 text-slate-400 ml-auto" />
-              </Link>
-            </motion.div>
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <Link
-                href={getLink('/certifications/bim-design-manager')}
-                className="flex items-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 border-l-4 border-l-[#00AA88]"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#00AA88]/10 flex items-center justify-center text-[#00AA88]">
-                  <Layers className="w-6 h-6" />
-                </div>
-                <div className="text-left">
-                  <div className="font-bold text-[#0B0F1C]">BIM Design Manager</div>
-                  <div className="text-sm text-slate-500">{locale === 'es' ? 'Coordinación de diseño BIM' : locale === 'pt' ? 'Coordenação de projeto BIM' : 'BIM design coordination'}</div>
-                </div>
-                <ArrowRight className="w-5 h-5 text-slate-400 ml-auto" />
-              </Link>
-            </motion.div>
-          </div>
+          <ul className="mt-10 border-t border-pmi-dark/15">
+            {related.map((r) => (
+              <li key={r.acronym} className="border-b border-pmi-dark/15">
+                <Link href={r.href} className="group flex items-center gap-5 py-6 md:gap-8">
+                  <span className="w-[3.2ch] font-display text-4xl font-semibold tracking-tighter md:text-6xl" style={{ color: r.color }}>{r.acronym}</span>
+                  <span className="flex-1">
+                    <span className="block font-display text-xl font-semibold text-pmi-dark md:text-2xl">{r.title}</span>
+                    <span className="block text-sm text-pmi-dark/55">{r.desc}</span>
+                  </span>
+                  <ArrowUpRight className="h-6 w-6 text-pmi-dark/30 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-pmi-dark" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </div>
