@@ -1,35 +1,17 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import {
+  motion, useMotionTemplate, useMotionValue,
+  useReducedMotion, useScroll, useSpring, useTransform,
+} from 'framer-motion'
+import { reveal, BLUEPRINT, CountUp, RevealWords, Magnetic, Marquee, Eyebrow } from '@/components/ui/motion-kit'
 import Link from 'next/link'
 import {
-  ArrowRight,
-  Globe, Award, TrendingUp,
-  Users, ClipboardList, Layers, HardHat,
-  CheckCircle2, FileText, Search, CreditCard,
-  GraduationCap, Briefcase, UserCircle, ShieldCheck,
+  ArrowRight, ArrowUpRight,
+  CheckCircle2, FileText, Search, CreditCard, GraduationCap,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/useTranslation'
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-60px' as const },
-  transition: { duration: 0.5, ease: 'easeOut' as const },
-}
-
-const staggerItem = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-60px' as const },
-  transition: { duration: 0.45 },
-}
-
-const GRID_BG = {
-  backgroundImage:
-    'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-  backgroundSize: '64px 64px',
-}
 
 export default function HomeLanding() {
   const { t, getLink, currentLang } = useTranslation()
@@ -42,9 +24,8 @@ export default function HomeLanding() {
       level: h.cert_1_level,
       desc: h.cert_1_desc,
       href: getLink('/certifications/information-delivery-manager'),
-      hexColor: '#0066CC',
-      gradient: 'from-[#0055aa] to-[#0080dd]',
-      icon: ClipboardList,
+      color: '#0066CC',
+      light: '#4DA3FF',
     },
     {
       acronym: 'BDM',
@@ -52,9 +33,8 @@ export default function HomeLanding() {
       level: h.cert_2_level,
       desc: h.cert_2_desc,
       href: getLink('/certifications/bim-design-manager'),
-      hexColor: '#00AA88',
-      gradient: 'from-[#008866] to-[#00ccaa]',
-      icon: Layers,
+      color: '#00AA88',
+      light: '#2CD3AF',
     },
     {
       acronym: 'BCM',
@@ -62,329 +42,359 @@ export default function HomeLanding() {
       level: h.cert_3_level,
       desc: h.cert_3_desc,
       href: getLink('/certifications/bim-construction-manager'),
-      hexColor: '#E8601C',
-      gradient: 'from-[#c84c12] to-[#f07030]',
-      icon: HardHat,
+      color: '#E8601C',
+      light: '#FF8A4C',
     },
+  ]
+
+  const advantages = [
+    { title: h.adv_1_title, desc: h.adv_1_desc },
+    { title: h.adv_2_title, desc: h.adv_2_desc },
+    { title: h.adv_3_title, desc: h.adv_3_desc },
+    { title: h.adv_4_title, desc: h.adv_4_desc },
+  ]
+
+  const steps = [
+    { icon: CheckCircle2, title: h.step_1_title, desc: h.step_1_desc },
+    { icon: FileText, title: h.step_2_title, desc: h.step_2_desc },
+    { icon: Search, title: h.step_3_title, desc: h.step_3_desc },
+    { icon: CreditCard, title: h.step_4_title, desc: h.step_4_desc },
+    { icon: GraduationCap, title: h.step_5_title, desc: h.step_5_desc },
+  ]
+
+  const reduce = useReducedMotion()
+  const heroRef = useRef<HTMLElement>(null)
+  const mx = useMotionValue(70)
+  const my = useMotionValue(30)
+  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${mx}% ${my}%, rgba(0,163,196,0.16), transparent 70%)`
+  const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const heroTextY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : 90])
+  const heroBarsY = useTransform(heroScroll, [0, 1], [0, reduce ? 0 : -60])
+  const heroFade = useTransform(heroScroll, [0, 0.8], [1, reduce ? 1 : 0.2])
+
+  const tlRef = useRef<HTMLOListElement>(null)
+  const { scrollYProgress: tlScroll } = useScroll({ target: tlRef, offset: ['start 85%', 'end 60%'] })
+  const tlLine = useSpring(tlScroll, { stiffness: 90, damping: 24 })
+
+  const marqueeItems = [...certs.map((c) => c.title), 'ISO 19650', 'BIM', 'CDE', 'AECOMI']
+
+  const stats = [
+    { value: h.community_1_value, label: h.community_1_label },
+    { value: h.community_2_value, label: h.community_2_label },
+    { value: h.community_3_value, label: h.community_3_label },
+    { value: h.community_4_value, label: h.community_4_label },
   ]
 
   return (
     <>
       {/* ═══ HERO ═══════════════════════════════════════════════════════════ */}
-      <section className="relative w-full bg-[#060B18] overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.035]" style={GRID_BG} />
-        <div className="absolute -top-48 -left-48 w-[900px] h-[700px] rounded-full bg-pmi-cyan/[0.07] blur-[110px] pointer-events-none" />
+      <section
+        ref={heroRef}
+        onMouseMove={(e) => {
+          if (reduce) return
+          const r = e.currentTarget.getBoundingClientRect()
+          mx.set(((e.clientX - r.left) / r.width) * 100)
+          my.set(((e.clientY - r.top) / r.height) * 100)
+        }}
+        className="relative w-full overflow-hidden bg-[#070B16] text-white"
+      >
+        <motion.div
+          className="absolute inset-0"
+          style={BLUEPRINT}
+          animate={reduce ? undefined : { backgroundPosition: ['0px 0px', '56px 56px'] }}
+          transition={{ duration: 6, ease: 'linear', repeat: Infinity }}
+          aria-hidden
+        />
+        <motion.div className="pointer-events-none absolute inset-0" style={{ background: spotlight }} aria-hidden />
+        {/* Barras del logo que "construyen" el skyline */}
+        <motion.div style={{ y: heroBarsY }} className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[46%] items-end justify-end gap-3 px-4 opacity-[0.16] sm:px-8 lg:pr-24" aria-hidden>
+          {[
+            { h: '62%', c: '#00A3C4' }, { h: '88%', c: '#E87722' }, { h: '48%', c: '#5B2D8E' },
+            { h: '74%', c: '#00A3C4' }, { h: '100%', c: '#E87722' }, { h: '56%', c: '#5B2D8E' },
+          ].map((b, i) => (
+            <motion.span
+              key={i}
+              className="w-8 origin-bottom rounded-t-sm sm:w-12 lg:w-16"
+              style={{ height: b.h, backgroundColor: b.c }}
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ duration: 1.2, delay: 0.5 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+            />
+          ))}
+        </motion.div>
+        <div className="pointer-events-none absolute -right-40 top-10 h-[520px] w-[520px] rounded-full bg-pmi-cyan/[0.10] blur-[140px]" aria-hidden />
 
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
-          <div className="grid lg:grid-cols-[1fr_400px] gap-12 lg:gap-16 items-center">
-
-            {/* ── Text ── */}
+        <motion.div style={{ y: heroTextY, opacity: heroFade }} className="relative mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 pt-20 pb-16 md:pt-28 md:pb-24 lg:pt-36 lg:pb-28">
+          <div className="grid gap-16 lg:grid-cols-12 lg:gap-8">
+            {/* Texto */}
             <motion.div
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="lg:col-span-7"
             >
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 text-[11px] font-semibold tracking-widest text-white/60 uppercase bg-white/[0.06] rounded-full mb-8 border border-white/[0.1]">
-                {h.hero_badge}
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-[60px] xl:text-[68px] font-extrabold text-white leading-[1.06] tracking-tight">
-                {h.hero_title}
-                <span className="block text-pmi-cyan mt-2.5 leading-[1.1]">{h.hero_title_accent}</span>
+              <Eyebrow dark>{h.hero_badge}</Eyebrow>
+              <h1 className="mt-8 font-display text-[44px] font-semibold leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-[84px]">
+                <RevealWords text={h.hero_title} />
+                <span className="mt-2 block text-pmi-cyan">
+                  <RevealWords text={h.hero_title_accent} delay={0.25} />
+                </span>
               </h1>
-              <p className="mt-7 text-[17px] text-white/60 leading-[1.75] max-w-[500px]">
-                {h.hero_subtitle}
-              </p>
-              <p className="mt-3 text-sm text-white/35 leading-relaxed max-w-[460px]">
-                {h.hero_description}
-              </p>
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-10 flex flex-col sm:flex-row gap-3"
-              >
+              <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/70">{h.hero_subtitle}</p>
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/40">{h.hero_description}</p>
+
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                <Magnetic>
                 <Link
                   href={getLink('/certifications')}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-pmi-orange text-white font-semibold rounded-xl hover:bg-pmi-orange/90 transition-all shadow-lg shadow-pmi-orange/20 hover:shadow-xl text-[15px]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-pmi-orange px-7 py-3.5 text-[15px] font-semibold text-pmi-dark transition-all hover:bg-[#f08430] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
                   {h.cta_primary}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
+                </Magnetic>
                 <Link
                   href={getLink('/about')}
-                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white/75 font-medium rounded-xl border border-white/[0.14] hover:bg-white/[0.06] hover:text-white/90 transition-all text-[15px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-[15px] font-medium text-white/80 transition-all hover:border-white/40 hover:bg-white/[0.05] hover:text-white"
                 >
                   {h.cta_secondary}
                 </Link>
-              </motion.div>
+              </div>
             </motion.div>
 
-            {/* ── Cert card previews (desktop only) ── */}
-            <div className="hidden lg:flex flex-col gap-3">
-              {certs.map((cert, i) => (
-                <motion.div
-                  key={cert.acronym}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.55, delay: 0.2 + i * 0.12 }}
-                >
-                  <Link
-                    href={cert.href}
-                    className="group flex items-center gap-4 px-4 py-3.5 rounded-xl bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.08] hover:border-white/[0.14] transition-all duration-300"
-                  >
-                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${cert.gradient} flex items-center justify-center shrink-0`}>
-                      <cert.icon className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{cert.acronym}</div>
-                      <div className="text-sm font-semibold text-white/80 truncate leading-snug mt-0.5">{cert.title}</div>
-                      <div className="text-[11px] text-white/30 mt-0.5">{cert.level}</div>
-                    </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-white/20 group-hover:text-white/50 transition-colors shrink-0" />
-                  </Link>
-                </motion.div>
-              ))}
-              <p className="mt-1 text-center text-[11px] text-white/20 tracking-wide">
-                {h.certifications_badge} · AECOMI
-              </p>
-            </div>
+            {/* Índice de certificaciones */}
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
+              className="lg:col-span-5 lg:pt-6"
+            >
+              <div className="mb-4 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
+                <span>{h.certifications_badge}</span>
+                <span>AECOMI</span>
+              </div>
+              <ul className="border-t border-white/15">
+                {certs.map((cert) => (
+                  <li key={cert.acronym} className="border-b border-white/15">
+                    <Link href={cert.href} className="group flex items-center gap-5 py-5 transition-colors hover:bg-white/[0.03]">
+                      <span
+                        className="font-display text-3xl font-semibold tracking-tight lg:text-4xl"
+                        style={{ color: cert.light }}
+                      >
+                        {cert.acronym}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[15px] font-medium text-white/90">{cert.title}</span>
+                        <span className="mt-0.5 block text-xs text-white/40">{cert.level}</span>
+                      </span>
+                      <ArrowUpRight className="h-5 w-5 shrink-0 text-white/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
-        </div>
-
-        {/* Wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0 80L60 74C120 68 240 56 360 50C480 44 600 44 720 48C840 52 960 60 1080 64C1200 68 1320 68 1380 68L1440 68V80H1380C1320 80 1200 80 1080 80C960 80 840 80 720 80C600 80 480 80 360 80C240 80 120 80 60 80H0Z" fill="#FAF7F4" />
-          </svg>
-        </div>
+        </motion.div>
       </section>
 
+      <Marquee items={marqueeItems} />
+
       {/* ═══ CERTIFICATIONS ═════════════════════════════════════════════════ */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-14">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-white rounded-full mb-4 border border-gray-100 shadow-sm">
-              {h.certifications_badge}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {h.certifications_title}
-            </h2>
+      <section className="w-full bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="grid gap-6 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <Eyebrow>{h.certifications_badge}</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">
+                {h.certifications_title}
+              </h2>
+            </div>
+            <div className="md:col-span-5 md:text-right">
+              <Link
+                href={getLink('/certifications')}
+                className="group inline-flex items-center gap-2 text-[15px] font-semibold text-pmi-dark underline decoration-pmi-orange decoration-2 underline-offset-8"
+              >
+                {h.certifications_cta}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-pmi-dark/10 md:grid-cols-3">
             {certs.map((cert, i) => (
               <motion.div
                 key={cert.acronym}
-                {...staggerItem}
-                transition={{ duration: 0.45, delay: i * 0.1 }}
-                className="group relative rounded-2xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                {...reveal}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                onMouseMove={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect()
+                  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+                  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
+                }}
+                className="group relative flex flex-col overflow-hidden bg-white p-8 lg:p-10"
               >
-                {/* Colored header */}
-                <div className={`relative bg-gradient-to-br ${cert.gradient} p-6 pb-9 overflow-hidden`}>
-                  {/* Decorative circles */}
-                  <div className="absolute -right-5 -top-5 w-28 h-28 rounded-full bg-white/[0.08]" />
-                  <div className="absolute right-6 bottom-2 w-16 h-16 rounded-full bg-white/[0.06]" />
-                  <div className="relative flex items-start justify-between">
-                    <div>
-                      <span className="text-5xl font-black text-white tracking-tighter leading-none">{cert.acronym}</span>
-                      <div className="mt-2.5 inline-flex items-center px-2.5 py-0.5 bg-white/20 rounded-full">
-                        <span className="text-[10px] font-semibold text-white/85 uppercase tracking-wider">{cert.level}</span>
-                      </div>
-                    </div>
-                    <div className="w-11 h-11 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center shrink-0">
-                      <cert.icon className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
+                <span
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{ background: `radial-gradient(360px circle at var(--mx,50%) var(--my,50%), ${cert.color}1f, transparent 65%)` }}
+                  aria-hidden
+                />
+                <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-[0.25] transition-transform duration-500 group-hover:scale-x-100" style={{ backgroundColor: cert.color }} />
+                <div className="flex items-start justify-between">
+                  <span className="font-display text-6xl font-semibold leading-none tracking-tighter transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-105 lg:text-7xl origin-left" style={{ color: cert.color }}>
+                    {cert.acronym}
+                  </span>
+                  <span className="rounded-full border border-pmi-dark/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-pmi-dark/60">
+                    {cert.level}
+                  </span>
                 </div>
-
-                {/* Body */}
-                <div className="flex-1 flex flex-col px-6 pb-6 pt-5">
-                  <h3 className="text-[15px] font-bold text-pmi-dark leading-snug">{cert.title}</h3>
-                  <p className="mt-2.5 text-sm text-gray-500 leading-relaxed flex-1">{cert.desc}</p>
-                  <Link
-                    href={cert.href}
-                    className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold transition-all group-hover:gap-2.5"
-                    style={{ color: cert.hexColor }}
-                  >
-                    {currentLang === 'en' ? `Explore ${cert.acronym}` : `Explorar ${cert.acronym}`}
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </Link>
-                </div>
+                <h3 className="mt-10 font-display text-xl font-semibold leading-snug text-pmi-dark">{cert.title}</h3>
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-pmi-dark/65">{cert.desc}</p>
+                <Link
+                  href={cert.href}
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-pmi-dark after:absolute after:inset-0 after:content-['']"
+                >
+                  {currentLang === 'en' ? `Explore ${cert.acronym}` : `Explorar ${cert.acronym}`}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" style={{ color: cert.color }} />
+                </Link>
               </motion.div>
             ))}
           </div>
-
-          <motion.div {...fadeInUp} className="mt-12 text-center">
-            <Link
-              href={getLink('/certifications')}
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-pmi-dark text-white font-semibold rounded-xl hover:bg-pmi-purple transition-all text-[15px] shadow-md hover:shadow-lg"
-            >
-              {h.certifications_cta}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
         </div>
       </section>
 
       {/* ═══ ADVANTAGES ═════════════════════════════════════════════════════ */}
-      <section className="w-full bg-pmi-cream py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-14">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-blue-50/70 rounded-full mb-4 border border-blue-100/60">
-              {h.advantages_badge}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
-              {h.advantages_title}
-            </h2>
-          </motion.div>
+      <section className="w-full bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
+            <motion.div {...reveal} className="lg:col-span-5">
+              <div className="lg:sticky lg:top-28">
+                <Eyebrow>{h.advantages_badge}</Eyebrow>
+                <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">
+                  {h.advantages_title}
+                </h2>
+              </div>
+            </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-            {[
-              { icon: Globe, title: h.adv_1_title, desc: h.adv_1_desc, color: 'text-pmi-blue', bg: 'bg-blue-50', border: 'border-blue-100/60' },
-              { icon: TrendingUp, title: h.adv_2_title, desc: h.adv_2_desc, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100/60' },
-              { icon: Users, title: h.adv_3_title, desc: h.adv_3_desc, color: 'text-pmi-purple', bg: 'bg-purple-50', border: 'border-purple-100/60' },
-              { icon: ShieldCheck, title: h.adv_4_title, desc: h.adv_4_desc, color: 'text-pmi-orange', bg: 'bg-orange-50', border: 'border-orange-100/60' },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                {...staggerItem}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className={`p-7 rounded-2xl bg-white border ${item.border} hover:shadow-md transition-all duration-300`}
-              >
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${item.bg} ${item.color} mb-5`}>
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-base font-bold text-pmi-dark mb-2 leading-snug">{item.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
+            <ol className="lg:col-span-7 lg:col-start-6">
+              {advantages.map((item, i) => (
+                <motion.li
+                  key={item.title}
+                  {...reveal}
+                  transition={{ duration: 0.5, delay: i * 0.06 }}
+                  className="grid grid-cols-[3rem_1fr] gap-4 border-t border-pmi-dark/15 py-8 first:border-t-0 first:pt-0 sm:grid-cols-[4rem_1fr]"
+                >
+                  <span className="font-display text-sm font-semibold tabular-nums text-pmi-orange">0{i + 1}</span>
+                  <div>
+                    <h3 className="font-display text-xl font-semibold text-pmi-dark md:text-2xl">{item.title}</h3>
+                    <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-pmi-dark/65">{item.desc}</p>
+                  </div>
+                </motion.li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
       {/* ═══ TIMELINE ═══════════════════════════════════════════════════════ */}
-      <section className="w-full bg-white py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeInUp} className="text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-blue uppercase bg-blue-50/70 rounded-full mb-4 border border-blue-100/60">
-              {h.timeline_badge}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-pmi-dark tracking-tight">
+      <section className="w-full bg-pmi-cream py-24 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
+          <motion.div {...reveal} className="max-w-2xl">
+            <Eyebrow>{h.timeline_badge}</Eyebrow>
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-pmi-dark md:text-[52px]">
               {h.timeline_title}
             </h2>
-            <p className="mt-3 text-base text-gray-500 max-w-lg mx-auto">
-              {h.timeline_subtitle}
-            </p>
+            <p className="mt-5 text-base leading-relaxed text-pmi-dark/65">{h.timeline_subtitle}</p>
           </motion.div>
 
-          <div className="relative">
-            {/* Desktop connector */}
-            <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4">
-              {[
-                { icon: CheckCircle2, title: h.step_1_title, desc: h.step_1_desc, color: 'bg-pmi-blue', n: '01' },
-                { icon: FileText,     title: h.step_2_title, desc: h.step_2_desc, color: 'bg-pmi-cyan', n: '02' },
-                { icon: Search,       title: h.step_3_title, desc: h.step_3_desc, color: 'bg-pmi-purple', n: '03' },
-                { icon: CreditCard,   title: h.step_4_title, desc: h.step_4_desc, color: 'bg-pmi-orange', n: '04' },
-                { icon: GraduationCap, title: h.step_5_title, desc: h.step_5_desc, color: 'bg-emerald-600', n: '05' },
-              ].map((step, i) => (
-                <motion.div
-                  key={step.title}
-                  {...staggerItem}
-                  transition={{ duration: 0.45, delay: i * 0.1 }}
-                  className="relative flex flex-col items-center text-center group"
+          <div className="relative mt-16">
+          <div className="pointer-events-none absolute left-0 right-0 top-6 hidden h-px bg-pmi-dark/10 lg:block" aria-hidden />
+          <motion.div style={{ scaleX: reduce ? 1 : tlLine }} className="pointer-events-none absolute left-0 right-0 top-6 hidden h-0.5 origin-left bg-pmi-orange lg:block" aria-hidden />
+          <ol ref={tlRef} className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {steps.map((step, i) => (
+              <motion.li key={step.title} {...reveal} transition={{ duration: 0.5, delay: i * 0.08 }} className="relative">
+                <motion.span
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 16, delay: i * 0.12 }}
+                  whileHover={{ rotate: -8, scale: 1.1 }}
+                  className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-pmi-dark text-white ring-4 ring-pmi-cream"
                 >
-                  <div className={`relative z-10 w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center shadow-md shadow-black/10 group-hover:scale-105 transition-transform duration-300`}>
-                    <step.icon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="mt-5">
-                    <div className="text-[11px] font-bold text-gray-300 tracking-widest mb-1.5">{step.n}</div>
-                    <div className="text-sm font-bold text-pmi-dark">{step.title}</div>
-                    <div className="mt-1.5 text-xs text-gray-500 leading-relaxed max-w-[140px] mx-auto">{step.desc}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  <step.icon className="h-5 w-5" />
+                </motion.span>
+                <div className="mt-6 font-display text-xs font-semibold tabular-nums tracking-widest text-pmi-orange">0{i + 1}</div>
+                <h3 className="mt-1 font-display text-lg font-semibold text-pmi-dark">{step.title}</h3>
+                <p className="mt-2 max-w-[220px] text-sm leading-relaxed text-pmi-dark/60">{step.desc}</p>
+              </motion.li>
+            ))}
+          </ol>
           </div>
         </div>
       </section>
 
       {/* ═══ COMMUNITY ══════════════════════════════════════════════════════ */}
-      <section className="relative w-full bg-[#060B18] overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]" style={GRID_BG} />
-        <div className="absolute top-0 right-0 w-[600px] h-[400px] bg-pmi-cyan/[0.05] rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-          <motion.div {...fadeInUp} className="text-center mb-14">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold tracking-widest text-pmi-cyan uppercase bg-white/[0.06] rounded-full mb-5 border border-white/[0.08]">
-              {h.community_badge}
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-[42px] font-bold text-white tracking-tight">
-              {h.community_title}
-            </h2>
-            <p className="mt-4 text-sm text-white/35 max-w-lg mx-auto leading-relaxed">
+      <section className="relative w-full overflow-hidden bg-[#070B16] text-white">
+        <div className="absolute inset-0" style={BLUEPRINT} aria-hidden />
+        <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+          <motion.div {...reveal} className="grid gap-6 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <Eyebrow dark>{h.community_badge}</Eyebrow>
+              <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.025em] md:text-[52px]">
+                {h.community_title}
+              </h2>
+            </div>
+            <p className="max-w-md text-[15px] leading-relaxed text-white/50 md:col-span-5 md:justify-self-end">
               {h.community_subtitle}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            {[
-              { value: h.community_1_value, label: h.community_1_label, icon: UserCircle },
-              { value: h.community_2_value, label: h.community_2_label, icon: GraduationCap },
-              { value: h.community_3_value, label: h.community_3_label, icon: Briefcase },
-              { value: h.community_4_value, label: h.community_4_label, icon: Globe },
-            ].map((item, i) => (
+          <dl className="mt-16 grid grid-cols-2 border-t border-white/15 lg:grid-cols-4">
+            {stats.map((s, i) => (
               <motion.div
-                key={item.label}
-                {...staggerItem}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="px-6 py-8 rounded-2xl bg-white/[0.03] border border-white/[0.06] text-center hover:bg-white/[0.06] hover:border-white/[0.1] transition-all duration-300"
+                key={s.label}
+                {...reveal}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="border-b border-white/15 py-10 pr-4 lg:border-b-0 lg:border-r lg:pl-8 lg:first:pl-0 lg:last:border-r-0"
               >
-                <item.icon className="w-5 h-5 text-pmi-cyan/50 mx-auto mb-3" />
-                <div className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">{item.value}</div>
-                <div className="mt-1.5 text-[11px] font-semibold text-white/30 uppercase tracking-wider">{item.label}</div>
+                <dd className="font-display text-5xl font-semibold tracking-tight text-white lg:text-6xl"><CountUp value={s.value} /></dd>
+                <dt className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/45">{s.label}</dt>
               </motion.div>
             ))}
-          </div>
+          </dl>
 
-          <motion.div {...fadeInUp} className="mt-12 text-center">
+          <motion.div {...reveal} className="mt-12">
             <Link
               href={getLink('/contact')}
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-white/90 transition-all text-[15px] shadow-md"
+              className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold text-pmi-dark transition-colors hover:bg-white/90"
             >
               {h.community_cta}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </motion.div>
         </div>
       </section>
 
       {/* ═══ FINAL CTA ══════════════════════════════════════════════════════ */}
-      <section className="relative w-full bg-[#060B18] overflow-hidden border-t border-white/[0.04]">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-pmi-cyan/10 via-pmi-blue/10 to-pmi-orange/10 rounded-full blur-[80px]" />
-        </div>
-
-        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-          <motion.div {...fadeInUp} className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
-              {h.final_cta_title}
-            </h2>
-            <p className="mt-5 text-sm text-white/40 leading-relaxed max-w-lg mx-auto">
-              {h.final_cta_subtitle}
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <section className="w-full bg-pmi-orange text-pmi-dark">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <motion.div {...reveal} className="grid gap-10 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <h2 className="font-display text-4xl font-semibold leading-[1.03] tracking-[-0.03em] sm:text-5xl lg:text-[68px]">
+                {h.final_cta_title}
+              </h2>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-pmi-dark/80">{h.final_cta_subtitle}</p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col lg:items-stretch">
               <Link
                 href={getLink('/certifications')}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-pmi-dark font-semibold rounded-xl hover:bg-white/90 transition-all text-[15px] shadow-md"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-pmi-dark px-7 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-black"
               >
                 {h.final_cta_primary}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href={getLink('/contact')}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-white/70 font-medium rounded-xl border border-white/[0.14] hover:bg-white/[0.06] hover:text-white/90 transition-all text-[15px]"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-pmi-dark/50 px-7 py-4 text-[15px] font-semibold text-pmi-dark transition-colors hover:bg-pmi-dark/10"
               >
                 {h.final_cta_secondary}
               </Link>
