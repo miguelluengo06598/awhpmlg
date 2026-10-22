@@ -284,12 +284,11 @@ export default function BDMCertificationPage({ locale }: Props) {
               {t.bdm.context_desc}
             </motion.p>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { title: t.bdm.context_1, desc: t.bdm.context_1_desc, icon: <Building2 className="w-6 h-6" />, bg: 'bg-emerald-100', text: 'text-emerald-600' },
-              { title: t.bdm.context_2, desc: t.bdm.context_2_desc, icon: <FileCheck className="w-6 h-6" />, bg: 'bg-blue-100', text: 'text-blue-600' },
-              { title: t.bdm.context_3, desc: t.bdm.context_3_desc, icon: <Globe className="w-6 h-6" />, bg: 'bg-cyan-100', text: 'text-cyan-600' },
-              { title: t.bdm.context_4, desc: t.bdm.context_4_desc, icon: <Briefcase className="w-6 h-6" />, bg: 'bg-teal-100', text: 'text-teal-600' },
+              { title: t.bdm.context_2, desc: t.bdm.context_2_desc, icon: <Globe className="w-6 h-6" />, bg: 'bg-cyan-100', text: 'text-cyan-600' },
+              { title: t.bdm.context_3, desc: t.bdm.context_3_desc, icon: <Briefcase className="w-6 h-6" />, bg: 'bg-teal-100', text: 'text-teal-600' },
             ].map((card, idx) => (
               <motion.div
                 key={idx}

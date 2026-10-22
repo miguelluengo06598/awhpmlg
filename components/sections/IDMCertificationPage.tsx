@@ -300,12 +300,11 @@ export default function IDMCertificationPage({ locale }: Props) {
               {t.idm.context_desc}
             </motion.p>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { title: t.idm.context_1, desc: t.idm.context_1_desc, icon: <Building2 className="w-10 h-10" /> },
-              { title: t.idm.context_2, desc: t.idm.context_2_desc, icon: <FileCheck className="w-10 h-10" /> },
-              { title: t.idm.context_3, desc: t.idm.context_3_desc, icon: <Globe className="w-10 h-10" /> },
-              { title: t.idm.context_4, desc: t.idm.context_4_desc, icon: <Briefcase className="w-10 h-10" /> },
+              { title: t.idm.context_2, desc: t.idm.context_2_desc, icon: <Globe className="w-10 h-10" /> },
+              { title: t.idm.context_3, desc: t.idm.context_3_desc, icon: <Briefcase className="w-10 h-10" /> },
             ].map((card, idx) => (
               <motion.div
                 key={idx}
