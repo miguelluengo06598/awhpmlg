@@ -236,17 +236,17 @@ export default function SignUpForm() {
         setSubmitStatus('error')
         setStatusMessage(af.registrationFailed)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('❌ Error inesperado en registro:', error)
       setSubmitStatus('error')
-      setStatusMessage(error?.message || af.errGeneric)
+      setStatusMessage((error instanceof Error && error.message) || af.errGeneric)
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const inputBase = 'w-full pl-11 pr-4 py-3 text-sm border rounded-xl focus:outline-none focus:ring-2 transition-all bg-white'
-  const inputNormal = 'border-gray-200 focus:ring-blue-100 focus:border-[#0066CC]'
+  const inputBase = 'w-full pl-12 pr-4 py-3.5 text-[15px] border rounded-2xl focus:outline-none focus:ring-2 transition-all bg-white'
+  const inputNormal = 'border-pmi-dark/15 focus:ring-pmi-orange/25 focus:border-pmi-orange'
   const inputError = 'border-red-300 focus:ring-red-100 focus:border-red-400 bg-red-50/30'
 
   const benefits = [
@@ -265,8 +265,8 @@ export default function SignUpForm() {
     >
       <div className="w-full">
         <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signUp_title}</h2>
-          <p className="text-sm text-gray-400 mt-1.5">
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold text-pmi-dark tracking-[-0.025em]">{a.signUp_title}</h2>
+          <p className="text-sm text-pmi-dark/55 mt-2">
             {af.signUpSubtitle}
           </p>
         </div>
@@ -274,11 +274,11 @@ export default function SignUpForm() {
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           {/* Nombre completo */}
           <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="fullName" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {a.signUp_name} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type="text" id="fullName" name="fullName" value={formData.fullName}
                 onChange={(e) => updateField('fullName', e.target.value)}
@@ -298,11 +298,11 @@ export default function SignUpForm() {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="email" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {a.signIn_email} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type="email" id="email" name="email" value={formData.email}
                 onChange={(e) => updateField('email', e.target.value)}
@@ -322,11 +322,11 @@ export default function SignUpForm() {
 
           {/* Teléfono */}
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="phone" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {af.phone} <span className="text-gray-400 font-normal">({af.optional})</span>
             </label>
             <div className="relative">
-              <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type="tel" id="phone" name="phone" value={formData.phone}
                 onChange={(e) => updateField('phone', e.target.value)}
@@ -346,11 +346,11 @@ export default function SignUpForm() {
 
           {/* Contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="password" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {a.signUp_password} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type={showPassword ? 'text' : 'password'} id="password" name="password" value={formData.password}
                 onChange={(e) => updateField('password', e.target.value)}
@@ -392,11 +392,11 @@ export default function SignUpForm() {
 
           {/* Confirmar contraseña */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="confirmPassword" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {af.confirmPasswordLabel} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type={showConfirmPassword ? 'text' : 'password'} id="confirmPassword" name="confirmPassword" value={formData.confirmPassword}
                 onChange={(e) => updateField('confirmPassword', e.target.value)}
@@ -428,16 +428,16 @@ export default function SignUpForm() {
                   className="peer sr-only"
                 />
                 <div className={`w-5 h-5 rounded-md border-2 transition-all flex items-center justify-center ${
-                  formData.acceptTerms ? 'bg-[#0066CC] border-[#0066CC]' : touched.acceptTerms && errors.acceptTerms ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white group-hover:border-[#0066CC]'
+                  formData.acceptTerms ? 'bg-pmi-dark border-pmi-dark' : touched.acceptTerms && errors.acceptTerms ? 'border-red-300 bg-red-50' : 'border-gray-300 bg-white group-hover:border-pmi-dark'
                 }`}>
                   <CheckCircle2 className={`w-3.5 h-3.5 text-white ${formData.acceptTerms ? 'opacity-100' : 'opacity-0'}`} />
                 </div>
               </div>
               <span className="text-sm text-gray-700 leading-snug">
                 {af.acceptThe}
-                <Link href={getLink('/legal/terminos')} className="text-[#0066CC] font-medium hover:underline">{af.termsLink}</Link>
+                <Link href={getLink('/legal/terminos')} className="text-pmi-dark font-medium underline decoration-pmi-orange underline-offset-2">{af.termsLink}</Link>
                 {' '}{af.andThe}
-                <Link href={getLink('/legal/privacidad')} className="text-[#0066CC] font-medium hover:underline">{af.privacyLink}</Link>
+                <Link href={getLink('/legal/privacidad')} className="text-pmi-dark font-medium underline decoration-pmi-orange underline-offset-2">{af.privacyLink}</Link>
                 {' '}<span className="text-red-500">*</span>
               </span>
             </label>
@@ -453,10 +453,10 @@ export default function SignUpForm() {
           {/* Submit */}
           <button
             type="submit" disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#0066CC] text-white font-semibold rounded-xl hover:bg-[#0052a3] transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-pmi-orange text-pmi-dark font-semibold rounded-full hover:bg-[#f08430] focus:outline-none focus:ring-2 focus:ring-pmi-orange/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-[15px]"
           >
             {isSubmitting ? (
-              <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {af.creatingAccount}</>
+              <><span className="w-5 h-5 border-2 border-pmi-dark/30 border-t-pmi-dark rounded-full animate-spin" /> {af.creatingAccount}</>
             ) : (
               <>{a.signUp_submit} <ArrowRight className="w-4 h-4" /></>
             )}
@@ -465,7 +465,7 @@ export default function SignUpForm() {
           <AnimatePresence mode="wait">
             {submitStatus !== 'idle' && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className={`flex items-start gap-3 p-4 rounded-xl text-sm ${submitStatus === 'success' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
+                className={`flex items-start gap-3 p-4 rounded-2xl text-sm ${submitStatus === 'success' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
                 {submitStatus === 'success' ? <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" /> : <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />}
                 <span>{statusMessage}</span>
               </motion.div>
@@ -473,10 +473,10 @@ export default function SignUpForm() {
           </AnimatePresence>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 pt-6 border-t border-pmi-dark/10 text-center">
+          <p className="text-sm text-pmi-dark/60">
             {a.signUp_hasAccount}{' '}
-            <Link href={getLink('/auth/signin')} className="text-[#0066CC] font-semibold hover:underline">
+            <Link href={getLink('/auth/signin')} className="text-pmi-dark font-semibold underline decoration-pmi-orange decoration-2 underline-offset-4">
               {a.signUp_signInLink}
             </Link>
           </p>

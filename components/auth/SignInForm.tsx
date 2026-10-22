@@ -140,17 +140,17 @@ export default function SignInForm() {
       console.error('❌ Credenciales inválidas')
       setSubmitStatus('error')
       setStatusMessage(af.invalidCredentialsStatus)
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('❌ Error inesperado en login:', err)
       setSubmitStatus('error')
-      setStatusMessage(err?.message || af.errGeneric)
+      setStatusMessage((err instanceof Error && err.message) || af.errGeneric)
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const inputBase = 'w-full pl-11 pr-4 py-3 text-sm border rounded-xl focus:outline-none focus:ring-2 transition-all bg-white'
-  const inputNormal = 'border-gray-200 focus:ring-blue-100 focus:border-[#0066CC]'
+  const inputBase = 'w-full pl-12 pr-4 py-3.5 text-[15px] border rounded-2xl focus:outline-none focus:ring-2 transition-all bg-white'
+  const inputNormal = 'border-pmi-dark/15 focus:ring-pmi-orange/25 focus:border-pmi-orange'
   const inputError = 'border-red-300 focus:ring-red-100 focus:border-red-400 bg-red-50/30'
 
   const benefits = [
@@ -168,8 +168,8 @@ export default function SignInForm() {
     >
       <div className="w-full">
         <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-pmi-dark tracking-tight">{a.signIn_title}</h2>
-          <p className="text-sm text-gray-400 mt-1.5">
+          <h2 className="font-display text-3xl sm:text-4xl font-semibold text-pmi-dark tracking-[-0.025em]">{a.signIn_title}</h2>
+          <p className="text-sm text-pmi-dark/55 mt-2">
             {af.signInSubtitle}
           </p>
         </div>
@@ -177,11 +177,11 @@ export default function SignInForm() {
         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="email" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {a.signIn_email} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type="email" id="email" name="email" value={email} autoFocus
                 onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((p) => ({ ...p, email: undefined })) }}
@@ -200,11 +200,11 @@ export default function SignInForm() {
 
           {/* Contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label htmlFor="password" className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-pmi-dark/60 mb-2">
               {a.signIn_password} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-pmi-dark/35" />
               <input
                 type={showPassword ? 'text' : 'password'} id="password" name="password" value={password}
                 onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors((p) => ({ ...p, password: undefined })) }}
@@ -229,13 +229,13 @@ export default function SignInForm() {
             <label className="flex items-center gap-2.5 cursor-pointer group">
               <div className="relative flex items-center">
                 <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="peer sr-only" />
-                <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${rememberMe ? 'bg-[#0066CC] border-[#0066CC]' : 'border-gray-300 bg-white group-hover:border-[#0066CC]'}`}>
+                <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${rememberMe ? 'bg-pmi-dark border-pmi-dark' : 'border-gray-300 bg-white group-hover:border-pmi-dark'}`}>
                   <CheckCircle2 className={`w-3 h-3 text-white ${rememberMe ? 'opacity-100' : 'opacity-0'}`} />
                 </div>
               </div>
               <span className="text-sm text-gray-700">{af.rememberMe}</span>
             </label>
-            <Link href={getLink('/auth/reset-password')} className="text-sm text-gray-500 hover:text-[#0066CC] transition-colors">
+            <Link href={getLink('/auth/reset-password')} className="text-sm text-gray-500 hover:text-pmi-dark transition-colors">
               {af.forgotPassword}
             </Link>
           </div>
@@ -244,10 +244,10 @@ export default function SignInForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#0066CC] text-white font-semibold rounded-xl hover:bg-[#0052a3] focus:outline-none focus:ring-2 focus:ring-[#0066CC]/40 transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-md text-[0.95rem]"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-pmi-orange text-pmi-dark font-semibold rounded-full hover:bg-[#f08430] focus:outline-none focus:ring-2 focus:ring-pmi-orange/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-[15px]"
           >
             {isSubmitting ? (
-              <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {af.verifying}</>
+              <><span className="w-4 h-4 border-2 border-pmi-dark/30 border-t-pmi-dark rounded-full animate-spin" /> {af.verifying}</>
             ) : (
               <>{a.signIn_submit} <ArrowRight className="w-4 h-4" /></>
             )}
@@ -256,7 +256,7 @@ export default function SignInForm() {
           <AnimatePresence mode="wait">
             {submitStatus !== 'idle' && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className={`flex items-start gap-3 p-4 rounded-xl text-sm ${submitStatus === 'success' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
+                className={`flex items-start gap-3 p-4 rounded-2xl text-sm ${submitStatus === 'success' ? 'bg-green-50 text-green-800 border border-green-100' : 'bg-red-50 text-red-800 border border-red-100'}`}>
                 {submitStatus === 'success' ? <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" /> : <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />}
                 <span>{statusMessage}</span>
               </motion.div>
@@ -264,10 +264,10 @@ export default function SignInForm() {
           </AnimatePresence>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 pt-6 border-t border-pmi-dark/10 text-center">
+          <p className="text-sm text-pmi-dark/60">
             {a.signIn_noAccount}{' '}
-            <Link href={getLink('/auth/signup')} className="text-[#0066CC] font-semibold hover:underline">
+            <Link href={getLink('/auth/signup')} className="text-pmi-dark font-semibold underline decoration-pmi-orange decoration-2 underline-offset-4">
               {a.signIn_signUpLink}
             </Link>
           </p>
